@@ -199,7 +199,7 @@ sec(4, 'Realizacje', 4.6, projects, sid='realizacje')
 
 def head(title, sub, tag=None, a=0, out=(.9, .97)):
     t = f'<p class="mono k" style="{K(a, a + .05, out[0], out[1], dy=10)}; margin: 0 0 14px; font-size: 10px; color: #9C9B96">{tag}</p>' if tag else ''
-    return (f'<div class="hdr" style="top: 8%">{t}<h2 class="t-st k" style="{K(a, a + .06, out[0], out[1], dy=26, bl=8)}; font-size: clamp(34px, 3.9vw, 56px)">{title}</h2>'
+    return (f'<div class="hdr">{t}<h2 class="t-st k" style="{K(a, a + .06, out[0], out[1], dy=26, bl=8)}; font-size: clamp(34px, 3.9vw, 56px)">{title}</h2>'
             f'<p class="t-sub k" style="{K(a + .03, a + .09, out[0], out[1], dy=16)}">{sub}</p></div>')
 
 

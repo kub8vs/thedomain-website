@@ -78,7 +78,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 .ev-c{position:absolute;left:44%;top:22%;width:min(580px,46vw)}
 .st-t{position:absolute;left:18%;top:39%}
 .st-c{position:absolute;left:51%;top:11%}
-.hdr{position:absolute;left:0;right:0;top:12%;text-align:center;padding:0 16px}
+.hdr{position:absolute;left:0;right:0;top:max(100px,11%);text-align:center;padding:0 16px}
 .vend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px 14px}
 .cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
 .svc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
@@ -90,17 +90,18 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
   .mlines{display:none}
   .ev-t{left:16px;right:16px;top:10%}
   .ev-c{left:16px;right:16px;width:auto;top:44%;height:400px !important}
-  .st-t{left:16px;right:16px;top:8%}
+  .st-t{left:16px;right:16px;top:max(88px,10%)}
   .st-c{left:50%;top:24%;transform:translateX(-50%) scale(var(--sc));transform-origin:50% 0}
   .vend{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 10px}
   .svc{grid-template-columns:repeat(2,minmax(0,1fr))}
   .cols3{grid-template-columns:minmax(0,1fr)}
   .hide-s{display:none !important}
+  .hdr{top:88px}
   .topbar{padding-bottom:30px !important;background:linear-gradient(#0B0B0B 62%,rgba(11,11,11,0))}
   .hero-l{left:16px;right:16px;bottom:96px;text-align:center}
   .hero-l h1{font-size:clamp(38px,11vw,48px) !important}
   .hrow{justify-content:center}
-  .ev-t{text-align:center;top:calc(var(--vh) * .09)}
+  .ev-t{text-align:center;top:max(88px,calc(var(--vh) * .1))}
   .ev-t .t-st{font-size:clamp(30px,9vw,38px) !important}
   .ev-c{top:auto;bottom:88px;height:322px !important}
   .pv{position:relative !important;height:auto !important}
@@ -223,7 +224,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </section>
 <section class="sc" data-sec="3" data-name="Brief" aria-label="Brief" style="height: calc(var(--vh) * 2.6)">
 <div class="stage">
-<div class="hdr" style="top: 8%"><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Dajesz nam brief.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Kilka zdań wystarczy. Resztę dopytam na rozmowie.</p></div>
+<div class="hdr"><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Dajesz nam brief.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Kilka zdań wystarczy. Resztę dopytam na rozmowie.</p></div>
 <div class="fit" style="top: 31%">
 <div class="card k" style="--a: 0.04; --b: 0.12; --c: 0.9; --d: 0.97; --dy: 50px; position: relative; width: 640px; height: 340px; box-sizing: border-box">
 <p class="k" style="--a: -1; --b: 0.001; --c: 0.66; --d: 0.7; --dy: 8px; position: absolute; left: 0; right: 0; top: 112px; margin: 0; text-align: center; font-size: 23px; font-weight: 500; letter-spacing: -.02em">Nad czym pracujemy?</p>
@@ -247,7 +248,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </section>
 <section class="sc" data-sec="4" data-name="Plan" aria-label="Plan" style="height: calc(var(--vh) * 2.6)">
 <div class="stage">
-<div class="hdr" style="top: 8%"><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Planujemy pracę.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Każdy krok ma właściciela i termin.</p></div>
+<div class="hdr"><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Planujemy pracę.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Każdy krok ma właściciela i termin.</p></div>
 <div class="fit" style="top: 31%">
 <div class="card k" style="--a: 0.04; --b: 0.1; --c: 0.9; --d: 0.97; --dy: 50px; width: 600px; padding: 18px 22px 10px; box-sizing: border-box">
 <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px"><span style="font-size: 15px; font-weight: 600">Plan · nowy sklep</span><span class="mono" style="font-size: 10px; color: #9C9B96">8 kroków · 1 zespół</span></div>
@@ -282,7 +283,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </section>
 <section class="sc" data-sec="5" data-name="Projektujemy" aria-label="Projektujemy" style="height: calc(var(--vh) * 3)">
 <div class="stage">
-<div class="hdr" style="top: 8%"><p class="mono k" style="--a: 0; --b: 0.05; --c: 0.9; --d: 0.97; --dy: 10px; margin: 0 0 14px; font-size: 10px; color: #9C9B96">Przykład · sklep internetowy</p><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Projektujemy i kodujemy.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Sklep z limitowanymi dropami, od makiety do kodu.</p></div>
+<div class="hdr"><p class="mono k" style="--a: 0; --b: 0.05; --c: 0.9; --d: 0.97; --dy: 10px; margin: 0 0 14px; font-size: 10px; color: #9C9B96">Przykład · sklep internetowy</p><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Projektujemy i kodujemy.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Sklep z limitowanymi dropami, od makiety do kodu.</p></div>
 <div class="fit" style="top: 30%"><div class="k" style="--a: 0.03; --b: 0.1; --c: 0.91; --d: 0.98; --dy: 60px"><div class="win" style="width: 820px; height: 450px; position: relative">
 <div style="height: 36px; display: flex; align-items: center; gap: 6px; padding: 0 14px; border-bottom: 1px solid rgba(243,242,238,.08); background: #141414">
 <i style="width: 9px; height: 9px; border-radius: 50%; background: #3A3A38"></i><i style="width: 9px; height: 9px; border-radius: 50%; background: #3A3A38"></i><i style="width: 9px; height: 9px; border-radius: 50%; background: #3A3A38"></i>
@@ -315,7 +316,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </section>
 <section class="sc" data-sec="6" data-name="Wideo" aria-label="Wideo" style="height: calc(var(--vh) * 3)">
 <div class="stage">
-<div class="hdr" style="top: 8%"><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Montujemy film na start.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Rolka 9:16 i wersja 16:9 z tego samego materiału.</p></div>
+<div class="hdr"><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Montujemy film na start.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Rolka 9:16 i wersja 16:9 z tego samego materiału.</p></div>
 <div class="fit" style="top: 29%"><div class="k" style="--a: 0.03; --b: 0.1; --c: 0.93; --d: 0.99; --dy: 60px"><div class="win" style="width: 860px; height: 470px; position: relative; background: #0D0D0D">
 <div style="height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-bottom: 1px solid rgba(243,242,238,.08); background: #141414">
 <span style="display: flex; align-items: center; gap: 10px"><span style="font-size: 13px; font-weight: 600">Montaż</span><span class="mono" style="font-size: 9.5px; color: #9C9B96">Rolka_drop01</span></span>
@@ -353,7 +354,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </section>
 <section class="sc" data-sec="7" data-name="Automatyzacje" aria-label="Automatyzacje" style="height: calc(var(--vh) * 3)">
 <div class="stage">
-<div class="hdr" style="top: 8%"><p class="mono k" style="--a: 0; --b: 0.05; --c: 0.9; --d: 0.97; --dy: 10px; margin: 0 0 14px; font-size: 10px; color: #9C9B96">Przykład · rezerwacje i płatności</p><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Podpinamy rezerwacje i płatności.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Przetestowane, potem włączone.</p></div>
+<div class="hdr"><p class="mono k" style="--a: 0; --b: 0.05; --c: 0.9; --d: 0.97; --dy: 10px; margin: 0 0 14px; font-size: 10px; color: #9C9B96">Przykład · rezerwacje i płatności</p><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Podpinamy rezerwacje i płatności.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Przetestowane, potem włączone.</p></div>
 <div class="fit" style="top: 33%"><div class="k" style="--a: 0.03; --b: 0.1; --c: 0.93; --d: 0.99; --dy: 60px"><div class="win" style="width: 860px; height: 420px; position: relative; background: #0D0D0D">
 <div style="height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-bottom: 1px solid rgba(243,242,238,.08); background: #141414">
 <span style="display: flex; align-items: center; gap: 10px"><span style="font-size: 13px; font-weight: 600">Automatyzacja</span><span class="mono" style="font-size: 9.5px; color: #9C9B96">Rezerwacje</span></span>
@@ -398,7 +399,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </section>
 <section class="sc" data-sec="8" data-name="Efekty" aria-label="Efekty" style="height: calc(var(--vh) * 2.6)">
 <div class="stage">
-<div class="hdr" style="top: 8%"><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Widzisz efekty.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Każde zapytanie i każda sprzedaż w jednym widoku.</p></div>
+<div class="hdr"><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Widzisz efekty.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Każde zapytanie i każda sprzedaż w jednym widoku.</p></div>
 <div class="fit" style="top: 29%"><div class="k" style="--a: 0.03; --b: 0.1; --c: 0.93; --d: 0.99; --dy: 60px"><div class="card zm" style="width: 820px; padding: 22px 22px 20px; box-sizing: border-box; border-radius: 18px; background: #0F0F0F">
 <div style="display: flex; justify-content: space-between; align-items: flex-start">
 <div><p style="margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -.02em">Cześć, Kuba</p><p class="mono" style="margin: 4px 0 0; font-size: 9px; color: #9C9B96">Twój sklep · ostatnie 7 dni</p></div>
