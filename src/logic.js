@@ -71,8 +71,23 @@ class Component extends DCLogic {
     const y0 = window.scrollY || 0;
     this.secs = Array.prototype.slice.call(document.querySelectorAll('[data-sec]')).map((el) => {
       const r = el.getBoundingClientRect();
-      return { el, top: r.top + y0, h: el.offsetHeight, p: -1, name: el.getAttribute('data-name') || '' };
+      return { el, top: r.top + y0, h: el.offsetHeight, p: -1, name: el.getAttribute('data-name') || '', pinned: !!el.querySelector(':scope > .stage') };
     });
+    // scale each mockup to the screen width; on phones centre it between the heading and the player
+    const narrow = this.W < 900;
+    Array.prototype.forEach.call(document.querySelectorAll('.fit, .st-c'), (f) => {
+      const c = f.firstElementChild; if (!c) return;
+      if (f.dataset.top === undefined) f.dataset.top = f.style.top || '';
+      const sc = Math.min(1, (this.W - 24) / (c.offsetWidth || 880));
+      f.style.setProperty('--sc', String(sc));
+      if (!narrow) { f.style.top = f.dataset.top; return; }
+      const st = f.closest('.stage'), hd = st && st.querySelector('.hdr, .st-t');
+      const top0 = hd ? hd.offsetTop + hd.offsetHeight + 20 : this.vh * 0.2;
+      const room = this.vh - 90 - top0;
+      f.style.top = Math.round(top0 + Math.max(0, (room - c.offsetHeight * sc) / 2)) + 'px';
+    });
+    const hl = document.querySelector('.hero-l');
+    this.heroTop = hl ? hl.offsetTop : this.vh * 0.5;
     this.kfs = Array.prototype.slice.call(document.querySelectorAll('[data-kf]')).map((el) => {
       const s = el.closest('[data-sec]');
       const frames = el.getAttribute('data-kf').split(';').map((f) => f.split(',').map(Number));
@@ -132,7 +147,8 @@ class Component extends DCLogic {
     for (let i = 0; i < this.secs.length; i++) {
       const s = this.secs[i];
       const span = s.h - vh;
-      let p = span > 40 ? (sy - s.top) / span : (sy - s.top + vh) / vh;
+      // pinned scenes run while stuck; free-flowing sections run as they scroll into view
+      let p = s.pinned && span > 40 ? (sy - s.top) / span : (sy - s.top + vh) / vh;
       p = Math.max(0, Math.min(1, p));
       if (Math.abs(p - s.p) > 0.0002) { s.p = p; s.el.style.setProperty('--p', p.toFixed(4)); }
       if (s.top <= sy + vh * 0.5) { idx = i; ip = p; }
@@ -250,12 +266,15 @@ class Component extends DCLogic {
     const from = S[k % S.length], to = S[(k + 1) % S.length];
     const hero = this.secs && this.secs[0] ? this.secs[0].p : 0;
     const narrow = W < 900;
-    const cxH = narrow ? 0.5 : 0.7, cyH = narrow ? 0.34 : 0.46;
+    // on phones the hero shape sits in the free space between the top bar and the headline
+    const room = Math.max(120, (this.heroTop || H * 0.5) - 76);
+    const cxH = narrow ? 0.5 : 0.7, cyH = narrow ? (76 + room / 2) / H : 0.46;
     const mixc = Math.min(1, hero * 1.6);
     const cx = W * (cxH + (0.5 - cxH) * mixc), cy = H * (cyH + (0.5 - cyH) * mixc);
-    const scale = Math.min(W, H) * (narrow ? 0.36 : 0.34) * (1 + 0.25 * mixc);
+    const base = narrow ? Math.min(W * 0.32, room * 0.42) : Math.min(W, H) * 0.34;
+    const scale = (narrow ? base + (Math.min(W, H) * 0.36 - base) * mixc : base) * (1 + 0.25 * mixc);
     const dims = [1, 0.5, 0.45, 0.45, 0.45, 0.4, 0.4, 0.4, 0.42, 0.5, 0.35];
-    const dim = dims[Math.min(dims.length - 1, idx)];
+    const dim = dims[Math.min(dims.length - 1, idx)] * (narrow ? (idx === 0 ? 0.75 : 0.6) : 1);
     const rotY = g * 14, rotX = 0.35 + Math.sin(g * 6) * 0.15;
     const cyR = Math.cos(rotY), syR = Math.sin(rotY), cxR = Math.cos(rotX), sxR = Math.sin(rotX);
     ctx.setTransform(1, 0, 0, 1, 0, 0);

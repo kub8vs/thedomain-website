@@ -81,10 +81,23 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
   .ev-t{left:16px;right:16px;top:10%}
   .ev-c{left:16px;right:16px;width:auto;top:44%;height:400px !important}
   .st-t{left:16px;right:16px;top:8%}
-  .st-c{left:50%;top:22%;transform:translateX(-50%) scale(var(--sc));transform-origin:50% 0}
+  .st-c{left:50%;top:24%;transform:translateX(-50%) scale(var(--sc));transform-origin:50% 0}
   .vend{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 10px}
   .svc{grid-template-columns:repeat(2,minmax(0,1fr))}
   .cols3{grid-template-columns:minmax(0,1fr)}
   .hide-s{display:none !important}
+  .topbar{padding-bottom:30px !important;background:linear-gradient(#0B0B0B 62%,rgba(11,11,11,0))}
+  .hero-l{left:16px;right:16px;bottom:96px;text-align:center}
+  .hero-l h1{font-size:clamp(38px,11vw,48px) !important}
+  .hrow{justify-content:center}
+  .ev-t{text-align:center;top:calc(var(--vh) * .09)}
+  .ev-t .t-st{font-size:clamp(30px,9vw,38px) !important}
+  .ev-c{top:auto;bottom:88px;height:322px !important}
+  .pv{position:relative !important;height:auto !important}
+  .pv>div{position:relative !important}
+  .pv img{height:auto !important;aspect-ratio:2/1;object-position:0 0 !important}
+  .pt{position:relative !important;left:auto !important;right:auto !important;top:auto !important;padding:12px 18px 0}
+  .st-t{text-align:center}
 }
+@media (max-width:900px) and (max-height:780px){.hero-l .bul{display:none}}
 @media (prefers-reduced-motion:reduce){.orb-spin,.orb-bob,.dots i,.caret{animation:none}.intro,.intro2,.intro3{animation:none}}

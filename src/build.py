@@ -119,8 +119,8 @@ HERO_BUL = ['Strony kodowane ręcznie', 'Motion w każdym detalu', 'Rolki i film
 hbul = ''.join(f'<span style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 500; white-space: nowrap"><span style="width: 17px; height: 17px; border-radius: 50%; background: #F3F2EE; color: #0B0B0B; display: flex; align-items: center; justify-content: center">{ic("check", 11, 2.2)}</span>{t}</span>' for t in HERO_BUL)
 hero = f'''<div class="hero-l">
 <h1 class="k" style="{K(-1, .001, .03, .42, dy=60)}; margin: 0; font-size: clamp(44px, 5.6vw, 82px); line-height: 1.02; letter-spacing: -.045em; font-weight: 600"><span class="intro" style="display: block">Ty masz pomysł.</span><span class="intro2" style="display: block; font-weight: 400">The Domain buduje resztę.</span></h1>
-<div class="k intro3" style="{K(-1, .001, .02, .3, dy=40)}; margin-top: 34px; display: flex; flex-wrap: wrap; gap: 10px">{cta_w('Napisz DOMAIN w DM')}{cta_o('Zobacz realizacje', '#realizacje')}</div>
-<div class="k bul" style="{K(-1, .001, .02, .25, dy=20)}; margin-top: 30px">{hbul}</div>
+<div class="k" style="{K(-1, .001, .02, .3, dy=40)}; margin-top: 34px"><div class="intro3 hrow" style="display: flex; flex-wrap: wrap; gap: 10px">{cta_w('Napisz DOMAIN w DM')}{cta_o('Zobacz realizacje', '#realizacje')}</div></div>
+<div class="k bul hrow" style="{K(-1, .001, .02, .25, dy=20)}; margin-top: 30px">{hbul}</div>
 </div>
 <button type="button" class="k btn btn-w" onClick="{{{{playStory}}}}" style="{K(-1, .001, .0, .07, dy=12)}; position: absolute; left: 50%; bottom: 14px; margin-left: -97px; width: 194px; height: 48px; display: flex; align-items: center; gap: 12px; padding: 0 16px 0 6px; box-sizing: border-box; border: 0; border-radius: 26px; background: #F3F2EE; color: #0B0B0B; cursor: pointer; text-align: left">
 <span style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M5 3.2 L13 8 L5 12.8 Z" fill="currentColor"></path></svg></span>
@@ -178,8 +178,8 @@ for i, (t, cat, tags) in enumerate(PROJ):
     cards.append(f'''<div class="k" style="{K(a, a + .12, .93, .99, dy=520, ds=-.04)}; position: absolute; inset: 0; z-index: {i + 1}">
 <div class="kc" style="{back}; position: absolute; inset: 0; transform: translateY(calc(var(--j) * -42px)) scale(calc(1 - .07 * var(--j))); transform-origin: 50% 0; filter: brightness(calc(1 - .55 * var(--j)))">
 <div class="card" style="position: absolute; inset: 0; overflow: hidden; background: #101010; border-radius: 22px">
-<div style="position: absolute; left: 0; right: 0; top: 0; height: 300px; border-bottom: 1px solid rgba(243,242,238,.1)">{VIS[i]}</div>
-<div style="position: absolute; left: 24px; right: 24px; top: 314px">
+<div class="pv" style="position: absolute; left: 0; right: 0; top: 0; height: 300px; border-bottom: 1px solid rgba(243,242,238,.1)">{VIS[i]}</div>
+<div class="pt" style="position: absolute; left: 24px; right: 24px; top: 314px">
 <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px"><span style="font-size: 21px; font-weight: 600; letter-spacing: -.02em">{t}</span><span class="mono" style="font-size: 9.5px; color: #9C9B96; white-space: nowrap">0{i + 1} · w toku</span></div>
 <p style="margin: 3px 0 10px; font-size: 13px; color: #9C9B96">{cat}</p>
 <div style="display: flex; flex-wrap: wrap; gap: 6px">{"".join(tagp(x) for x in tags)}</div>
@@ -460,7 +460,7 @@ start = f'''<div class="st-t"><h2 class="t-st"><span class="k" style="{K(.08, .1
 sec(13, 'Współpraca', 2.6, start)
 
 # 14 final ---------------------------------------------------------------
-final = f'''<section class="sc" data-sec="@@IDX@@" data-name="Kontakt" aria-label="Kontakt" style="min-height: var(--vh); padding: calc(var(--vh) * .18) 16px 90px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center">
+final = f'''<section class="sc" data-sec="@@IDX@@" data-name="Kontakt" aria-label="Kontakt" style="min-height: var(--vh); padding: calc(var(--vh) * .18) 16px 130px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center">
 <h2 class="k" style="{K(.2, .7, dy=40, bl=10)}; margin: 0; text-align: center; font-size: clamp(44px, 6.2vw, 96px); line-height: 1; letter-spacing: -.045em; font-weight: 600">Skup się na pomysłach.<br><span style="font-weight: 400">Your domain. Built to grow.</span></h2>
 <div class="k" style="{K(.35, .8, dy=20)}; margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 18px">
 <a class="btn btn-w" href="https://ig.me/m/aixkuba" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 22px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 13px; font-weight: 600">{ic("ig", 15)}Napisz na IG</a>
@@ -493,7 +493,7 @@ chrome = f'''{DEFS}
 <div style="position: absolute; inset: -30px; border-radius: 50%; background: radial-gradient(circle, rgba(243,242,238,.18), transparent 65%)"></div>
 <div class="orb-bob">{chrome_mark(76)}</div>
 </div>
-<header style="position: fixed; left: 0; right: 0; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 18px clamp(16px, 1.8vw, 26px); pointer-events: none">
+<header class="topbar" style="position: fixed; left: 0; right: 0; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 18px clamp(16px, 1.8vw, 26px); pointer-events: none">
 <a href="#start" aria-label="The Domain, na początek" style="pointer-events: auto; display: flex; align-items: center; gap: 8px; color: #F3F2EE; text-decoration: none; font-weight: 600; font-size: 15px; letter-spacing: -.02em; white-space: nowrap">{mark(19)}The Domain.</a>
 <span style="pointer-events: auto; display: flex; gap: 8px">
 <a class="btn btn-w" href="https://ig.me/m/aixkuba" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 7px; height: 36px; padding: 0 14px; border-radius: 20px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 13px; font-weight: 600">{ic("ig", 14)}<span style="white-space: nowrap">Napisz na IG</span></a>
