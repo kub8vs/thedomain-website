@@ -29,6 +29,7 @@ for name, sid in IDS.items():
 SLOTS = ['10:00', '11:30', '13:00', '14:30', '16:00', '17:30']
 CHIPS = ['Strona', 'Sklep online', 'Rolki i wideo', 'Automatyzacje', 'Branding']
 bk = open(os.path.join(HERE, 'booking.html')).read()
+bk = bk.replace('@@CAL@@', 'https://cal.com/jakub-zimnicki-dusys3/the-domain')
 bk = bk.replace('@@SLOTS@@', ''.join(f'<button type="button" class="gc-t" data-time="{t}">{t}</button>' for t in SLOTS))
 bk = bk.replace('@@CHIPS@@', ''.join(f'<label><input type="checkbox" name="potrzeby" value="{c}"><span>{c}</span></label>' for c in CHIPS))
 site_js = open(os.path.join(HERE, 'site.js')).read()
