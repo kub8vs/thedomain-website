@@ -1,10 +1,8 @@
 /* menu, section links and call booking (plain JS, outside the story template) */
 (function () {
   var D = document, R = D.documentElement;
-  var MAIL = 'kub.mktg@gmail.com';
   var DN = ['nd', 'pon', 'wt', 'śr', 'czw', 'pt', 'sob'];
   var MN = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'];
-  var MF = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
   var sel = { d: null, t: null };
   var pad = function (n) { return (n < 10 ? '0' : '') + n; };
   var iso = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
@@ -50,11 +48,7 @@
     R.classList.toggle('bk-open', open);
     var m = D.querySelector('.bk');
     if (m) m.setAttribute('aria-hidden', open ? 'false' : 'true');
-    if (open) {
-      menu(false); fillDays();
-      var f = D.getElementById('bkF'), ok = D.querySelector('.bk-ok');
-      if (f && ok && !ok.hidden && f.dataset.sent) { ok.hidden = true; f.hidden = false; f.reset(); delete f.dataset.sent; }
-    }
+    if (open) { menu(false); loadCal(); }
   }
   function goTo(hash) {
     if (hash === '#top' || hash === '#start') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
@@ -84,56 +78,16 @@
   D.addEventListener('keydown', function (e) { if (e.key === 'Escape') { menu(false); book(false); } });
   if (location.hash === '#umow') setTimeout(function () { book(true); }, 400);
 
-  function label(dayIso, time) {
-    var p = dayIso.split('-'), d = new Date(+p[0], +p[1] - 1, +p[2]);
-    return DN[d.getDay()] + ', ' + d.getDate() + ' ' + MF[d.getMonth()] + ' ' + d.getFullYear() + ', ' + time;
+  // ---- Cal.com inline calendar in the booking modal (real free slots, Google Meet link, reminders)
+  var CAL_LINK = 'jakub-zimnicki-dusys3/the-domain', calOn = false;
+  function loadCal() {
+    if (calOn) return; calOn = true;
+    (function (C, A, L) { var p = function (a, ar) { a.q.push(ar); }; var d = C.document; C.Cal = C.Cal || function () { var cal = C.Cal; var ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement('script')).src = A; cal.loaded = true; } if (ar[0] === L) { var api = function () { p(api, arguments); }; var namespace = ar[1]; api.q = api.q || []; if (typeof namespace === 'string') { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ['initNamespace', namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, 'https://app.cal.com/embed/embed.js', 'init');
+    var box = D.getElementById('calInline'); if (box) box.innerHTML = '';
+    var cfg = { layout: 'month_view', theme: 'dark' };
+    if (sel.d) { cfg.date = sel.d; cfg.month = sel.d.slice(0, 7); }
+    window.Cal('init', 'td', { origin: 'https://cal.com' });
+    window.Cal.ns.td('inline', { elementOrSelector: '#calInline', calLink: CAL_LINK, config: cfg });
+    window.Cal.ns.td('ui', { theme: 'dark', layout: 'month_view', hideEventTypeDetails: false, cssVarsPerTheme: { dark: { 'cal-brand': '#F3F2EE', 'cal-brand-text': '#0B0B0B' } } });
   }
-  function gcal(dayIso, time, title, details) {
-    var s = dayIso.replace(/-/g, '') + 'T' + time.replace(':', '') + '00';
-    var hm = time.split(':'), end = +hm[0] * 60 + +hm[1] + 30;
-    var e = dayIso.replace(/-/g, '') + 'T' + pad(Math.floor(end / 60)) + pad(end % 60) + '00';
-    return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(title) + '&dates=' + s + '/' + e + '&ctz=Europe/Warsaw&details=' + encodeURIComponent(details);
-  }
-
-  D.addEventListener('submit', function (e) {
-    var f = e.target; if (f.id !== 'bkF') return;
-    e.preventDefault();
-    var err = f.querySelector('.bk-err'), btn = f.querySelector('.bk-send');
-    var v = function (n) { var x = f.elements[n]; return x ? x.value.trim() : ''; };
-    if (v('_honey')) return;
-    if (!sel.d) { err.textContent = 'Wybierz dzień rozmowy.'; return; }
-    if (!sel.t) { err.textContent = 'Wybierz godzinę rozmowy.'; return; }
-    if (!v('imie')) { err.textContent = 'Wpisz imię i nazwisko.'; f.elements.imie.focus(); return; }
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('email'))) { err.textContent = 'Wpisz poprawny adres e-mail.'; f.elements.email.focus(); return; }
-    err.textContent = '';
-    var needs = Array.prototype.map.call(f.querySelectorAll('input[name="potrzeby"]:checked'), function (x) { return x.value; }).join(', ');
-    var when = label(sel.d, sel.t);
-    var info = v('imie') + ' · ' + v('email') + (v('telefon') ? ' · ' + v('telefon') : '') + (v('firma') ? '\n' + v('firma') : '') + (needs ? '\nPotrzeby: ' + needs : '') + (v('wiadomosc') ? '\n\n' + v('wiadomosc') : '');
-    var payload = {
-      _subject: 'Nowy call: ' + v('imie') + ' · ' + when,
-      _template: 'table',
-      _captcha: 'false',
-      'Termin': when + ' (30 min, czas polski)',
-      'Imię i nazwisko': v('imie'),
-      email: v('email'),
-      'Telefon': v('telefon') || '-',
-      'Firma / strona / IG': v('firma') || '-',
-      'Potrzeby': needs || '-',
-      'Wiadomość': v('wiadomosc') || '-',
-      'Dodaj do kalendarza': gcal(sel.d, sel.t, 'Call: ' + v('imie') + ' (The Domain)', info)
-    };
-    btn.disabled = true; btn.firstChild.nodeValue = 'Wysyłam… ';
-    fetch('https://formsubmit.co/ajax/' + MAIL, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) })
-      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-      .then(function () {
-        f.dataset.sent = '1'; f.hidden = true;
-        var ok = D.querySelector('.bk-ok'); ok.hidden = false;
-        ok.querySelector('[data-okt]').textContent = 'Termin: ' + when + '. Potwierdzenie i link do rozmowy wyślę na ' + v('email') + ' w ciągu 24 godzin.';
-        ok.querySelector('[data-okcal]').href = gcal(sel.d, sel.t, 'Call z The Domain', 'Rozmowa o projekcie z The Domain. Link do spotkania przyjdzie mailem.');
-      })
-      .catch(function () {
-        err.innerHTML = 'Nie udało się wysłać. Napisz proszę na <a href="mailto:' + MAIL + '?subject=' + encodeURIComponent('Call: ' + when) + '" style="color:#F3F2EE">' + MAIL + '</a>.';
-      })
-      .then(function () { btn.disabled = false; btn.firstChild.nodeValue = 'Umów się na call '; });
-  });
 })();
