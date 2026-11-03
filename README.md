@@ -19,6 +19,7 @@ i wejść na http://localhost:8000. Nadaje się od razu na GitHub Pages, Netlify
 - `assets/img/`: screeny realizacji (Himera, Adriatico, Tirenders)
 - `src/build.py`, `src/figs.py`: treść i układ scen
 - `src/style.css`, `src/logic.js`: style i logika (scroll, kropki, autoplay)
+- `src/site.js`, `src/booking.html`: menu z sekcjami i okno „Umów się na call” (formularz wysyła zgłoszenie przez FormSubmit na kub.mktg@gmail.com, z linkiem do dodania terminu w Google Calendar)
 - `src/export.py`: składa wszystko w `index.html`
 
 ## Zmiany

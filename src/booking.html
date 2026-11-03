@@ -1,0 +1,31 @@
+<div class="bk" role="dialog" aria-modal="true" aria-labelledby="bkT" aria-hidden="true">
+<div class="bk-p glass">
+<button type="button" class="bk-x" data-close="" aria-label="Zamknij">×</button>
+<form id="bkF" novalidate>
+<h3 id="bkT">Umów się na call</h3>
+<p class="sub">30 minut online (Google Meet), bezpłatnie. Wybierz termin i zostaw kontakt.</p>
+<p class="lab">Dzień</p>
+<div class="gc-days" data-days="10"></div>
+<p class="lab">Godzina</p>
+<div class="gc-times">@@SLOTS@@</div>
+<p class="lab">Twoje dane</p>
+<div class="bk-row"><input name="imie" placeholder="Imię i nazwisko *" autocomplete="name" required><input name="email" type="email" placeholder="E-mail *" autocomplete="email" required></div>
+<div class="bk-row" style="margin-top: 10px"><input name="telefon" type="tel" placeholder="Telefon" autocomplete="tel"><input name="firma" placeholder="Firma, strona lub IG"></div>
+<p class="lab">Czego potrzebujesz?</p>
+<div class="bk-chips">@@CHIPS@@</div>
+<p class="lab">Kilka słów o projekcie</p>
+<textarea name="wiadomosc" placeholder="Np. sklep z dropami, start w grudniu, orientacyjny budżet"></textarea>
+<input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display: none">
+<p class="bk-err" aria-live="polite"></p>
+<button class="bk-send" type="submit">Umów się na call <span aria-hidden="true">→</span></button>
+<p class="bk-note">Odpowiedź w ciągu 24 godzin. Dane trafiają tylko do The Domain.</p>
+</form>
+<div class="bk-ok" hidden>
+<div class="ck"><svg viewBox="0 0 16 16" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.4 L6.8 11 L12 5.2"></path></svg></div>
+<h3>Dziękuję, mamy to.</h3>
+<p class="sub" data-okt></p>
+<p class="sub" style="margin-top: 14px"><a data-okcal href="#" target="_blank" rel="noopener">Dodaj termin do swojego kalendarza</a></p>
+<button type="button" class="bk-send" data-close="" style="margin-top: 24px">Zamknij</button>
+</div>
+</div>
+</div>
