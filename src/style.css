@@ -7,7 +7,7 @@
 @property --ds{syntax:'<number>';inherits:false;initial-value:0}
 @property --bl{syntax:'<length>';inherits:false;initial-value:0px}
 :root{--vh:100vh;--sc:1;--hp:0;--pl:0}
-html{scrollbar-color:#3A3A38 #0B0B0B}
+html{scrollbar-color:#3A3A38 #0B0B0B;overflow-anchor:none}
 body{margin:0;background:#0B0B0B;color:#F3F2EE;font-family:"Geist",ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:#F3F2EE}a:hover{color:#FFFFFF}
 ::selection{background:#F3F2EE;color:#0B0B0B}

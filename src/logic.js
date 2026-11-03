@@ -14,7 +14,14 @@ class Component extends DCLogic {
       const done = () => { this.setState({ copied: true }); clearTimeout(this.cpT); this.cpT = setTimeout(() => this.setState({ copied: false }), 1800); };
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText('kub.mktg@gmail.com').then(done, done); else done();
     };
-    this.userScroll = () => { if (this.playing) this.stop(); };
+    // stop only on a real gesture, not on trackpad inertia or a finger wobble right after pressing play
+    this.userScroll = (e) => {
+      if (!this.playing || performance.now() - this.playT < 900) return;
+      if (e && e.type === 'wheel' && Math.abs(e.deltaY) < 6 && Math.abs(e.deltaX) < 6) return;
+      this.stop();
+    };
+    this.onTouchStart = (e) => { const t = e.touches && e.touches[0]; this.ty0 = t ? t.clientY : 0; };
+    this.onTouchMove = (e) => { const t = e.touches && e.touches[0]; if (t && Math.abs(t.clientY - this.ty0) > 14) this.userScroll(e); };
     this.onResize = () => this.measure();
     this.onMove = (e) => { this.mx = e.clientX; this.my = e.clientY; };
     this.onLeave = () => { this.mx = -9999; this.my = -9999; };
@@ -43,7 +50,8 @@ class Component extends DCLogic {
     window.addEventListener('pointermove', this.onMove, { passive: true });
     document.addEventListener('pointerleave', this.onLeave);
     window.addEventListener('wheel', this.userScroll, { passive: true });
-    window.addEventListener('touchmove', this.userScroll, { passive: true });
+    window.addEventListener('touchstart', this.onTouchStart, { passive: true });
+    window.addEventListener('touchmove', this.onTouchMove, { passive: true });
     this.measure();
     this.buildDots();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (!this.dead) this.measure(); });
@@ -58,7 +66,8 @@ class Component extends DCLogic {
     window.removeEventListener('pointermove', this.onMove);
     document.removeEventListener('pointerleave', this.onLeave);
     window.removeEventListener('wheel', this.userScroll);
-    window.removeEventListener('touchmove', this.userScroll);
+    window.removeEventListener('touchstart', this.onTouchStart);
+    window.removeEventListener('touchmove', this.onTouchMove);
   }
 
   measure() {
@@ -109,6 +118,7 @@ class Component extends DCLogic {
     if (!fromTop && (window.scrollY || 0) >= max - 4) { window.scrollTo(0, 0); this.sy = 0; }
     this.ap = fromTop ? 0 : (window.scrollY || 0);
     this.playing = true;
+    this.playT = performance.now();
     document.documentElement.style.setProperty('--pl', '1');
     this.setState({ playing: true });
   }
@@ -132,8 +142,11 @@ class Component extends DCLogic {
     const y = window.scrollY || 0;
     if (this.playing) {
       // the person grabbed the scrollbar or used the keyboard: hand control back
-      if (Math.abs(y - Math.round(this.ap)) > 4) this.stop();
+      // small differences come from pixel rounding or the phone toolbar resizing the page: follow them
+      const off = Math.abs(y - this.ap);
+      if (off > 160 && performance.now() - this.playT > 900) this.stop();
       else {
+        if (off > 2) this.ap = y;
         this.ap = Math.min(max, this.ap + (max / 95) * dt);
         window.scrollTo(0, this.ap);
         if (this.ap >= max - 1) this.stop();
