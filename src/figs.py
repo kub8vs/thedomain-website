@@ -1,6 +1,6 @@
 import random, math
 
-MARK = "M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z"
+MARK = "M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z"
 CURSOR = "M0 0 L0 34.85 L8.61 27.06 L14.35 40.18 L19.68 37.92 L14.14 25.22 L25.42 25.22 Z"
 
 DEFS = '''<svg width="0" height="0" style="position: absolute; width: 0; height: 0; overflow: hidden" aria-hidden="true" focusable="false"><defs>

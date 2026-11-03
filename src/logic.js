@@ -200,7 +200,7 @@ class Component extends DCLogic {
     el.style.transform = 'translate3d(' + (v[0] * W - sz / 2).toFixed(1) + 'px,' + (v[1] * H - sz / 2).toFixed(1) + 'px,0) scale(' + v[2].toFixed(3) + ')';
     el.style.opacity = (W < 900 ? 0 : v[3]).toFixed(3);
     if (!this.spinEl) this.spinEl = el.querySelector('.orb-spin');
-    if (this.spinEl) this.spinEl.style.transform = 'rotateX(14deg) rotateY(' + ((this.sy / this.maxScroll()) * 2160).toFixed(1) + 'deg)';
+    if (this.spinEl) this.spinEl.style.transform = 'rotateX(14deg) rotateY(' + ((this.sy / this.maxScroll()) * 2160 + (this.spin || 0) * 50).toFixed(1) + 'deg)';
   }
 
   sizeCanvas() {
@@ -235,11 +235,11 @@ class Component extends DCLogic {
     // sphere
     shapes.push(Array.from({ length: N }, (_, i) => { const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), th = i * 2.39996; return [Math.cos(th) * r, y, Math.sin(th) * r]; }));
     // the D with the cursor cut out
-    shapes.push(fill2d(new Path2D('M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z'), 84, 84, 0.25));
+    shapes.push(fill2d(new Path2D('M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z'), 84, 84, 0.25));
     // torus
     shapes.push(Array.from({ length: N }, () => { const a = rnd() * Math.PI * 2, b = rnd() * Math.PI * 2, R = 0.75, r = 0.28; return [(R + r * Math.cos(b)) * Math.cos(a), r * Math.sin(b), (R + r * Math.cos(b)) * Math.sin(a)]; }));
     // a big cursor
-    shapes.push(fill2d(new Path2D('M0 0 L0 34.85 L8.61 27.06 L14.35 40.18 L19.68 37.92 L14.14 25.22 L25.42 25.22 Z'), 26, 41, 0.2).map((p) => [p[0] + 0.25, p[1], p[2]]));
+    shapes.push(Array.from({ length: N }, () => [(rnd() - 0.5) * 1.1, (rnd() - 0.5) * 1.1, (rnd() - 0.5) * 1.1]));
     // wave field
     shapes.push(Array.from({ length: N }, (_, i) => { const gx = (i % 60) / 59 * 2 - 1, gz = Math.floor(i / 60) / (N / 60) * 2 - 1; return [gx * 1.3, Math.sin(gx * 4) * 0.18 + Math.cos(gz * 5) * 0.12, gz * 1.3]; }));
     // double helix
@@ -275,7 +275,8 @@ class Component extends DCLogic {
     const scale = (narrow ? base + (Math.min(W, H) * 0.36 - base) * mixc : base) * (1 + 0.25 * mixc);
     const dims = [1, 0.5, 0.45, 0.45, 0.45, 0.4, 0.4, 0.4, 0.42, 0.5, 0.35];
     const dim = dims[Math.min(dims.length - 1, idx)] * (narrow ? (idx === 0 ? 0.75 : 0.6) : 1);
-    const rotY = g * 14, rotX = 0.35 + Math.sin(g * 6) * 0.15;
+    this.spin = (this.spin || 0) + dt;
+    const rotY = g * 14 + this.spin * 0.45, rotX = 0.35 + Math.sin(g * 6) * 0.15 + Math.sin(this.spin * 0.6) * 0.06;
     const cyR = Math.cos(rotY), syR = Math.sin(rotY), cxR = Math.cos(rotX), sxR = Math.sin(rotX);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, W * dpr, H * dpr);

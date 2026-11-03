@@ -104,10 +104,10 @@ def sec(i, name, h, inner, pinned=True, sid=None):
         S.append(inner.replace('@@IDX@@', str(i)))
 
 
-def cta_w(label, href='https://ig.me/m/aixkuba', size=54, extra=''):
-    ext = ' target="_blank" rel="noopener"' if href.startswith('http') else ''
+def cta_w(label='Umów się na call', href='#umow', size=54, extra=''):
+    ext = ' target="_blank" rel="noopener"' if href.startswith('http') else ' data-book=""'
     return (f'<a class="btn btn-w" href="{href}"{ext} style="display: inline-flex; align-items: center; gap: 12px; height: {size}px; padding: 0 {size*0.11:.0f}px 0 22px; box-sizing: border-box; border-radius: 30px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 15px; font-weight: 600; white-space: nowrap{extra}">'
-            f'{ic("ig", 16)}<span>{label}</span><span style="width: {size-12}px; height: {size-12}px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center">{ic("right", 15, 1.8)}</span></a>')
+            f'{ic("cal", 16)}<span>{label}</span><span style="width: {size-12}px; height: {size-12}px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center">{ic("right", 15, 1.8)}</span></a>')
 
 
 def cta_o(label, href, size=54):
@@ -119,7 +119,7 @@ HERO_BUL = ['Strony kodowane ręcznie', 'Motion w każdym detalu', 'Rolki i film
 hbul = ''.join(f'<span style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 500; white-space: nowrap"><span style="width: 17px; height: 17px; border-radius: 50%; background: #F3F2EE; color: #0B0B0B; display: flex; align-items: center; justify-content: center">{ic("check", 11, 2.2)}</span>{t}</span>' for t in HERO_BUL)
 hero = f'''<div class="hero-l">
 <h1 class="k" style="{K(-1, .001, .03, .42, dy=60)}; margin: 0; font-size: clamp(44px, 5.6vw, 82px); line-height: 1.02; letter-spacing: -.045em; font-weight: 600"><span class="intro" style="display: block">Ty masz pomysł.</span><span class="intro2" style="display: block; font-weight: 400">The Domain buduje resztę.</span></h1>
-<div class="k" style="{K(-1, .001, .02, .3, dy=40)}; margin-top: 34px"><div class="intro3 hrow" style="display: flex; flex-wrap: wrap; gap: 10px">{cta_w('Napisz DOMAIN w DM')}{cta_o('Zobacz realizacje', '#realizacje')}</div></div>
+<div class="k" style="{K(-1, .001, .02, .3, dy=40)}; margin-top: 34px"><div class="intro3 hrow" style="display: flex; flex-wrap: wrap; gap: 10px">{cta_w('Umów się na call')}{cta_o('Zobacz realizacje', '#realizacje')}</div></div>
 <div class="k bul hrow" style="{K(-1, .001, .02, .25, dy=20)}; margin-top: 30px">{hbul}</div>
 </div>
 <button type="button" class="k btn btn-w" onClick="{{{{playStory}}}}" style="{K(-1, .001, .0, .07, dy=12)}; position: absolute; left: 50%; bottom: 14px; margin-left: -97px; width: 194px; height: 48px; display: flex; align-items: center; gap: 12px; padding: 0 16px 0 6px; box-sizing: border-box; border: 0; border-radius: 26px; background: #F3F2EE; color: #0B0B0B; cursor: pointer; text-align: left">
@@ -148,7 +148,7 @@ questions = f'''<p class="mono" style="position: absolute; left: 0; right: 0; to
 <div style="position: absolute; left: 0; right: 0; top: 0; text-align: center">
 <h2 style="margin: 0; font-size: clamp(44px, 7vw, 112px); line-height: 1; letter-spacing: -.05em; font-weight: 600">{words('To jest The Domain.', fa, .012, .04, 2, 3)}</h2>
 <p class="k" style="{K(fa + .05, fa + .09, dy=16)}; margin: 18px 0 0; font-size: clamp(16px, 1.4vw, 20px); color: #C9C7C1">Strona kodowana ręcznie, motion i wideo. Jeden zespół, jeden kontakt.</p>
-<div class="k" style="{K(fa + .07, fa + .11, dy=20)}; margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px">{cta_w('Napisz DOMAIN w DM')}{cta_o('Zobacz realizacje', '#realizacje')}</div>
+<div class="k" style="{K(fa + .07, fa + .11, dy=20)}; margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px">{cta_w('Umów się na call')}{cta_o('Zobacz realizacje', '#realizacje')}</div>
 </div>
 </div>
 <div style="position: absolute; left: 0; right: 0; bottom: 90px; display: flex; justify-content: center; gap: 6px">{''.join(qd)}</div>'''
@@ -189,7 +189,7 @@ projects = f'''<div class="ev-t">
 <p class="mono k" style="{K(0, .05, .93, .99, dy=10)}; margin: 0 0 16px; font-size: 10px; color: #9C9B96">Realizacje · 2026</p>
 <h2 class="t-st" style="font-size: clamp(36px, 3.7vw, 54px); line-height: 1.04"><span class="k" style="{K(0, .06, .93, .99, dy=24, bl=8)}; display: block">Projekty,</span><span class="k" style="{K(.02, .08, .93, .99, dy=24, bl=8)}; display: block; font-weight: 400">które właśnie</span><span class="k" style="{K(.04, .1, .93, .99, dy=24, bl=8)}; display: block; font-weight: 400">powstają.</span></h2>
 <div class="k hide-s" style="{K(.06, .12, .93, .99, dy=20)}; position: relative; margin-top: 28px; height: 110px; font-family: Syne, sans-serif; font-weight: 800; font-size: 108px; line-height: 1; letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 1px rgba(243,242,238,.55)">{''.join(nums)}<span style="position: absolute; left: 150px; top: 18px; font-size: 22px; -webkit-text-stroke: 0; color: #9C9B96; font-family: Geist, sans-serif; font-weight: 400; letter-spacing: 0">/ 03</span></div>
-<div class="k" style="{K(.08, .14, .93, .99, dy=14)}; margin-top: 22px">{cta_w('Chcę taki projekt', size=48)}</div>
+<div class="k" style="{K(.08, .14, .93, .99, dy=14)}; margin-top: 22px">{cta_w('Umów się na call', size=48)}</div>
 </div>
 <div class="ev-c" style="height: 440px">
 {''.join(cards)}
@@ -446,16 +446,23 @@ STATS = [('0', 'Gotowych szablonów'), ('12', 'Usług w zespole'), ('1', 'Osoba 
 stats = ''.join(f'<div style="padding: 10px 0; border-top: 1px solid rgba(243,242,238,.08)"><span style="display: block; font-size: 19px; font-weight: 600; letter-spacing: -.02em">{v}</span><span class="mono" style="display: block; margin-top: 3px; font-size: 8.5px; color: #9C9B96">{l}</span></div>' for v, l in STATS)
 brk = lambda p: f'<i style="position: absolute; {p}; width: 12px; height: 12px"></i>'
 corners = ''.join(f'<svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" style="position: absolute; {p}"><path d="{d}" fill="none" stroke="#9C9B96"></path></svg>' for p, d in [('left: -22px; top: -22px', 'M0 12 V0 H12'), ('right: -22px; top: -22px', 'M0 0 H12 V12'), ('left: -22px; bottom: -22px', 'M0 0 V12 H12'), ('right: -22px; bottom: -22px', 'M0 12 H12 V0')])
-start = f'''<div class="st-t"><h2 class="t-st"><span class="k" style="{K(.08, .16, .86, .95, dy=26, bl=8)}; display: block">Zacznij teraz.</span><span class="k" style="{K(.12, .2, .86, .95, dy=26, bl=8)}; display: block; font-weight: 400">Rośnij szybciej.</span></h2></div>
-<div class="st-c"><div class="k" style="{K(.02, .14, .84, .98, dy=90)}; position: relative">{corners}
-<div class="card" style="width: 370px; padding: 22px 22px 16px; box-sizing: border-box; background: #101010">
-<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 17px; font-weight: 600">The Domain</span><span class="mono" style="font-size: 9px; border: 1px solid rgba(243,242,238,.3); border-radius: 12px; padding: 5px 9px">Terminy 2026</span></div>
-<div style="display: flex; align-items: flex-start; gap: 12px; margin: 14px 0 6px">{mark(78)}<span class="mono" style="font-size: 9.5px; line-height: 1.6; color: #C9C7C1; padding-top: 10px">/ projekt<br>Wycena po rozmowie<br>bez gotowych pakietów</span></div>
-<div style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px">{stats}</div>
-<p class="mono" style="margin: 12px 0 8px; font-size: 8.5px; color: #9C9B96">W projekcie</p>
-<div style="display: grid; grid-template-columns: repeat(6, 26px); gap: 6px 8px">{igrid}</div>
-<a class="btn btn-w" href="https://ig.me/m/aixkuba" target="_blank" rel="noopener" style="margin-top: 18px; height: 50px; border-radius: 26px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 0 6px 0 20px; font-size: 15px; font-weight: 600">Napisz DOMAIN w DM<span style="width: 38px; height: 38px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center">{ic("right", 15, 1.8)}</span></a>
-<p class="mono" style="margin: 12px 0 0; text-align: center; font-size: 8px; color: #6E6D69">Odpisuję osobiście · strona + wideo · PL / EN</p>
+SLOTS = ['10:00', '11:30', '13:00', '14:30', '16:00', '17:30']
+start = f'''<div class="st-t"><h2 class="t-st"><span class="k" style="{K(.04, .12, .86, .95, dy=26, bl=8)}; display: block">Zacznij teraz.</span><span class="k" style="{K(.08, .16, .86, .95, dy=26, bl=8)}; display: block; font-weight: 400">Rośnij szybciej.</span></h2>
+<p class="t-sub k" style="{K(.1, .18, .86, .95, dy=16)}">Wybierz termin. 30 minut rozmowy online, bez zobowiązań.</p></div>
+<div class="st-c"><div class="k" style="{K(.06, .18, .84, .98, dy=90, ds=.06)}; position: relative">
+<div class="halo" aria-hidden="true"></div>
+<div class="gcard">
+<div class="gc-top">
+<span class="gc-orb" style="perspective: 240px">{chrome_mark(54, 7, 1.1)}</span>
+<span style="flex: 1; min-width: 0"><span style="display: block; font-size: 19px; font-weight: 600; letter-spacing: -.02em">Call z The Domain</span><span class="mono" style="display: block; margin-top: 5px; font-size: 9.5px; color: #C9C7C1">30 min · Google Meet · bezpłatnie</span></span>
+<span class="gc-live"><i></i>Wolne terminy</span>
+</div>
+<p class="mono" style="margin: 20px 0 10px; font-size: 9px; color: #9C9B96">Dzień</p>
+<div class="gc-days" data-days></div>
+<p class="mono" style="margin: 18px 0 10px; font-size: 9px; color: #9C9B96">Godzina</p>
+<div class="gc-times">{''.join(f'<button type="button" class="gc-t" data-time="{t}">{t}</button>' for t in SLOTS)}</div>
+<a class="btn btn-w gc-cta" href="#umow" data-book="" >{ic("cal", 16)}<span>Umów się na call</span><span class="gc-arr">{ic("right", 15, 1.8)}</span></a>
+<div class="gc-foot">{''.join(f'<span><b>{v}</b>{l}</span>' for v, l in [('0', 'szablonów'), ('100%', 'kodu dla Ciebie'), ('24 h', 'na odpowiedź')])}</div>
 </div></div></div>'''
 sec(13, 'Współpraca', 2.6, start)
 
@@ -463,8 +470,8 @@ sec(13, 'Współpraca', 2.6, start)
 final = f'''<section class="sc" data-sec="@@IDX@@" data-name="Kontakt" aria-label="Kontakt" style="min-height: var(--vh); padding: calc(var(--vh) * .18) 16px 130px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center">
 <h2 class="k" style="{K(.2, .7, dy=40, bl=10)}; margin: 0; text-align: center; font-size: clamp(44px, 6.2vw, 96px); line-height: 1; letter-spacing: -.045em; font-weight: 600">Skup się na pomysłach.<br><span style="font-weight: 400">Your domain. Built to grow.</span></h2>
 <div class="k" style="{K(.35, .8, dy=20)}; margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 18px">
-<a class="btn btn-w" href="https://ig.me/m/aixkuba" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 22px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 13px; font-weight: 600">{ic("ig", 15)}Napisz na IG</a>
-<a class="btn btn-o" href="mailto:kub.mktg@gmail.com?subject=Rozmowa%20o%20projekcie" style="display: flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 22px; border: 1px solid rgba(243,242,238,.22); color: #F3F2EE; text-decoration: none; font-size: 13px; font-weight: 500">Umów rozmowę {ic("right", 13)}</a>
+{cta_w('Umów się na call', size=48)}
+<a class="btn btn-o glass" href="https://instagram.com/aixkuba" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 18px; border-radius: 26px; color: #F3F2EE; text-decoration: none; font-size: 14px; font-weight: 500">{ic("ig", 15)}Instagram @aixkuba</a>
 <span style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: #9C9B96"><svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M5 3.2 L13 8 L5 12.8 Z" fill="currentColor"></path></svg>Showreel · wkrótce</span>
 <button type="button" onClick="{{{{replay}}}}" style="background: transparent; border: 0; color: #F3F2EE; font-size: 13px; cursor: pointer; padding: 10px 4px">Odtwórz historię</button>
 </div>
@@ -493,15 +500,16 @@ chrome = f'''{DEFS}
 <div style="position: absolute; inset: -30px; border-radius: 50%; background: radial-gradient(circle, rgba(243,242,238,.18), transparent 65%)"></div>
 <div class="orb-bob">{chrome_mark(76)}</div>
 </div>
-<header class="topbar" style="position: fixed; left: 0; right: 0; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 18px clamp(16px, 1.8vw, 26px); pointer-events: none">
-<a href="#start" aria-label="The Domain, na początek" style="pointer-events: auto; display: flex; align-items: center; gap: 8px; color: #F3F2EE; text-decoration: none; font-weight: 600; font-size: 15px; letter-spacing: -.02em; white-space: nowrap">{mark(19)}The Domain.</a>
-<span style="pointer-events: auto; display: flex; gap: 8px">
-<a class="btn btn-w" href="https://ig.me/m/aixkuba" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 7px; height: 36px; padding: 0 14px; border-radius: 20px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 13px; font-weight: 600">{ic("ig", 14)}<span style="white-space: nowrap">Napisz na IG</span></a>
-<a class="btn btn-o hide-s" href="mailto:kub.mktg@gmail.com?subject=Rozmowa%20o%20projekcie" style="display: flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 20px; border: 1px solid rgba(243,242,238,.22); color: #F3F2EE; text-decoration: none; font-size: 13px; font-weight: 500">Umów rozmowę</a>
+<header class="topbar" style="position: fixed; left: 0; right: 0; top: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; padding: 16px clamp(16px, 1.8vw, 26px); pointer-events: none">
+<a href="#top" data-nav="" aria-label="The Domain, na początek" class="glass logo-pill" style="pointer-events: auto; display: flex; align-items: center; gap: 9px; height: 44px; padding: 0 16px 0 13px; border-radius: 24px; color: #F3F2EE; text-decoration: none; font-weight: 500; font-size: 16px; letter-spacing: -.03em; white-space: nowrap">{mark(20)}the domain</a>
+<span style="pointer-events: auto; display: flex; gap: 8px; align-items: center">
+<a class="btn btn-w" href="#umow" data-book="" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 24px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 13.5px; font-weight: 600">{ic("cal", 15)}<span class="hide-s" style="white-space: nowrap">Umów się na call</span><span class="show-s" style="white-space: nowrap">Call</span></a>
+<button type="button" class="glass burger" data-menu="" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
 </span>
 </header>
+<nav class="menu" aria-label="Sekcje strony"><div class="menu-p glass"><a href="#top" class="mi" data-nav="" style="--i: 0"><span class="mono">01</span>Start</a><a href="#pytania" class="mi" data-nav="" style="--i: 1"><span class="mono">02</span>To jest The Domain</a><a href="#realizacje" class="mi" data-nav="" style="--i: 2"><span class="mono">03</span>Realizacje</a><a href="#proces" class="mi" data-nav="" style="--i: 3"><span class="mono">04</span>Jak pracujemy</a><a href="#strony" class="mi" data-nav="" style="--i: 4"><span class="mono">05</span>Strony</a><a href="#wideo" class="mi" data-nav="" style="--i: 5"><span class="mono">06</span>Wideo</a><a href="#automatyzacje" class="mi" data-nav="" style="--i: 6"><span class="mono">07</span>Automatyzacje</a><a href="#efekty" class="mi" data-nav="" style="--i: 7"><span class="mono">08</span>Efekty</a><a href="#wspolpraca" class="mi" data-nav="" style="--i: 8"><span class="mono">09</span>Zacznij teraz</a><a href="#kontakt" class="mi" data-nav="" style="--i: 9"><span class="mono">10</span>Kontakt</a><a href="#umow" data-book="" class="btn btn-w menu-cta">{ic("cal", 16)}Umów się na call</a></div></nav>
 
-<div ref="{{{{plRef}}}}" role="region" aria-label="Odtwarzacz historii" style="position: fixed; left: 50%; bottom: 14px; z-index: 45; width: 264px; margin-left: -132px; height: 50px; box-sizing: border-box; border-radius: 26px; background: rgba(22,22,22,.88); border: 1px solid rgba(243,242,238,.14); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); display: flex; align-items: center; gap: 10px; padding: 0 8px 0 7px; opacity: max(min(1, calc(var(--hp) * 10 - .6)), var(--pl)); pointer-events: none">
+<div ref="{{{{plRef}}}}" role="region" class="glass" aria-label="Odtwarzacz historii" style="position: fixed; left: 50%; bottom: 14px; z-index: 45; width: 264px; margin-left: -132px; height: 50px; box-sizing: border-box; border-radius: 26px; display: flex; align-items: center; gap: 10px; padding: 0 8px 0 7px; opacity: max(min(1, calc(var(--hp) * 10 - .6)), var(--pl)); pointer-events: none">
 <span style="flex: none; width: 36px; height: 36px; border-radius: 10px; background: #1C1C1B; display: flex; align-items: center; justify-content: center; perspective: 200px">{chrome_mark(24, 5, .8)}</span>
 <span style="flex: 1; min-width: 0; position: relative; height: 36px">
 <span style="display: block; font-size: 13px; font-weight: 600; line-height: 1.25; padding-top: 2px">The Domain</span>

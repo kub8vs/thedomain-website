@@ -19,6 +19,16 @@ assert '@@' not in body and '/_blob/' not in body
 meta = ('<title>The Domain · strony, wideo i automatyzacje</title>'
         '<meta name="description" content="The Domain: szybkie, kodowane od zera strony z motion designem, rolki i wideo promocyjne oraz automatyzacje dla firm.">'
         '<meta name="theme-color" content="#0B0B0B">')
+IDS = {'Pytania': 'pytania', 'Brief': 'proces', 'Plan': 'plan', 'Projektujemy': 'strony', 'Wideo': 'wideo', 'Automatyzacje': 'automatyzacje', 'Efekty': 'efekty', 'Współpraca': 'wspolpraca', 'Kontakt': 'kontakt'}
+for name, sid in IDS.items():
+    body, n = re.subn(r'<section class="sc" data-sec="(\d+)" data-name="' + name + '"', r'<section class="sc" id="' + sid + r'" data-sec="\1" data-name="' + name + '"', body)
+    assert n == 1, name
+SLOTS = ['10:00', '11:30', '13:00', '14:30', '16:00', '17:30']
+CHIPS = ['Strona', 'Sklep online', 'Rolki i wideo', 'Automatyzacje', 'Branding']
+bk = open(os.path.join(HERE, 'booking.html')).read()
+bk = bk.replace('@@SLOTS@@', ''.join(f'<button type="button" class="gc-t" data-time="{t}">{t}</button>' for t in SLOTS))
+bk = bk.replace('@@CHIPS@@', ''.join(f'<label><input type="checkbox" name="potrzeby" value="{c}"><span>{c}</span></label>' for c in CHIPS))
+site_js = open(os.path.join(HERE, 'site.js')).read()
 html = f'''<!doctype html>
 <html lang="pl">
 <head>
@@ -30,10 +40,12 @@ html = f'''<!doctype html>
 <body>
 <template id="tpl">{body}</template>
 <div id="root"></div>
+{bk}
 <script src="assets/runtime.js"></script>
 <script>{js}
 window.__mount(document.getElementById('tpl'), document.getElementById('root'), Component);
 </script>
+<script>{site_js}</script>
 </body>
 </html>
 '''

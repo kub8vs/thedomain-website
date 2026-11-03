@@ -44,7 +44,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 .mcard{transform:translate(calc((1 - var(--m) + var(--q)) * (-4vw - 50%)),calc((1 - var(--m) + var(--q)) * var(--vh) * .05)) scale(calc((.46 + .54 * var(--m)) * (1 - .97 * var(--q))));border-radius:calc(4px + var(--q) * 400px)}
 .cream{opacity:calc(1 - var(--m))}
 .zm{--z:clamp(0,(var(--p,0) - .62)/.26,1);transform:scale(calc(1 + .13 * var(--z)));transform-origin:50% 30%}
-.card{background:rgba(15,15,15,.86);border:1px solid rgba(243,242,238,.12);border-radius:22px;box-shadow:0 40px 90px rgba(0,0,0,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.card{background:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,.02) 40%,rgba(255,255,255,.04));border:1px solid rgba(243,242,238,.14);border-radius:22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(255,255,255,.05),0 40px 90px rgba(0,0,0,.55);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
 .win{background:#0F0F0F;border:1px solid rgba(243,242,238,.12);border-radius:16px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.6)}
 .mono{font-family:"Geist Mono",ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase}
 .t-st{margin:0;font-size:clamp(38px,4.9vw,72px);line-height:1.02;letter-spacing:-.04em;font-weight:600}
@@ -76,8 +76,8 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 .mframe{position:absolute;left:54%;top:10%;height:70%;aspect-ratio:340/505}
 .ev-t{position:absolute;left:15%;top:23%}
 .ev-c{position:absolute;left:44%;top:22%;width:min(580px,46vw)}
-.st-t{position:absolute;left:18%;top:39%}
-.st-c{position:absolute;left:51%;top:11%}
+.st-t{position:absolute;left:0;right:0;top:max(92px,9%);text-align:center;padding:0 16px}
+.st-c{position:absolute;left:50%;top:max(290px,32%);transform:translateX(-50%)}
 .hdr{position:absolute;left:0;right:0;top:max(100px,11%);text-align:center;padding:0 16px}
 .vend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px 14px}
 .cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
@@ -90,7 +90,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
   .mlines{display:none}
   .ev-t{left:16px;right:16px;top:10%}
   .ev-c{left:16px;right:16px;width:auto;top:44%;height:400px !important}
-  .st-t{left:16px;right:16px;top:max(88px,10%)}
+  .st-t{left:16px;right:16px;top:max(80px,9%)}
   .st-c{left:50%;top:24%;transform:translateX(-50%) scale(var(--sc));transform-origin:50% 0}
   .vend{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 10px}
   .svc{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -112,6 +112,97 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 }
 @media (max-width:900px) and (max-height:780px){.hero-l .bul{display:none}}
 @media (prefers-reduced-motion:reduce){.orb-spin,.orb-bob,.dots i,.caret{animation:none}.intro,.intro2,.intro3{animation:none}}
+
+/* ---- liquid glass ---- */
+.glass{position:relative;background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 45%,rgba(255,255,255,.09));border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 1px rgba(255,255,255,.08),inset 0 0 18px rgba(255,255,255,.05),0 10px 30px rgba(0,0,0,.35);-webkit-backdrop-filter:blur(16px) saturate(180%) brightness(1.1);backdrop-filter:blur(16px) saturate(180%) brightness(1.1);isolation:isolate}
+.glass::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 70% at 20% 0%,rgba(255,255,255,.28),rgba(255,255,255,0) 55%);mix-blend-mode:screen;opacity:.55}
+.btn-o.glass{border-color:rgba(255,255,255,.22)}
+.show-s{display:none}
+.burger{pointer-events:auto;width:44px;height:44px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;padding:0;color:#F3F2EE}
+.burger i{display:block;width:16px;height:1.6px;border-radius:2px;background:currentColor;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.menu-open .burger i:nth-child(1){transform:translateY(5.6px) rotate(45deg)}
+.menu-open .burger i:nth-child(2){opacity:0;transform:scaleX(.2)}
+.menu-open .burger i:nth-child(3){transform:translateY(-5.6px) rotate(-45deg)}
+.menu{position:fixed;inset:0;z-index:55;pointer-events:none;display:flex;justify-content:flex-end;align-items:flex-start;padding:72px clamp(16px,1.8vw,26px) 16px}
+.menu::before{content:"";position:fixed;inset:0;background:rgba(5,5,5,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .5s}
+.menu-p{width:min(360px,100%);border-radius:28px;padding:12px;display:flex;flex-direction:column;transform-origin:calc(100% - 22px) -30px;transform:scale(.6) translateY(-20px);opacity:0;filter:blur(8px);transition:transform .6s cubic-bezier(.2,.9,.2,1),opacity .4s,filter .5s;max-height:calc(100vh - 90px);overflow:auto}
+.menu-open .menu{pointer-events:auto}
+.menu-open .menu::before{opacity:1}
+.menu-open .menu-p{transform:none;opacity:1;filter:none}
+.mi{display:flex;align-items:baseline;gap:14px;padding:11px 14px;border-radius:16px;color:#F3F2EE;text-decoration:none;font-size:19px;font-weight:500;letter-spacing:-.02em;opacity:0;transform:translateX(18px);transition:background .25s,opacity .5s calc(var(--i) * 35ms + 120ms),transform .6s cubic-bezier(.2,.9,.2,1) calc(var(--i) * 35ms + 120ms)}
+.mi span{font-size:9.5px;color:#9C9B96;width:18px}
+.mi:hover{background:rgba(255,255,255,.08)}
+.menu-open .mi{opacity:1;transform:none}
+.menu-cta{margin-top:8px;height:50px;border-radius:26px;background:#F3F2EE;color:#0B0B0B !important;display:flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;font-size:15px;font-weight:600}
+/* ---- start: glass booking card ---- */
+.halo{position:absolute;inset:-90px -120px;pointer-events:none;background:radial-gradient(40% 40% at 25% 30%,rgba(243,242,238,.16),transparent 70%),radial-gradient(35% 35% at 80% 75%,rgba(160,170,255,.12),transparent 70%);filter:blur(20px);animation:td-halo 9s ease-in-out infinite alternate}
+@keyframes td-halo{to{transform:translate(30px,-20px) rotate(8deg)}}
+.gcard{position:relative;width:560px;box-sizing:border-box;padding:24px;border-radius:32px;background:linear-gradient(150deg,rgba(255,255,255,.13),rgba(255,255,255,.03) 38%,rgba(255,255,255,.07));box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 1px rgba(255,255,255,.1),inset 0 0 40px rgba(255,255,255,.04),0 50px 120px rgba(0,0,0,.6);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);overflow:hidden}
+.gcard::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:conic-gradient(from var(--ga,0deg),rgba(255,255,255,.08),rgba(255,255,255,.75),rgba(255,255,255,.08) 30%,rgba(255,255,255,.08) 60%,rgba(255,255,255,.55),rgba(255,255,255,.08));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:td-ga 6s linear infinite;pointer-events:none}
+@property --ga{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes td-ga{to{--ga:360deg}}
+.gcard::after{content:"";position:absolute;left:-40%;top:-60%;width:80%;height:120%;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.1) 50%,transparent 65%);transform:rotate(8deg);animation:td-sheen 7s ease-in-out infinite;pointer-events:none}
+@keyframes td-sheen{0%,60%{transform:translateX(-30%) rotate(8deg)}100%{transform:translateX(260%) rotate(8deg)}}
+.gc-top{display:flex;align-items:center;gap:14px}
+.gc-orb{flex:none;width:64px;height:64px;border-radius:20px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.gc-orb .orb-spin{animation:td-spin 9s linear infinite}
+.gc-live{display:flex;align-items:center;gap:7px;font-size:12px;color:#C9C7C1;white-space:nowrap}
+.gc-live i{width:7px;height:7px;border-radius:50%;background:#7CF29A;box-shadow:0 0 10px #7CF29A;animation:td-dot 1.6s infinite}
+.gc-days{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.gc-d{height:64px;border-radius:16px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#F3F2EE;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:background .25s,transform .25s,border-color .25s;font-family:inherit}
+.gc-d b{font-size:20px;font-weight:600;letter-spacing:-.02em}
+.gc-d span{font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#9C9B96}
+.gc-d:hover,.gc-t:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.4)}
+.gc-d.on,.gc-t.on{background:#F3F2EE;color:#0B0B0B;border-color:#F3F2EE}
+.gc-d.on span{color:#5D5C58}
+.gc-times{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.gc-t{height:38px;border-radius:19px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#F3F2EE;font-size:13px;cursor:pointer;transition:background .25s,transform .25s,border-color .25s;font-family:inherit}
+.gc-cta{margin-top:22px;height:56px;border-radius:30px;background:#F3F2EE;color:#0B0B0B !important;text-decoration:none;display:flex;align-items:center;gap:10px;padding:0 8px 0 22px;font-size:16px;font-weight:600}
+.gc-cta>span:nth-of-type(1){flex:1}
+.gc-arr{width:42px;height:42px;border-radius:50%;background:#0B0B0B;color:#F3F2EE;display:flex;align-items:center;justify-content:center}
+.gc-foot{display:flex;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1)}
+.gc-foot span{font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#9C9B96}
+.gc-foot b{display:block;font-family:Geist,sans-serif;font-size:18px;letter-spacing:-.02em;text-transform:none;color:#F3F2EE;margin-bottom:3px}
+/* ---- booking modal ---- */
+.bk{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;font-family:Geist,ui-sans-serif,system-ui,sans-serif;color:#F3F2EE}
+.bk::before{content:"";position:absolute;inset:0;background:rgba(5,5,5,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .45s}
+.bk-open .bk{pointer-events:auto}
+.bk-open .bk::before{opacity:1}
+.bk-p{position:relative;width:min(620px,100%);max-height:calc(100vh - 32px);overflow:auto;border-radius:30px;padding:26px;box-sizing:border-box;background:linear-gradient(150deg,rgba(40,40,40,.75),rgba(16,16,16,.82));transform:translateY(40px) scale(.94);opacity:0;filter:blur(10px);transition:transform .6s cubic-bezier(.2,.9,.2,1),opacity .4s,filter .5s}
+.bk-open .bk-p{transform:none;opacity:1;filter:none}
+.bk-x{position:absolute;right:16px;top:16px;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#F3F2EE;cursor:pointer;font-size:18px;line-height:1;z-index:2}
+.bk h3{margin:0;font-size:28px;font-weight:600;letter-spacing:-.03em}
+.bk .sub{margin:6px 0 0;color:#C9C7C1;font-size:14px}
+.bk .lab{margin:20px 0 9px;font-family:"Geist Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#9C9B96}
+.bk .gc-days{grid-template-columns:repeat(5,1fr)}
+.bk-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bk input,.bk textarea{width:100%;box-sizing:border-box;height:48px;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#F3F2EE;padding:0 14px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s,background .2s}
+.bk textarea{height:92px;padding:12px 14px;resize:vertical}
+.bk input:focus,.bk textarea:focus{border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.08)}
+.bk-chips{display:flex;flex-wrap:wrap;gap:8px}
+.bk-chips label{cursor:pointer}
+.bk-chips input{display:none}
+.bk-chips span{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:18px;border:1px solid rgba(255,255,255,.16);font-size:13.5px;transition:background .2s,color .2s}
+.bk-chips input:checked+span{background:#F3F2EE;color:#0B0B0B;border-color:#F3F2EE}
+.bk-send{margin-top:20px;width:100%;height:56px;border:0;border-radius:30px;background:#F3F2EE;color:#0B0B0B;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px}
+.bk-send[disabled]{opacity:.6;cursor:wait}
+.bk-note{margin:12px 0 0;text-align:center;font-size:12px;color:#9C9B96}
+.bk-err{color:#FF9B9B;font-size:13px;margin:10px 0 0;min-height:1em}
+.bk-ok{text-align:center;padding:20px 4px 6px}
+.bk-ok .ck{width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:#F3F2EE;color:#0B0B0B;display:flex;align-items:center;justify-content:center}
+.bk-ok a{color:#F3F2EE}
+@media (max-width:900px){
+  .show-s{display:inline}
+  .logo-pill{height:40px !important}
+  .burger{width:40px;height:40px}
+  .gcard{width:min(560px,calc(100vw - 32px));padding:18px;border-radius:26px}
+  .gc-times{grid-template-columns:repeat(3,1fr)}
+  .gc-d{height:56px}
+  .bk-row{grid-template-columns:1fr}
+  .bk-p{padding:20px;border-radius:24px}
+  .bk h3{font-size:23px}
+}
+@media (prefers-reduced-motion:reduce){.gcard::before,.gcard::after,.halo,.gc-orb .orb-spin{animation:none}}
 </style>
 
 </head>
@@ -134,18 +225,19 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 <canvas ref="{{cv}}" aria-hidden="true" style="position: fixed; left: 0; top: 0; width: 100%; height: 100vh; display: block; pointer-events: none; z-index: 0"></canvas>
 <div ref="{{orbRef}}" class="orb" aria-hidden="true" style="position: fixed; left: 0; top: 0; width: 76px; height: 76px; z-index: 3; pointer-events: none; opacity: 0; will-change: transform, opacity">
 <div style="position: absolute; inset: -30px; border-radius: 50%; background: radial-gradient(circle, rgba(243,242,238,.18), transparent 65%)"></div>
-<div class="orb-bob"><div class="orb-spin" style="position: relative; width: 76px; height: 76px"><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-11.7px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdChrome)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-10.4px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-9.1px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-7.8px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-6.5px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-5.2px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-3.9px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-2.6px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-1.3px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(0.0px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdChrome)" fill-rule="evenodd"></path></svg></div></div>
+<div class="orb-bob"><div class="orb-spin" style="position: relative; width: 76px; height: 76px"><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-11.7px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdChrome)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-10.4px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-9.1px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-7.8px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-6.5px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-5.2px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-3.9px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-2.6px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-1.3px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="76" height="76" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(0.0px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdChrome)" fill-rule="evenodd"></path></svg></div></div>
 </div>
-<header class="topbar" style="position: fixed; left: 0; right: 0; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 18px clamp(16px, 1.8vw, 26px); pointer-events: none">
-<a href="#start" aria-label="The Domain, na początek" style="pointer-events: auto; display: flex; align-items: center; gap: 8px; color: #F3F2EE; text-decoration: none; font-weight: 600; font-size: 15px; letter-spacing: -.02em; white-space: nowrap"><svg viewBox="0 0 84 84" width="19" height="19" aria-hidden="true"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="#F3F2EE" fill-rule="evenodd"></path></svg>The Domain.</a>
-<span style="pointer-events: auto; display: flex; gap: 8px">
-<a class="btn btn-w" href="https://ig.me/m/aixkuba" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 7px; height: 36px; padding: 0 14px; border-radius: 20px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 13px; font-weight: 600"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="3.2"></rect><circle cx="8" cy="8" r="2.6"></circle><circle cx="11.4" cy="4.6" r=".5" fill="currentColor"></circle></svg><span style="white-space: nowrap">Napisz na IG</span></a>
-<a class="btn btn-o hide-s" href="mailto:kub.mktg@gmail.com?subject=Rozmowa%20o%20projekcie" style="display: flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 20px; border: 1px solid rgba(243,242,238,.22); color: #F3F2EE; text-decoration: none; font-size: 13px; font-weight: 500">Umów rozmowę</a>
+<header class="topbar" style="position: fixed; left: 0; right: 0; top: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; padding: 16px clamp(16px, 1.8vw, 26px); pointer-events: none">
+<a href="#top" data-nav="" aria-label="The Domain, na początek" class="glass logo-pill" style="pointer-events: auto; display: flex; align-items: center; gap: 9px; height: 44px; padding: 0 16px 0 13px; border-radius: 24px; color: #F3F2EE; text-decoration: none; font-weight: 500; font-size: 16px; letter-spacing: -.03em; white-space: nowrap"><svg viewBox="0 0 84 84" width="20" height="20" aria-hidden="true"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="#F3F2EE" fill-rule="evenodd"></path></svg>the domain</a>
+<span style="pointer-events: auto; display: flex; gap: 8px; align-items: center">
+<a class="btn btn-w" href="#umow" data-book="" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 24px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 13.5px; font-weight: 600"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"></rect><path d="M2.5 6.5 H13.5 M5.5 2 V4.5 M10.5 2 V4.5"></path></svg><span class="hide-s" style="white-space: nowrap">Umów się na call</span><span class="show-s" style="white-space: nowrap">Call</span></a>
+<button type="button" class="glass burger" data-menu="" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
 </span>
 </header>
+<nav class="menu" aria-label="Sekcje strony"><div class="menu-p glass"><a href="#top" class="mi" data-nav="" style="--i: 0"><span class="mono">01</span>Start</a><a href="#pytania" class="mi" data-nav="" style="--i: 1"><span class="mono">02</span>To jest The Domain</a><a href="#realizacje" class="mi" data-nav="" style="--i: 2"><span class="mono">03</span>Realizacje</a><a href="#proces" class="mi" data-nav="" style="--i: 3"><span class="mono">04</span>Jak pracujemy</a><a href="#strony" class="mi" data-nav="" style="--i: 4"><span class="mono">05</span>Strony</a><a href="#wideo" class="mi" data-nav="" style="--i: 5"><span class="mono">06</span>Wideo</a><a href="#automatyzacje" class="mi" data-nav="" style="--i: 6"><span class="mono">07</span>Automatyzacje</a><a href="#efekty" class="mi" data-nav="" style="--i: 7"><span class="mono">08</span>Efekty</a><a href="#wspolpraca" class="mi" data-nav="" style="--i: 8"><span class="mono">09</span>Zacznij teraz</a><a href="#kontakt" class="mi" data-nav="" style="--i: 9"><span class="mono">10</span>Kontakt</a><a href="#umow" data-book="" class="btn btn-w menu-cta"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"></rect><path d="M2.5 6.5 H13.5 M5.5 2 V4.5 M10.5 2 V4.5"></path></svg>Umów się na call</a></div></nav>
 
-<div ref="{{plRef}}" role="region" aria-label="Odtwarzacz historii" style="position: fixed; left: 50%; bottom: 14px; z-index: 45; width: 264px; margin-left: -132px; height: 50px; box-sizing: border-box; border-radius: 26px; background: rgba(22,22,22,.88); border: 1px solid rgba(243,242,238,.14); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); display: flex; align-items: center; gap: 10px; padding: 0 8px 0 7px; opacity: max(min(1, calc(var(--hp) * 10 - .6)), var(--pl)); pointer-events: none">
-<span style="flex: none; width: 36px; height: 36px; border-radius: 10px; background: #1C1C1B; display: flex; align-items: center; justify-content: center; perspective: 200px"><div class="orb-spin" style="position: relative; width: 24px; height: 24px"><svg viewBox="0 0 84 84" width="24" height="24" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-4.0px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdChrome)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="24" height="24" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-3.2px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="24" height="24" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-2.4px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="24" height="24" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-1.6px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="24" height="24" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-0.8px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="24" height="24" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(0.0px)"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="url(#tdChrome)" fill-rule="evenodd"></path></svg></div></span>
+<div ref="{{plRef}}" role="region" class="glass" aria-label="Odtwarzacz historii" style="position: fixed; left: 50%; bottom: 14px; z-index: 45; width: 264px; margin-left: -132px; height: 50px; box-sizing: border-box; border-radius: 26px; display: flex; align-items: center; gap: 10px; padding: 0 8px 0 7px; opacity: max(min(1, calc(var(--hp) * 10 - .6)), var(--pl)); pointer-events: none">
+<span style="flex: none; width: 36px; height: 36px; border-radius: 10px; background: #1C1C1B; display: flex; align-items: center; justify-content: center; perspective: 200px"><div class="orb-spin" style="position: relative; width: 24px; height: 24px"><svg viewBox="0 0 84 84" width="24" height="24" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-4.0px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdChrome)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="24" height="24" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-3.2px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="24" height="24" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-2.4px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="24" height="24" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-1.6px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="24" height="24" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-0.8px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="24" height="24" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(0.0px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdChrome)" fill-rule="evenodd"></path></svg></div></span>
 <span style="flex: 1; min-width: 0; position: relative; height: 36px">
 <span style="display: block; font-size: 13px; font-weight: 600; line-height: 1.25; padding-top: 2px">The Domain</span>
 <span style="display: block; font-size: 11px; color: #9C9B96; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{sceneName}}</span>
@@ -162,7 +254,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 <div class="stage">
 <div class="hero-l">
 <h1 class="k" style="--a: -1; --b: 0.001; --c: 0.03; --d: 0.42; --dy: 60px; margin: 0; font-size: clamp(44px, 5.6vw, 82px); line-height: 1.02; letter-spacing: -.045em; font-weight: 600"><span class="intro" style="display: block">Ty masz pomysł.</span><span class="intro2" style="display: block; font-weight: 400">The Domain buduje resztę.</span></h1>
-<div class="k" style="--a: -1; --b: 0.001; --c: 0.02; --d: 0.3; --dy: 40px; margin-top: 34px"><div class="intro3 hrow" style="display: flex; flex-wrap: wrap; gap: 10px"><a class="btn btn-w" href="https://ig.me/m/aixkuba" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 12px; height: 54px; padding: 0 6px 0 22px; box-sizing: border-box; border-radius: 30px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 15px; font-weight: 600; white-space: nowrap"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="3.2"></rect><circle cx="8" cy="8" r="2.6"></circle><circle cx="11.4" cy="4.6" r=".5" fill="currentColor"></circle></svg><span>Napisz DOMAIN w DM</span><span style="width: 42px; height: 42px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8 H13 M9 4 L13 8 L9 12"></path></svg></span></a><a class="btn btn-o" href="#realizacje" style="display: inline-flex; align-items: center; height: 54px; padding: 0 22px; box-sizing: border-box; border-radius: 30px; border: 1px solid rgba(243,242,238,.28); color: #F3F2EE; text-decoration: none; font-size: 15px; font-weight: 500; white-space: nowrap">Zobacz realizacje</a></div></div>
+<div class="k" style="--a: -1; --b: 0.001; --c: 0.02; --d: 0.3; --dy: 40px; margin-top: 34px"><div class="intro3 hrow" style="display: flex; flex-wrap: wrap; gap: 10px"><a class="btn btn-w" href="#umow" data-book="" style="display: inline-flex; align-items: center; gap: 12px; height: 54px; padding: 0 6px 0 22px; box-sizing: border-box; border-radius: 30px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 15px; font-weight: 600; white-space: nowrap"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"></rect><path d="M2.5 6.5 H13.5 M5.5 2 V4.5 M10.5 2 V4.5"></path></svg><span>Umów się na call</span><span style="width: 42px; height: 42px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8 H13 M9 4 L13 8 L9 12"></path></svg></span></a><a class="btn btn-o" href="#realizacje" style="display: inline-flex; align-items: center; height: 54px; padding: 0 22px; box-sizing: border-box; border-radius: 30px; border: 1px solid rgba(243,242,238,.28); color: #F3F2EE; text-decoration: none; font-size: 15px; font-weight: 500; white-space: nowrap">Zobacz realizacje</a></div></div>
 <div class="k bul hrow" style="--a: -1; --b: 0.001; --c: 0.02; --d: 0.25; --dy: 20px; margin-top: 30px"><span style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 500; white-space: nowrap"><span style="width: 17px; height: 17px; border-radius: 50%; background: #F3F2EE; color: #0B0B0B; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.4 L6.8 11 L12 5.2"></path></svg></span>Strony kodowane ręcznie</span><span style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 500; white-space: nowrap"><span style="width: 17px; height: 17px; border-radius: 50%; background: #F3F2EE; color: #0B0B0B; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.4 L6.8 11 L12 5.2"></path></svg></span>Motion w każdym detalu</span><span style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 500; white-space: nowrap"><span style="width: 17px; height: 17px; border-radius: 50%; background: #F3F2EE; color: #0B0B0B; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.4 L6.8 11 L12 5.2"></path></svg></span>Rolki i filmy promo</span><span style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 500; white-space: nowrap"><span style="width: 17px; height: 17px; border-radius: 50%; background: #F3F2EE; color: #0B0B0B; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.4 L6.8 11 L12 5.2"></path></svg></span>Wycena po rozmowie</span></div>
 </div>
 <button type="button" class="k btn btn-w" onClick="{{playStory}}" style="--a: -1; --b: 0.001; --c: 0; --d: 0.07; --dy: 12px; position: absolute; left: 50%; bottom: 14px; margin-left: -97px; width: 194px; height: 48px; display: flex; align-items: center; gap: 12px; padding: 0 16px 0 6px; box-sizing: border-box; border: 0; border-radius: 26px; background: #F3F2EE; color: #0B0B0B; cursor: pointer; text-align: left">
@@ -171,7 +263,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </button>
 </div>
 </section>
-<section class="sc" data-sec="1" data-name="Pytania" aria-label="Pytania" style="height: calc(var(--vh) * 7)">
+<section class="sc" id="pytania" data-sec="1" data-name="Pytania" aria-label="Pytania" style="height: calc(var(--vh) * 7)">
 <div class="stage">
 <p class="mono" style="position: absolute; left: 0; right: 0; top: 24%; margin: 0; height: 14px; text-align: center; font-size: 10.5px; color: #9C9B96"><span class="k" style="--a: 0.03; --b: 0.05; --c: 0.15; --d: 0.17; --dy: 8px; position: absolute; left: 0; right: 0; top: 0">Pytanie 01 / 05</span><span class="k" style="--a: 0.185; --b: 0.205; --c: 0.305; --d: 0.325; --dy: 8px; position: absolute; left: 0; right: 0; top: 0">Pytanie 02 / 05</span><span class="k" style="--a: 0.34; --b: 0.36; --c: 0.46; --d: 0.48; --dy: 8px; position: absolute; left: 0; right: 0; top: 0">Pytanie 03 / 05</span><span class="k" style="--a: 0.495; --b: 0.515; --c: 0.615; --d: 0.635; --dy: 8px; position: absolute; left: 0; right: 0; top: 0">Pytanie 04 / 05</span><span class="k" style="--a: 0.65; --b: 0.67; --c: 0.77; --d: 0.79; --dy: 8px; position: absolute; left: 0; right: 0; top: 0">Pytanie 05 / 05</span></p>
 <div style="position: absolute; left: 16px; right: 16px; top: 33%; height: 220px">
@@ -179,7 +271,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 <div style="position: absolute; left: 0; right: 0; top: 0; text-align: center">
 <h2 style="margin: 0; font-size: clamp(44px, 7vw, 112px); line-height: 1; letter-spacing: -.05em; font-weight: 600"><span class="k" style="--a: 0.805; --b: 0.845; --c: 2; --d: 3; --dy: 0px; --bl: 8px; display: inline-block">To</span> <span class="k" style="--a: 0.817; --b: 0.857; --c: 2; --d: 3; --dy: 0px; --bl: 8px; display: inline-block">jest</span> <span class="k" style="--a: 0.829; --b: 0.869; --c: 2; --d: 3; --dy: 0px; --bl: 8px; display: inline-block">The</span> <span class="k" style="--a: 0.841; --b: 0.881; --c: 2; --d: 3; --dy: 0px; --bl: 8px; display: inline-block">Domain.</span></h2>
 <p class="k" style="--a: 0.855; --b: 0.895; --dy: 16px; margin: 18px 0 0; font-size: clamp(16px, 1.4vw, 20px); color: #C9C7C1">Strona kodowana ręcznie, motion i wideo. Jeden zespół, jeden kontakt.</p>
-<div class="k" style="--a: 0.875; --b: 0.915; --dy: 20px; margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px"><a class="btn btn-w" href="https://ig.me/m/aixkuba" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 12px; height: 54px; padding: 0 6px 0 22px; box-sizing: border-box; border-radius: 30px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 15px; font-weight: 600; white-space: nowrap"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="3.2"></rect><circle cx="8" cy="8" r="2.6"></circle><circle cx="11.4" cy="4.6" r=".5" fill="currentColor"></circle></svg><span>Napisz DOMAIN w DM</span><span style="width: 42px; height: 42px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8 H13 M9 4 L13 8 L9 12"></path></svg></span></a><a class="btn btn-o" href="#realizacje" style="display: inline-flex; align-items: center; height: 54px; padding: 0 22px; box-sizing: border-box; border-radius: 30px; border: 1px solid rgba(243,242,238,.28); color: #F3F2EE; text-decoration: none; font-size: 15px; font-weight: 500; white-space: nowrap">Zobacz realizacje</a></div>
+<div class="k" style="--a: 0.875; --b: 0.915; --dy: 20px; margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px"><a class="btn btn-w" href="#umow" data-book="" style="display: inline-flex; align-items: center; gap: 12px; height: 54px; padding: 0 6px 0 22px; box-sizing: border-box; border-radius: 30px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 15px; font-weight: 600; white-space: nowrap"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"></rect><path d="M2.5 6.5 H13.5 M5.5 2 V4.5 M10.5 2 V4.5"></path></svg><span>Umów się na call</span><span style="width: 42px; height: 42px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8 H13 M9 4 L13 8 L9 12"></path></svg></span></a><a class="btn btn-o" href="#realizacje" style="display: inline-flex; align-items: center; height: 54px; padding: 0 22px; box-sizing: border-box; border-radius: 30px; border: 1px solid rgba(243,242,238,.28); color: #F3F2EE; text-decoration: none; font-size: 15px; font-weight: 500; white-space: nowrap">Zobacz realizacje</a></div>
 </div>
 </div>
 <div style="position: absolute; left: 0; right: 0; bottom: 90px; display: flex; justify-content: center; gap: 6px"><i class="kc" style="--a: 0.03; --b: 0.06; display: block; width: 28px; height: 3px; border-radius: 2px; background: rgba(243,242,238,calc(.18 + .82 * var(--j)))"></i><i class="kc" style="--a: 0.185; --b: 0.215; display: block; width: 28px; height: 3px; border-radius: 2px; background: rgba(243,242,238,calc(.18 + .82 * var(--j)))"></i><i class="kc" style="--a: 0.34; --b: 0.37; display: block; width: 28px; height: 3px; border-radius: 2px; background: rgba(243,242,238,calc(.18 + .82 * var(--j)))"></i><i class="kc" style="--a: 0.495; --b: 0.525; display: block; width: 28px; height: 3px; border-radius: 2px; background: rgba(243,242,238,calc(.18 + .82 * var(--j)))"></i><i class="kc" style="--a: 0.65; --b: 0.68; display: block; width: 28px; height: 3px; border-radius: 2px; background: rgba(243,242,238,calc(.18 + .82 * var(--j)))"></i></div>
@@ -191,7 +283,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 <p class="mono k" style="--a: 0; --b: 0.05; --c: 0.93; --d: 0.99; --dy: 10px; margin: 0 0 16px; font-size: 10px; color: #9C9B96">Realizacje · 2026</p>
 <h2 class="t-st" style="font-size: clamp(36px, 3.7vw, 54px); line-height: 1.04"><span class="k" style="--a: 0; --b: 0.06; --c: 0.93; --d: 0.99; --dy: 24px; --bl: 8px; display: block">Projekty,</span><span class="k" style="--a: 0.02; --b: 0.08; --c: 0.93; --d: 0.99; --dy: 24px; --bl: 8px; display: block; font-weight: 400">które właśnie</span><span class="k" style="--a: 0.04; --b: 0.1; --c: 0.93; --d: 0.99; --dy: 24px; --bl: 8px; display: block; font-weight: 400">powstają.</span></h2>
 <div class="k hide-s" style="--a: 0.06; --b: 0.12; --c: 0.93; --d: 0.99; --dy: 20px; position: relative; margin-top: 28px; height: 110px; font-family: Syne, sans-serif; font-weight: 800; font-size: 108px; line-height: 1; letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 1px rgba(243,242,238,.55)"><span class="k" style="--a: 0.07; --b: 0.13; --c: 0.34; --d: 0.4; --dy: 40px; --bl: 6px; position: absolute; left: 0; top: 0">01</span><span class="k" style="--a: 0.34; --b: 0.4; --c: 0.61; --d: 0.67; --dy: 40px; --bl: 6px; position: absolute; left: 0; top: 0">02</span><span class="k" style="--a: 0.61; --b: 0.67; --c: 2; --d: 3; --dy: 40px; --bl: 6px; position: absolute; left: 0; top: 0">03</span><span style="position: absolute; left: 150px; top: 18px; font-size: 22px; -webkit-text-stroke: 0; color: #9C9B96; font-family: Geist, sans-serif; font-weight: 400; letter-spacing: 0">/ 03</span></div>
-<div class="k" style="--a: 0.08; --b: 0.14; --c: 0.93; --d: 0.99; --dy: 14px; margin-top: 22px"><a class="btn btn-w" href="https://ig.me/m/aixkuba" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 12px; height: 48px; padding: 0 5px 0 22px; box-sizing: border-box; border-radius: 30px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 15px; font-weight: 600; white-space: nowrap"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="3.2"></rect><circle cx="8" cy="8" r="2.6"></circle><circle cx="11.4" cy="4.6" r=".5" fill="currentColor"></circle></svg><span>Chcę taki projekt</span><span style="width: 36px; height: 36px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8 H13 M9 4 L13 8 L9 12"></path></svg></span></a></div>
+<div class="k" style="--a: 0.08; --b: 0.14; --c: 0.93; --d: 0.99; --dy: 14px; margin-top: 22px"><a class="btn btn-w" href="#umow" data-book="" style="display: inline-flex; align-items: center; gap: 12px; height: 48px; padding: 0 5px 0 22px; box-sizing: border-box; border-radius: 30px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 15px; font-weight: 600; white-space: nowrap"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"></rect><path d="M2.5 6.5 H13.5 M5.5 2 V4.5 M10.5 2 V4.5"></path></svg><span>Umów się na call</span><span style="width: 36px; height: 36px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8 H13 M9 4 L13 8 L9 12"></path></svg></span></a></div>
 </div>
 <div class="ev-c" style="height: 440px">
 <div class="k" style="--a: 0.05; --b: 0.17; --c: 0.93; --d: 0.99; --dy: 520px; --ds: -0.04; position: absolute; inset: 0; z-index: 1">
@@ -222,14 +314,14 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </div>
 </div>
 </section>
-<section class="sc" data-sec="3" data-name="Brief" aria-label="Brief" style="height: calc(var(--vh) * 2.6)">
+<section class="sc" id="proces" data-sec="3" data-name="Brief" aria-label="Brief" style="height: calc(var(--vh) * 2.6)">
 <div class="stage">
 <div class="hdr"><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Dajesz nam brief.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Kilka zdań wystarczy. Resztę dopytam na rozmowie.</p></div>
 <div class="fit" style="top: 31%">
 <div class="card k" style="--a: 0.04; --b: 0.12; --c: 0.9; --d: 0.97; --dy: 50px; position: relative; width: 640px; height: 340px; box-sizing: border-box">
 <p class="k" style="--a: -1; --b: 0.001; --c: 0.66; --d: 0.7; --dy: 8px; position: absolute; left: 0; right: 0; top: 112px; margin: 0; text-align: center; font-size: 23px; font-weight: 500; letter-spacing: -.02em">Nad czym pracujemy?</p>
 <div class="k" style="--a: 0.68; --b: 0.74; --dy: 24px; position: absolute; right: 22px; top: 24px; max-width: 380px; background: #F3F2EE; color: #0B0B0B; border-radius: 16px 16px 4px 16px; padding: 11px 15px; font-size: 14px; line-height: 1.4">Sklep z dropami streetwear. Ma wyglądać premium i sprzedawać.</div>
-<div class="k" style="--a: 0.76; --b: 0.82; --dy: 14px; position: absolute; left: 22px; top: 106px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #E9E7E1"><svg viewBox="0 0 84 84" width="18" height="18" aria-hidden="true"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="#F3F2EE" fill-rule="evenodd"></path></svg><span>Rozumiem. Planuję pracę</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+<div class="k" style="--a: 0.76; --b: 0.82; --dy: 14px; position: absolute; left: 22px; top: 106px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #E9E7E1"><svg viewBox="0 0 84 84" width="18" height="18" aria-hidden="true"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="#F3F2EE" fill-rule="evenodd"></path></svg><span>Rozumiem. Planuję pracę</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
 <div style="position: absolute; left: 18px; right: 18px; bottom: 18px; height: 104px; border-radius: 16px; background: #141414; border: 1px solid rgba(243,242,238,.12); box-sizing: border-box; padding: 14px 16px">
 <span class="kc inv" style="--a: 0.18; --b: 0.2; position: absolute; left: 16px; top: 14px; font-size: 15px; color: #6E6D69">Opisz projekt…</span>
 <div class="k" style="--a: -1; --b: 0.001; --c: 0.64; --d: 0.67; --dy: 0px; position: relative; font-size: 15px; line-height: 1.45; color: #F3F2EE"><span class="kc ty" style="--a: 0.2; --b: 0.58; display: inline-block; white-space: nowrap">Sklep z dropami streetwear. Ma wyglądać premium i sprzedawać.</span></div>
@@ -246,7 +338,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </div>
 </div>
 </section>
-<section class="sc" data-sec="4" data-name="Plan" aria-label="Plan" style="height: calc(var(--vh) * 2.6)">
+<section class="sc" id="plan" data-sec="4" data-name="Plan" aria-label="Plan" style="height: calc(var(--vh) * 2.6)">
 <div class="stage">
 <div class="hdr"><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Planujemy pracę.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Każdy krok ma właściciela i termin.</p></div>
 <div class="fit" style="top: 31%">
@@ -281,7 +373,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </div>
 </div>
 </section>
-<section class="sc" data-sec="5" data-name="Projektujemy" aria-label="Projektujemy" style="height: calc(var(--vh) * 3)">
+<section class="sc" id="strony" data-sec="5" data-name="Projektujemy" aria-label="Projektujemy" style="height: calc(var(--vh) * 3)">
 <div class="stage">
 <div class="hdr"><p class="mono k" style="--a: 0; --b: 0.05; --c: 0.9; --d: 0.97; --dy: 10px; margin: 0 0 14px; font-size: 10px; color: #9C9B96">Przykład · sklep internetowy</p><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Projektujemy i kodujemy.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Sklep z limitowanymi dropami, od makiety do kodu.</p></div>
 <div class="fit" style="top: 30%"><div class="k" style="--a: 0.03; --b: 0.1; --c: 0.91; --d: 0.98; --dy: 60px"><div class="win" style="width: 820px; height: 450px; position: relative">
@@ -314,7 +406,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </div></div></div>
 </div>
 </section>
-<section class="sc" data-sec="6" data-name="Wideo" aria-label="Wideo" style="height: calc(var(--vh) * 3)">
+<section class="sc" id="wideo" data-sec="6" data-name="Wideo" aria-label="Wideo" style="height: calc(var(--vh) * 3)">
 <div class="stage">
 <div class="hdr"><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Montujemy film na start.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Rolka 9:16 i wersja 16:9 z tego samego materiału.</p></div>
 <div class="fit" style="top: 29%"><div class="k" style="--a: 0.03; --b: 0.1; --c: 0.93; --d: 0.99; --dy: 60px"><div class="win" style="width: 860px; height: 470px; position: relative; background: #0D0D0D">
@@ -329,7 +421,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 <div style="height: 56px; border-radius: 8px; background: linear-gradient(135deg, #222221, #0B0B0B); position: relative"><span style="position: absolute; left: 8px; bottom: 6px; font-size: 10px; color: #C9C7C1">logo_D.svg</span></div>
 </div>
 <div style="position: absolute; left: 200px; top: 52px; width: 460px; height: 208px; background: #070707; border-radius: 10px">
-<div style="position: absolute; left: 50%; top: 10px; width: 106px; height: 188px; margin-left: -53px; background: #111110; border: 1px solid #3A3A38; overflow: hidden"><div class="k" style="--a: 0.08; --b: 0.12; --c: 0.33; --d: 0.36; --dy: 0px; --ds: 0.15; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center"><span style="font-family: Syne, sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .02em; text-align: center; line-height: 1.1">TWOJA<br>MARKA</span></div><div class="k" style="--a: 0.33; --b: 0.36; --c: 0.52; --d: 0.55; --dy: 0px; --ds: 0.15; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 200 200" width="96" height="96" aria-hidden="true"><path d="M70 30 Q100 18 130 30 L168 48 Q178 54 182 66 L196 128 L170 136 L160 96 L160 190 Q100 200 40 190 L40 96 L30 136 L4 128 L18 66 Q22 54 32 48 Z" fill="url(#tdStone)"></path><path d="M76 30 Q100 58 124 30" fill="none" stroke="#3E3D3A" stroke-width="3"></path><path d="M70 120 H130 V150 H70 Z" fill="none" stroke="#3E3D3A" stroke-width="2"></path></svg></div><div class="k" style="--a: 0.52; --b: 0.55; --c: 0.72; --d: 0.75; --dy: 0px; --ds: 0.15; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center"><span class="mono" style="font-size: 11px; text-align: center; line-height: 1.6">Drop 01<br>21.10 · 21:00</span></div><div class="k" style="--a: 0.72; --b: 0.75; --c: 2; --d: 3; --dy: 0px; --ds: 0.15; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 84 84" width="44" height="44" aria-hidden="true"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="#F3F2EE" fill-rule="evenodd"></path></svg></div></div>
+<div style="position: absolute; left: 50%; top: 10px; width: 106px; height: 188px; margin-left: -53px; background: #111110; border: 1px solid #3A3A38; overflow: hidden"><div class="k" style="--a: 0.08; --b: 0.12; --c: 0.33; --d: 0.36; --dy: 0px; --ds: 0.15; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center"><span style="font-family: Syne, sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .02em; text-align: center; line-height: 1.1">TWOJA<br>MARKA</span></div><div class="k" style="--a: 0.33; --b: 0.36; --c: 0.52; --d: 0.55; --dy: 0px; --ds: 0.15; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 200 200" width="96" height="96" aria-hidden="true"><path d="M70 30 Q100 18 130 30 L168 48 Q178 54 182 66 L196 128 L170 136 L160 96 L160 190 Q100 200 40 190 L40 96 L30 136 L4 128 L18 66 Q22 54 32 48 Z" fill="url(#tdStone)"></path><path d="M76 30 Q100 58 124 30" fill="none" stroke="#3E3D3A" stroke-width="3"></path><path d="M70 120 H130 V150 H70 Z" fill="none" stroke="#3E3D3A" stroke-width="2"></path></svg></div><div class="k" style="--a: 0.52; --b: 0.55; --c: 0.72; --d: 0.75; --dy: 0px; --ds: 0.15; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center"><span class="mono" style="font-size: 11px; text-align: center; line-height: 1.6">Drop 01<br>21.10 · 21:00</span></div><div class="k" style="--a: 0.72; --b: 0.75; --c: 2; --d: 3; --dy: 0px; --ds: 0.15; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 84 84" width="44" height="44" aria-hidden="true"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="#F3F2EE" fill-rule="evenodd"></path></svg></div></div>
 </div>
 <div style="position: absolute; right: 14px; top: 54px; width: 172px; display: flex; flex-direction: column; gap: 0">
 <span class="mono" style="font-size: 9px; color: #6E6D69; margin-bottom: 6px">Ustawienia</span>
@@ -352,7 +444,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </div></div></div>
 </div>
 </section>
-<section class="sc" data-sec="7" data-name="Automatyzacje" aria-label="Automatyzacje" style="height: calc(var(--vh) * 3)">
+<section class="sc" id="automatyzacje" data-sec="7" data-name="Automatyzacje" aria-label="Automatyzacje" style="height: calc(var(--vh) * 3)">
 <div class="stage">
 <div class="hdr"><p class="mono k" style="--a: 0; --b: 0.05; --c: 0.9; --d: 0.97; --dy: 10px; margin: 0 0 14px; font-size: 10px; color: #9C9B96">Przykład · rezerwacje i płatności</p><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Podpinamy rezerwacje i płatności.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Przetestowane, potem włączone.</p></div>
 <div class="fit" style="top: 33%"><div class="k" style="--a: 0.03; --b: 0.1; --c: 0.93; --d: 0.99; --dy: 60px"><div class="win" style="width: 860px; height: 420px; position: relative; background: #0D0D0D">
@@ -397,7 +489,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </div></div></div>
 </div>
 </section>
-<section class="sc" data-sec="8" data-name="Efekty" aria-label="Efekty" style="height: calc(var(--vh) * 2.6)">
+<section class="sc" id="efekty" data-sec="8" data-name="Efekty" aria-label="Efekty" style="height: calc(var(--vh) * 2.6)">
 <div class="stage">
 <div class="hdr"><h2 class="t-st k" style="--a: 0; --b: 0.06; --c: 0.9; --d: 0.97; --dy: 26px; --bl: 8px; font-size: clamp(34px, 3.9vw, 56px)">Widzisz efekty.</h2><p class="t-sub k" style="--a: 0.03; --b: 0.09; --c: 0.9; --d: 0.97; --dy: 16px">Każde zapytanie i każda sprzedaż w jednym widoku.</p></div>
 <div class="fit" style="top: 29%"><div class="k" style="--a: 0.03; --b: 0.1; --c: 0.93; --d: 0.99; --dy: 60px"><div class="card zm" style="width: 820px; padding: 22px 22px 20px; box-sizing: border-box; border-radius: 18px; background: #0F0F0F">
@@ -418,26 +510,32 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </div></div></div>
 </div>
 </section>
-<section class="sc" data-sec="9" data-name="Współpraca" aria-label="Współpraca" style="height: calc(var(--vh) * 2.6)">
+<section class="sc" id="wspolpraca" data-sec="9" data-name="Współpraca" aria-label="Współpraca" style="height: calc(var(--vh) * 2.6)">
 <div class="stage">
-<div class="st-t"><h2 class="t-st"><span class="k" style="--a: 0.08; --b: 0.16; --c: 0.86; --d: 0.95; --dy: 26px; --bl: 8px; display: block">Zacznij teraz.</span><span class="k" style="--a: 0.12; --b: 0.2; --c: 0.86; --d: 0.95; --dy: 26px; --bl: 8px; display: block; font-weight: 400">Rośnij szybciej.</span></h2></div>
-<div class="st-c"><div class="k" style="--a: 0.02; --b: 0.14; --c: 0.84; --d: 0.98; --dy: 90px; position: relative"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" style="position: absolute; left: -22px; top: -22px"><path d="M0 12 V0 H12" fill="none" stroke="#9C9B96"></path></svg><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" style="position: absolute; right: -22px; top: -22px"><path d="M0 0 H12 V12" fill="none" stroke="#9C9B96"></path></svg><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" style="position: absolute; left: -22px; bottom: -22px"><path d="M0 0 V12 H12" fill="none" stroke="#9C9B96"></path></svg><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" style="position: absolute; right: -22px; bottom: -22px"><path d="M0 12 H12 V0" fill="none" stroke="#9C9B96"></path></svg>
-<div class="card" style="width: 370px; padding: 22px 22px 16px; box-sizing: border-box; background: #101010">
-<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 17px; font-weight: 600">The Domain</span><span class="mono" style="font-size: 9px; border: 1px solid rgba(243,242,238,.3); border-radius: 12px; padding: 5px 9px">Terminy 2026</span></div>
-<div style="display: flex; align-items: flex-start; gap: 12px; margin: 14px 0 6px"><svg viewBox="0 0 84 84" width="78" height="78" aria-hidden="true"><path d="M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z" fill="#F3F2EE" fill-rule="evenodd"></path></svg><span class="mono" style="font-size: 9.5px; line-height: 1.6; color: #C9C7C1; padding-top: 10px">/ projekt<br>Wycena po rozmowie<br>bez gotowych pakietów</span></div>
-<div style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px"><div style="padding: 10px 0; border-top: 1px solid rgba(243,242,238,.08)"><span style="display: block; font-size: 19px; font-weight: 600; letter-spacing: -.02em">0</span><span class="mono" style="display: block; margin-top: 3px; font-size: 8.5px; color: #9C9B96">Gotowych szablonów</span></div><div style="padding: 10px 0; border-top: 1px solid rgba(243,242,238,.08)"><span style="display: block; font-size: 19px; font-weight: 600; letter-spacing: -.02em">12</span><span class="mono" style="display: block; margin-top: 3px; font-size: 8.5px; color: #9C9B96">Usług w zespole</span></div><div style="padding: 10px 0; border-top: 1px solid rgba(243,242,238,.08)"><span style="display: block; font-size: 19px; font-weight: 600; letter-spacing: -.02em">1</span><span class="mono" style="display: block; margin-top: 3px; font-size: 8.5px; color: #9C9B96">Osoba kontaktowa</span></div><div style="padding: 10px 0; border-top: 1px solid rgba(243,242,238,.08)"><span style="display: block; font-size: 19px; font-weight: 600; letter-spacing: -.02em">PL · EN</span><span class="mono" style="display: block; margin-top: 3px; font-size: 8.5px; color: #9C9B96">Wersje językowe</span></div><div style="padding: 10px 0; border-top: 1px solid rgba(243,242,238,.08)"><span style="display: block; font-size: 19px; font-weight: 600; letter-spacing: -.02em">100%</span><span class="mono" style="display: block; margin-top: 3px; font-size: 8.5px; color: #9C9B96">Kodu dla Ciebie</span></div><div style="padding: 10px 0; border-top: 1px solid rgba(243,242,238,.08)"><span style="display: block; font-size: 19px; font-weight: 600; letter-spacing: -.02em">9:16 · 16:9</span><span class="mono" style="display: block; margin-top: 3px; font-size: 8.5px; color: #9C9B96">Formaty wideo</span></div></div>
-<p class="mono" style="margin: 12px 0 8px; font-size: 8.5px; color: #9C9B96">W projekcie</p>
-<div style="display: grid; grid-template-columns: repeat(6, 26px); gap: 6px 8px"><span style="width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(243,242,238,.14); display: flex; align-items: center; justify-content: center; color: #C9C7C1"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5.5"></circle><circle cx="8" cy="8" r="2.2"></circle></svg></span><span style="width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(243,242,238,.14); display: flex; align-items: center; justify-content: center; color: #C9C7C1"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="7" r="4.2"></circle><path d="M10.2 10.2 L13.5 13.5"></path></svg></span><span style="width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(243,242,238,.14); display: flex; align-items: center; justify-content: center; color: #C9C7C1"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4 L6 2.8 L10 4.2 L13.5 3 V12 L10 13.2 L6 11.8 L2.5 13 Z M6 2.8 V11.8 M10 4.2 V13.2"></path></svg></span><span style="width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(243,242,238,.14); display: flex; align-items: center; justify-content: center; color: #C9C7C1"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13 L3.6 10.2 L10.6 3.2 L12.8 5.4 L5.8 12.4 Z"></path></svg></span><span style="width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(243,242,238,.14); display: flex; align-items: center; justify-content: center; color: #C9C7C1"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5"></rect><path d="M2.5 6 H13.5 M6.5 6 V13.5"></path></svg></span><span style="width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(243,242,238,.14); display: flex; align-items: center; justify-content: center; color: #C9C7C1"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2 L9.3 6.7 L14 8 L9.3 9.3 L8 14 L6.7 9.3 L2 8 L6.7 6.7 Z"></path></svg></span><span style="width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(243,242,238,.14); display: flex; align-items: center; justify-content: center; color: #C9C7C1"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 4.5 L2 8 L5.5 11.5 M10.5 4.5 L14 8 L10.5 11.5"></path></svg></span><span style="width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(243,242,238,.14); display: flex; align-items: center; justify-content: center; color: #C9C7C1"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5 H13 L12.2 13.5 H3.8 Z M5.8 5.5 V4.5 A2.2 2.2 0 0 1 10.2 4.5 V5.5"></path></svg></span><span style="width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(243,242,238,.14); display: flex; align-items: center; justify-content: center; color: #C9C7C1"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"></rect><path d="M2.5 6.5 H13.5 M5.5 2 V4.5 M10.5 2 V4.5"></path></svg></span><span style="width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(243,242,238,.14); display: flex; align-items: center; justify-content: center; color: #C9C7C1"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="1.8" width="7" height="12.4" rx="1.6"></rect><path d="M7 12 H9"></path></svg></span><span style="width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(243,242,238,.14); display: flex; align-items: center; justify-content: center; color: #C9C7C1"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="1.5"></rect><path d="M2 6 H14 M2 10 H14 M5.5 3 V6 M10.5 3 V6 M5.5 10 V13 M10.5 10 V13"></path></svg></span><span style="width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(243,242,238,.14); display: flex; align-items: center; justify-content: center; color: #C9C7C1"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4.5" width="9" height="7.5" rx="1.5"></rect><path d="M11 7 L14 5.5 V11 L11 9.5"></path></svg></span></div>
-<a class="btn btn-w" href="https://ig.me/m/aixkuba" target="_blank" rel="noopener" style="margin-top: 18px; height: 50px; border-radius: 26px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 0 6px 0 20px; font-size: 15px; font-weight: 600">Napisz DOMAIN w DM<span style="width: 38px; height: 38px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8 H13 M9 4 L13 8 L9 12"></path></svg></span></a>
-<p class="mono" style="margin: 12px 0 0; text-align: center; font-size: 8px; color: #6E6D69">Odpisuję osobiście · strona + wideo · PL / EN</p>
+<div class="st-t"><h2 class="t-st"><span class="k" style="--a: 0.04; --b: 0.12; --c: 0.86; --d: 0.95; --dy: 26px; --bl: 8px; display: block">Zacznij teraz.</span><span class="k" style="--a: 0.08; --b: 0.16; --c: 0.86; --d: 0.95; --dy: 26px; --bl: 8px; display: block; font-weight: 400">Rośnij szybciej.</span></h2>
+<p class="t-sub k" style="--a: 0.1; --b: 0.18; --c: 0.86; --d: 0.95; --dy: 16px">Wybierz termin. 30 minut rozmowy online, bez zobowiązań.</p></div>
+<div class="st-c"><div class="k" style="--a: 0.06; --b: 0.18; --c: 0.84; --d: 0.98; --dy: 90px; --ds: 0.06; position: relative">
+<div class="halo" aria-hidden="true"></div>
+<div class="gcard">
+<div class="gc-top">
+<span class="gc-orb" style="perspective: 240px"><div class="orb-spin" style="position: relative; width: 54px; height: 54px"><svg viewBox="0 0 84 84" width="54" height="54" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-7.7px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdChrome)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="54" height="54" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-6.6px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="54" height="54" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-5.5px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="54" height="54" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-4.4px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="54" height="54" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-3.3px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="54" height="54" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-2.2px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="54" height="54" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(-1.1px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdSide)" fill-rule="evenodd"></path></svg><svg viewBox="0 0 84 84" width="54" height="54" aria-hidden="true" style="position: absolute; left: 0; top: 0; transform: translateZ(0.0px)"><path d="M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z" fill="url(#tdChrome)" fill-rule="evenodd"></path></svg></div></span>
+<span style="flex: 1; min-width: 0"><span style="display: block; font-size: 19px; font-weight: 600; letter-spacing: -.02em">Call z The Domain</span><span class="mono" style="display: block; margin-top: 5px; font-size: 9.5px; color: #C9C7C1">30 min · Google Meet · bezpłatnie</span></span>
+<span class="gc-live"><i></i>Wolne terminy</span>
+</div>
+<p class="mono" style="margin: 20px 0 10px; font-size: 9px; color: #9C9B96">Dzień</p>
+<div class="gc-days" data-days></div>
+<p class="mono" style="margin: 18px 0 10px; font-size: 9px; color: #9C9B96">Godzina</p>
+<div class="gc-times"><button type="button" class="gc-t" data-time="10:00">10:00</button><button type="button" class="gc-t" data-time="11:30">11:30</button><button type="button" class="gc-t" data-time="13:00">13:00</button><button type="button" class="gc-t" data-time="14:30">14:30</button><button type="button" class="gc-t" data-time="16:00">16:00</button><button type="button" class="gc-t" data-time="17:30">17:30</button></div>
+<a class="btn btn-w gc-cta" href="#umow" data-book="" ><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"></rect><path d="M2.5 6.5 H13.5 M5.5 2 V4.5 M10.5 2 V4.5"></path></svg><span>Umów się na call</span><span class="gc-arr"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8 H13 M9 4 L13 8 L9 12"></path></svg></span></a>
+<div class="gc-foot"><span><b>0</b>szablonów</span><span><b>100%</b>kodu dla Ciebie</span><span><b>24 h</b>na odpowiedź</span></div>
 </div></div></div>
 </div>
 </section>
-<section class="sc" data-sec="10" data-name="Kontakt" aria-label="Kontakt" style="min-height: var(--vh); padding: calc(var(--vh) * .18) 16px 130px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center">
+<section class="sc" id="kontakt" data-sec="10" data-name="Kontakt" aria-label="Kontakt" style="min-height: var(--vh); padding: calc(var(--vh) * .18) 16px 130px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center">
 <h2 class="k" style="--a: 0.2; --b: 0.7; --dy: 40px; --bl: 10px; margin: 0; text-align: center; font-size: clamp(44px, 6.2vw, 96px); line-height: 1; letter-spacing: -.045em; font-weight: 600">Skup się na pomysłach.<br><span style="font-weight: 400">Your domain. Built to grow.</span></h2>
 <div class="k" style="--a: 0.35; --b: 0.8; --dy: 20px; margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 18px">
-<a class="btn btn-w" href="https://ig.me/m/aixkuba" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 22px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 13px; font-weight: 600"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="3.2"></rect><circle cx="8" cy="8" r="2.6"></circle><circle cx="11.4" cy="4.6" r=".5" fill="currentColor"></circle></svg>Napisz na IG</a>
-<a class="btn btn-o" href="mailto:kub.mktg@gmail.com?subject=Rozmowa%20o%20projekcie" style="display: flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 22px; border: 1px solid rgba(243,242,238,.22); color: #F3F2EE; text-decoration: none; font-size: 13px; font-weight: 500">Umów rozmowę <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8 H13 M9 4 L13 8 L9 12"></path></svg></a>
+<a class="btn btn-w" href="#umow" data-book="" style="display: inline-flex; align-items: center; gap: 12px; height: 48px; padding: 0 5px 0 22px; box-sizing: border-box; border-radius: 30px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 15px; font-weight: 600; white-space: nowrap"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"></rect><path d="M2.5 6.5 H13.5 M5.5 2 V4.5 M10.5 2 V4.5"></path></svg><span>Umów się na call</span><span style="width: 36px; height: 36px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8 H13 M9 4 L13 8 L9 12"></path></svg></span></a>
+<a class="btn btn-o glass" href="https://instagram.com/aixkuba" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 18px; border-radius: 26px; color: #F3F2EE; text-decoration: none; font-size: 14px; font-weight: 500"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="3.2"></rect><circle cx="8" cy="8" r="2.6"></circle><circle cx="11.4" cy="4.6" r=".5" fill="currentColor"></circle></svg>Instagram @aixkuba</a>
 <span style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: #9C9B96"><svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M5 3.2 L13 8 L5 12.8 Z" fill="currentColor"></path></svg>Showreel · wkrótce</span>
 <button type="button" onClick="{{replay}}" style="background: transparent; border: 0; color: #F3F2EE; font-size: 13px; cursor: pointer; padding: 10px 4px">Odtwórz historię</button>
 </div>
@@ -458,6 +556,38 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 </div>
 </template>
 <div id="root"></div>
+<div class="bk" role="dialog" aria-modal="true" aria-labelledby="bkT" aria-hidden="true">
+<div class="bk-p glass">
+<button type="button" class="bk-x" data-close="" aria-label="Zamknij">×</button>
+<form id="bkF" novalidate>
+<h3 id="bkT">Umów się na call</h3>
+<p class="sub">30 minut online (Google Meet), bezpłatnie. Wybierz termin i zostaw kontakt.</p>
+<p class="lab">Dzień</p>
+<div class="gc-days" data-days="10"></div>
+<p class="lab">Godzina</p>
+<div class="gc-times"><button type="button" class="gc-t" data-time="10:00">10:00</button><button type="button" class="gc-t" data-time="11:30">11:30</button><button type="button" class="gc-t" data-time="13:00">13:00</button><button type="button" class="gc-t" data-time="14:30">14:30</button><button type="button" class="gc-t" data-time="16:00">16:00</button><button type="button" class="gc-t" data-time="17:30">17:30</button></div>
+<p class="lab">Twoje dane</p>
+<div class="bk-row"><input name="imie" placeholder="Imię i nazwisko *" autocomplete="name" required><input name="email" type="email" placeholder="E-mail *" autocomplete="email" required></div>
+<div class="bk-row" style="margin-top: 10px"><input name="telefon" type="tel" placeholder="Telefon" autocomplete="tel"><input name="firma" placeholder="Firma, strona lub IG"></div>
+<p class="lab">Czego potrzebujesz?</p>
+<div class="bk-chips"><label><input type="checkbox" name="potrzeby" value="Strona"><span>Strona</span></label><label><input type="checkbox" name="potrzeby" value="Sklep online"><span>Sklep online</span></label><label><input type="checkbox" name="potrzeby" value="Rolki i wideo"><span>Rolki i wideo</span></label><label><input type="checkbox" name="potrzeby" value="Automatyzacje"><span>Automatyzacje</span></label><label><input type="checkbox" name="potrzeby" value="Branding"><span>Branding</span></label></div>
+<p class="lab">Kilka słów o projekcie</p>
+<textarea name="wiadomosc" placeholder="Np. sklep z dropami, start w grudniu, orientacyjny budżet"></textarea>
+<input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display: none">
+<p class="bk-err" aria-live="polite"></p>
+<button class="bk-send" type="submit">Umów się na call <span aria-hidden="true">→</span></button>
+<p class="bk-note">Odpowiedź w ciągu 24 godzin. Dane trafiają tylko do The Domain.</p>
+</form>
+<div class="bk-ok" hidden>
+<div class="ck"><svg viewBox="0 0 16 16" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.4 L6.8 11 L12 5.2"></path></svg></div>
+<h3>Dziękuję, mamy to.</h3>
+<p class="sub" data-okt></p>
+<p class="sub" style="margin-top: 14px"><a data-okcal href="#" target="_blank" rel="noopener">Dodaj termin do swojego kalendarza</a></p>
+<button type="button" class="bk-send" data-close="" style="margin-top: 24px">Zamknij</button>
+</div>
+</div>
+</div>
+
 <script src="assets/runtime.js"></script>
 <script>
 class Component extends DCLogic {
@@ -662,7 +792,7 @@ class Component extends DCLogic {
     el.style.transform = 'translate3d(' + (v[0] * W - sz / 2).toFixed(1) + 'px,' + (v[1] * H - sz / 2).toFixed(1) + 'px,0) scale(' + v[2].toFixed(3) + ')';
     el.style.opacity = (W < 900 ? 0 : v[3]).toFixed(3);
     if (!this.spinEl) this.spinEl = el.querySelector('.orb-spin');
-    if (this.spinEl) this.spinEl.style.transform = 'rotateX(14deg) rotateY(' + ((this.sy / this.maxScroll()) * 2160).toFixed(1) + 'deg)';
+    if (this.spinEl) this.spinEl.style.transform = 'rotateX(14deg) rotateY(' + ((this.sy / this.maxScroll()) * 2160 + (this.spin || 0) * 50).toFixed(1) + 'deg)';
   }
 
   sizeCanvas() {
@@ -697,11 +827,11 @@ class Component extends DCLogic {
     // sphere
     shapes.push(Array.from({ length: N }, (_, i) => { const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), th = i * 2.39996; return [Math.cos(th) * r, y, Math.sin(th) * r]; }));
     // the D with the cursor cut out
-    shapes.push(fill2d(new Path2D('M0 0 H42 A42 42 0 0 1 42 84 H0 Z M26 22 L26 56.85 L34.61 49.06 L40.35 62.18 L45.68 59.92 L40.14 47.22 L51.42 47.22 Z'), 84, 84, 0.25));
+    shapes.push(fill2d(new Path2D('M0 4.94 H32.12 A33.97 37.06 0 0 1 32.12 79.06 H0 Z M72.88 67.94 H84 V79.06 H72.88 Z'), 84, 84, 0.25));
     // torus
     shapes.push(Array.from({ length: N }, () => { const a = rnd() * Math.PI * 2, b = rnd() * Math.PI * 2, R = 0.75, r = 0.28; return [(R + r * Math.cos(b)) * Math.cos(a), r * Math.sin(b), (R + r * Math.cos(b)) * Math.sin(a)]; }));
     // a big cursor
-    shapes.push(fill2d(new Path2D('M0 0 L0 34.85 L8.61 27.06 L14.35 40.18 L19.68 37.92 L14.14 25.22 L25.42 25.22 Z'), 26, 41, 0.2).map((p) => [p[0] + 0.25, p[1], p[2]]));
+    shapes.push(Array.from({ length: N }, () => [(rnd() - 0.5) * 1.1, (rnd() - 0.5) * 1.1, (rnd() - 0.5) * 1.1]));
     // wave field
     shapes.push(Array.from({ length: N }, (_, i) => { const gx = (i % 60) / 59 * 2 - 1, gz = Math.floor(i / 60) / (N / 60) * 2 - 1; return [gx * 1.3, Math.sin(gx * 4) * 0.18 + Math.cos(gz * 5) * 0.12, gz * 1.3]; }));
     // double helix
@@ -737,7 +867,8 @@ class Component extends DCLogic {
     const scale = (narrow ? base + (Math.min(W, H) * 0.36 - base) * mixc : base) * (1 + 0.25 * mixc);
     const dims = [1, 0.5, 0.45, 0.45, 0.45, 0.4, 0.4, 0.4, 0.42, 0.5, 0.35];
     const dim = dims[Math.min(dims.length - 1, idx)] * (narrow ? (idx === 0 ? 0.75 : 0.6) : 1);
-    const rotY = g * 14, rotX = 0.35 + Math.sin(g * 6) * 0.15;
+    this.spin = (this.spin || 0) + dt;
+    const rotY = g * 14 + this.spin * 0.45, rotX = 0.35 + Math.sin(g * 6) * 0.15 + Math.sin(this.spin * 0.6) * 0.06;
     const cyR = Math.cos(rotY), syR = Math.sin(rotY), cxR = Math.cos(rotX), sxR = Math.sin(rotX);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, W * dpr, H * dpr);
@@ -783,6 +914,143 @@ class Component extends DCLogic {
 }
 
 window.__mount(document.getElementById('tpl'), document.getElementById('root'), Component);
+</script>
+<script>/* menu, section links and call booking (plain JS, outside the story template) */
+(function () {
+  var D = document, R = D.documentElement;
+  var MAIL = 'kub.mktg@gmail.com';
+  var DN = ['nd', 'pon', 'wt', 'śr', 'czw', 'pt', 'sob'];
+  var MN = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'];
+  var MF = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
+  var sel = { d: null, t: null };
+  var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+  var iso = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+
+  function workdays(n) {
+    var out = [], d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + 1);
+    while (out.length < n) { var w = d.getDay(); if (w > 0 && w < 6) out.push(new Date(d)); d.setDate(d.getDate() + 1); }
+    return out;
+  }
+  function fillDays() {
+    var els = D.querySelectorAll('[data-days]');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      if (!el.firstChild) {
+        var n = +el.getAttribute('data-days') || 5;
+        el.innerHTML = workdays(n).map(function (d) {
+          return '<button type="button" class="gc-d" data-day="' + iso(d) + '"><span>' + DN[d.getDay()] + '</span><b>' + d.getDate() + '</b><span>' + MN[d.getMonth()] + '</span></button>';
+        }).join('');
+      }
+    }
+    sync();
+  }
+  function sync() {
+    var b = D.querySelectorAll('.gc-d');
+    for (var i = 0; i < b.length; i++) b[i].classList.toggle('on', b[i].getAttribute('data-day') === sel.d);
+    var t = D.querySelectorAll('.gc-t');
+    for (var j = 0; j < t.length; j++) t[j].classList.toggle('on', t[j].getAttribute('data-time') === sel.t);
+  }
+  // the story template can re-render; keep the day pickers filled
+  setInterval(fillDays, 600);
+  D.addEventListener('DOMContentLoaded', fillDays);
+  fillDays();
+
+  function menu(open) {
+    R.classList.toggle('menu-open', open);
+    var b = D.querySelectorAll('[data-menu]');
+    for (var i = 0; i < b.length; i++) b[i].setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  function book(open) {
+    R.classList.toggle('bk-open', open);
+    var m = D.querySelector('.bk');
+    if (m) m.setAttribute('aria-hidden', open ? 'false' : 'true');
+    if (open) {
+      menu(false); fillDays();
+      var f = D.getElementById('bkF'), ok = D.querySelector('.bk-ok');
+      if (f && ok && !ok.hidden && f.dataset.sent) { ok.hidden = true; f.hidden = false; f.reset(); delete f.dataset.sent; }
+    }
+  }
+  function goTo(hash) {
+    if (hash === '#top' || hash === '#start') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    var el = D.getElementById(hash.slice(1)); if (!el) return;
+    var y = el.getBoundingClientRect().top + window.scrollY;
+    if (el.querySelector(':scope > .stage')) y += Math.max(0, el.offsetHeight - window.innerHeight) * 0.3;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+
+  D.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target : e.target.parentElement;
+    var m = t.closest('[data-menu]');
+    if (m) { e.preventDefault(); menu(!R.classList.contains('menu-open')); return; }
+    var b = t.closest('[data-book]');
+    if (b) { e.preventDefault(); book(true); return; }
+    var c = t.closest('[data-close]');
+    if (c) { e.preventDefault(); book(false); return; }
+    var n = t.closest('[data-nav]');
+    if (n) { e.preventDefault(); menu(false); goTo(n.getAttribute('href')); return; }
+    var d = t.closest('.gc-d');
+    if (d) { sel.d = d.getAttribute('data-day'); sync(); return; }
+    var h = t.closest('.gc-t');
+    if (h) { sel.t = h.getAttribute('data-time'); sync(); return; }
+    if (R.classList.contains('menu-open') && !t.closest('.menu-p')) menu(false);
+    if (R.classList.contains('bk-open') && t.classList.contains('bk')) book(false);
+  });
+  D.addEventListener('keydown', function (e) { if (e.key === 'Escape') { menu(false); book(false); } });
+  if (location.hash === '#umow') setTimeout(function () { book(true); }, 400);
+
+  function label(dayIso, time) {
+    var p = dayIso.split('-'), d = new Date(+p[0], +p[1] - 1, +p[2]);
+    return DN[d.getDay()] + ', ' + d.getDate() + ' ' + MF[d.getMonth()] + ' ' + d.getFullYear() + ', ' + time;
+  }
+  function gcal(dayIso, time, title, details) {
+    var s = dayIso.replace(/-/g, '') + 'T' + time.replace(':', '') + '00';
+    var hm = time.split(':'), end = +hm[0] * 60 + +hm[1] + 30;
+    var e = dayIso.replace(/-/g, '') + 'T' + pad(Math.floor(end / 60)) + pad(end % 60) + '00';
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(title) + '&dates=' + s + '/' + e + '&ctz=Europe/Warsaw&details=' + encodeURIComponent(details);
+  }
+
+  D.addEventListener('submit', function (e) {
+    var f = e.target; if (f.id !== 'bkF') return;
+    e.preventDefault();
+    var err = f.querySelector('.bk-err'), btn = f.querySelector('.bk-send');
+    var v = function (n) { var x = f.elements[n]; return x ? x.value.trim() : ''; };
+    if (v('_honey')) return;
+    if (!sel.d) { err.textContent = 'Wybierz dzień rozmowy.'; return; }
+    if (!sel.t) { err.textContent = 'Wybierz godzinę rozmowy.'; return; }
+    if (!v('imie')) { err.textContent = 'Wpisz imię i nazwisko.'; f.elements.imie.focus(); return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('email'))) { err.textContent = 'Wpisz poprawny adres e-mail.'; f.elements.email.focus(); return; }
+    err.textContent = '';
+    var needs = Array.prototype.map.call(f.querySelectorAll('input[name="potrzeby"]:checked'), function (x) { return x.value; }).join(', ');
+    var when = label(sel.d, sel.t);
+    var info = v('imie') + ' · ' + v('email') + (v('telefon') ? ' · ' + v('telefon') : '') + (v('firma') ? '\n' + v('firma') : '') + (needs ? '\nPotrzeby: ' + needs : '') + (v('wiadomosc') ? '\n\n' + v('wiadomosc') : '');
+    var payload = {
+      _subject: 'Nowy call: ' + v('imie') + ' · ' + when,
+      _template: 'table',
+      _captcha: 'false',
+      'Termin': when + ' (30 min, czas polski)',
+      'Imię i nazwisko': v('imie'),
+      email: v('email'),
+      'Telefon': v('telefon') || '-',
+      'Firma / strona / IG': v('firma') || '-',
+      'Potrzeby': needs || '-',
+      'Wiadomość': v('wiadomosc') || '-',
+      'Dodaj do kalendarza': gcal(sel.d, sel.t, 'Call: ' + v('imie') + ' (The Domain)', info)
+    };
+    btn.disabled = true; btn.firstChild.nodeValue = 'Wysyłam… ';
+    fetch('https://formsubmit.co/ajax/' + MAIL, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function () {
+        f.dataset.sent = '1'; f.hidden = true;
+        var ok = D.querySelector('.bk-ok'); ok.hidden = false;
+        ok.querySelector('[data-okt]').textContent = 'Termin: ' + when + '. Potwierdzenie i link do rozmowy wyślę na ' + v('email') + ' w ciągu 24 godzin.';
+        ok.querySelector('[data-okcal]').href = gcal(sel.d, sel.t, 'Call z The Domain', 'Rozmowa o projekcie z The Domain. Link do spotkania przyjdzie mailem.');
+      })
+      .catch(function () {
+        err.innerHTML = 'Nie udało się wysłać. Napisz proszę na <a href="mailto:' + MAIL + '?subject=' + encodeURIComponent('Call: ' + when) + '" style="color:#F3F2EE">' + MAIL + '</a>.';
+      })
+      .then(function () { btn.disabled = false; btn.firstChild.nodeValue = 'Umów się na call '; });
+  });
+})();
 </script>
 </body>
 </html>
