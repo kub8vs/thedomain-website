@@ -18,7 +18,10 @@ assert '@@' not in body and '/_blob/' not in body
 
 meta = ('<title>The Domain · strony, wideo i automatyzacje</title>'
         '<meta name="description" content="The Domain: szybkie, kodowane od zera strony z motion designem, rolki i wideo promocyjne oraz automatyzacje dla firm.">'
-        '<meta name="theme-color" content="#0B0B0B">')
+        '<meta name="theme-color" content="#0B0B0B">'
+        '<link rel="icon" href="favicon.ico" sizes="32x32">'
+        '<link rel="icon" href="favicon.svg" type="image/svg+xml">'
+        '<link rel="apple-touch-icon" href="apple-touch-icon.png">')
 IDS = {'Pytania': 'pytania', 'Brief': 'proces', 'Plan': 'plan', 'Projektujemy': 'strony', 'Wideo': 'wideo', 'Automatyzacje': 'automatyzacje', 'Efekty': 'efekty', 'Współpraca': 'wspolpraca', 'Kontakt': 'kontakt'}
 for name, sid in IDS.items():
     body, n = re.subn(r'<section class="sc" data-sec="(\d+)" data-name="' + name + '"', r'<section class="sc" id="' + sid + r'" data-sec="\1" data-name="' + name + '"', body)

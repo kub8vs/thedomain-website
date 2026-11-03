@@ -163,7 +163,7 @@ cal = ''.join(f'<span style="height: 26px; border-radius: 6px; background: {"#F3
 def shot(n, url):
     return (f'<div style="position: absolute; inset: 0; background: #0B0B0B">'
             f'<div style="height: 26px; display: flex; align-items: center; gap: 5px; padding: 0 12px; background: #161616; border-bottom: 1px solid rgba(243,242,238,.08)"><i style="width: 7px; height: 7px; border-radius: 50%; background: #3A3A38"></i><i style="width: 7px; height: 7px; border-radius: 50%; background: #3A3A38"></i><i style="width: 7px; height: 7px; border-radius: 50%; background: #3A3A38"></i><span class="mono" style="margin: 0 auto; font-size: 8.5px; letter-spacing: .04em; text-transform: none; color: #9C9B96">{url}</span><span style="width: 33px"></span></div>'
-            f'<img src="@@PROJ{n}@@" alt="Zrzut ekranu projektu {url}" style="display: block; width: 100%; height: calc(100% - 27px); object-fit: cover; object-position: 50% 0"></div>')
+            f'<img src="@@PROJ{n}@@" alt="Zrzut ekranu projektu {url}" style="display: block; width: 100%; height: calc(100% - 27px); object-fit: cover; object-position: 50% 0" class="pj-img"></div>')
 
 
 VIS = [shot(1, 'Himera · sklep'), shot(2, 'Adriatico · sala weselna'), shot(3, 'Tirenders · rezerwacje')]
@@ -174,12 +174,13 @@ cards, nums = [], []
 for i, (t, cat, tags) in enumerate(PROJ):
     a = .05 + i * .27
     na = .05 + (i + 1) * .27
-    back = f'{J(na, na + .12)}' if i < 2 else '--a: 8; --b: 9'
-    cards.append(f'''<div class="k" style="{K(a, a + .12, .93, .99, dy=520, ds=-.04)}; position: absolute; inset: 0; z-index: {i + 1}">
-<div class="kc" style="{back}; position: absolute; inset: 0; transform: translateY(calc(var(--j) * -42px)) scale(calc(1 - .07 * var(--j))); transform-origin: 50% 0; filter: brightness(calc(1 - .55 * var(--j)))">
-<div class="card" style="position: absolute; inset: 0; overflow: hidden; background: #101010; border-radius: 22px">
+    back = f'{J(na, na + .14)}' if i < 2 else '--a: 8; --b: 9'
+    cards.append(f'''<div class="kc pj" style="{J(a, a + .17)}; --e: var(--j); position: absolute; inset: 0; z-index: {i + 1}">
+<div class="kc pj-out" style="{back}; position: absolute; inset: 0">
+<div class="card pj-card" style="position: absolute; inset: 0; overflow: hidden; background: #101010; border-radius: 22px">
+<i class="pj-sh" aria-hidden="true"></i>
 <div class="pv" style="position: absolute; left: 0; right: 0; top: 0; height: 300px; border-bottom: 1px solid rgba(243,242,238,.1)">{VIS[i]}</div>
-<div class="pt" style="position: absolute; left: 24px; right: 24px; top: 314px">
+<div class="pt pj-txt" style="position: absolute; left: 24px; right: 24px; top: 314px">
 <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px"><span style="font-size: 21px; font-weight: 600; letter-spacing: -.02em">{t}</span><span class="mono" style="font-size: 9.5px; color: #9C9B96; white-space: nowrap">0{i + 1} · w toku</span></div>
 <p style="margin: 3px 0 10px; font-size: 13px; color: #9C9B96">{cat}</p>
 <div style="display: flex; flex-wrap: wrap; gap: 6px">{"".join(tagp(x) for x in tags)}</div>
@@ -192,7 +193,9 @@ projects = f'''<div class="ev-t">
 <div class="k" style="{K(.08, .14, .93, .99, dy=14)}; margin-top: 22px">{cta_w('Umów się na call', size=48)}</div>
 </div>
 <div class="ev-c" style="height: 440px">
+<div class="k" style="{K(-1, .001, .93, .99, dy=40)}; position: absolute; inset: 0; perspective: 1500px">
 {''.join(cards)}
+</div>
 </div>'''
 sec(4, 'Realizacje', 4.6, projects, sid='realizacje')
 
@@ -206,21 +209,24 @@ def head(title, sub, tag=None, a=0, out=(.9, .97)):
 # 5 brief ---------------------------------------------------------------
 brief = head('Dajesz nam brief.', 'Kilka zdań wystarczy. Resztę dopytam na rozmowie.') + f'''
 <div class="fit" style="top: 31%">
-<div class="card k" style="{K(.04, .12, .9, .97, dy=50)}; position: relative; width: 640px; height: 340px; box-sizing: border-box">
-<p class="k" style="{K(-1, .001, .66, .7, dy=8)}; position: absolute; left: 0; right: 0; top: 112px; margin: 0; text-align: center; font-size: 23px; font-weight: 500; letter-spacing: -.02em">Nad czym pracujemy?</p>
-<div class="k" style="{K(.68, .74, dy=24)}; position: absolute; right: 22px; top: 24px; max-width: 380px; background: #F3F2EE; color: #0B0B0B; border-radius: 16px 16px 4px 16px; padding: 11px 15px; font-size: 14px; line-height: 1.4">Sklep z dropami streetwear. Ma wyglądać premium i sprzedawać.</div>
-<div class="k" style="{K(.76, .82, dy=14)}; position: absolute; left: 22px; top: 106px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #E9E7E1">{mark(18)}<span>Rozumiem. Planuję pracę</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
-<div style="position: absolute; left: 18px; right: 18px; bottom: 18px; height: 104px; border-radius: 16px; background: #141414; border: 1px solid rgba(243,242,238,.12); box-sizing: border-box; padding: 14px 16px">
-<span class="kc inv" style="{J(.18, .2)}; position: absolute; left: 16px; top: 14px; font-size: 15px; color: #6E6D69">Opisz projekt…</span>
-<div class="k" style="{K(-1, .001, .64, .67, dy=0)}; position: relative; font-size: 15px; line-height: 1.45; color: #F3F2EE"><span class="kc ty" style="{J(.2, .58)}; display: inline-block; white-space: nowrap">Sklep z dropami streetwear. Ma wyglądać premium i sprzedawać.</span></div>
-<div style="position: absolute; left: 14px; bottom: 12px; display: flex; gap: 6px">
-<span style="display: flex; align-items: center; gap: 5px; font-size: 11px; color: #9C9B96; border: 1px solid rgba(243,242,238,.14); border-radius: 8px; padding: 4px 8px">{ic("plus", 10)}Plik</span>
-<span style="display: flex; align-items: center; gap: 5px; font-size: 11px; color: #9C9B96; border: 1px solid rgba(243,242,238,.14); border-radius: 8px; padding: 4px 8px">{ic("layout", 10)}moodboard.pdf</span>
+<div class="card k" style="{K(.04, .12, .9, .97, dy=50)}; position: relative; width: 640px; height: 340px; box-sizing: border-box; overflow: hidden">
+<div style="position: absolute; left: 0; right: 0; top: 0; height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid rgba(243,242,238,.08)">
+<span style="display: flex; align-items: center; gap: 10px"><span style="width: 28px; height: 28px; border-radius: 50%; background: #232322; display: flex; align-items: center; justify-content: center; color: #C9C7C1">{ic("user", 14)}</span><span style="font-size: 14px; font-weight: 600">Nowe zapytanie</span></span>
+<span class="mono" style="font-size: 9px; color: #9C9B96">Wiadomości</span>
 </div>
-<span style="position: absolute; right: 12px; bottom: 10px; width: 34px; height: 34px">
-<span style="position: absolute; inset: 0; border-radius: 50%; background: #2B2B29; color: #6E6D69; display: flex; align-items: center; justify-content: center">{ic("up", 14, 1.8)}</span>
-<span class="kc on" style="{J(.6, .64)}; position: absolute; inset: 0; border-radius: 50%; background: #F3F2EE; color: #0B0B0B; display: flex; align-items: center; justify-content: center">{ic("up", 14, 1.8)}</span>
-</span>
+<div class="k" style="{K(.1, .18, dy=24)}; position: absolute; right: 22px; top: 74px; max-width: 390px; text-align: right">
+<span class="mono" style="display: block; margin: 0 6px 6px 0; font-size: 8.5px; color: #9C9B96">Klient · 21:04</span>
+<div style="display: inline-block; text-align: left; background: #F3F2EE; color: #0B0B0B; border-radius: 16px 16px 4px 16px; padding: 11px 15px; font-size: 14.5px; line-height: 1.4">Sklep z dropami streetwear. Ma wyglądać premium i sprzedawać.</div>
+</div>
+<div class="k" style="{K(.26, .32, .44, .48, dy=10)}; position: absolute; left: 22px; top: 176px; display: flex; align-items: center; gap: 10px">{mark(20)}<span style="display: flex; align-items: center; height: 34px; padding: 0 14px; border-radius: 17px; background: #1C1C1B"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></span></div>
+<div class="k" style="{K(.46, .52, dy=14, ds=.1)}; position: absolute; left: 22px; top: 156px">
+<span class="mono" style="display: block; margin: 0 0 6px 30px; font-size: 8.5px; color: #9C9B96">The Domain · 21:05</span>
+<div style="display: flex; align-items: flex-end; gap: 10px">{mark(20)}<span style="background: #1C1C1B; border: 1px solid rgba(243,242,238,.1); border-radius: 16px 16px 16px 4px; padding: 10px 16px; font-size: 15px; font-weight: 500">ok.</span></div>
+</div>
+<div class="k" style="{K(.62, .7, dy=8)}; position: absolute; left: 52px; top: 232px; display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: #9C9B96"><span>Planuję pracę</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+<div style="position: absolute; left: 18px; right: 18px; bottom: 16px; height: 46px; border-radius: 23px; background: #141414; border: 1px solid rgba(243,242,238,.1); display: flex; align-items: center; justify-content: space-between; padding: 0 6px 0 18px; box-sizing: border-box">
+<span style="font-size: 13.5px; color: #6E6D69">Napisz wiadomość…</span>
+<span style="width: 34px; height: 34px; border-radius: 50%; background: #2B2B29; color: #6E6D69; display: flex; align-items: center; justify-content: center">{ic("up", 14, 1.8)}</span>
 </div>
 </div>
 </div>'''
@@ -360,10 +366,10 @@ video = head('Montujemy film na start.', 'Rolka 9:16 i wersja 16:9 z tego samego
 sec(8, 'Wideo', 3, video)
 
 # 9 automation graph ------------------------------------------------------
-NODES = [(40, 150, 'Wybór terminu', 'Klient', 'cal'), (262, 70, 'Wolny termin?', 'Kalendarz', 'search'), (484, 70, 'Płatność online', 'Płatności', 'card'),
-         (650, 190, 'Potwierdzenie', 'E-mail', 'mail'), (484, 250, 'Inny termin', 'Gdy zajęte', 'cal'), (650, 300, 'Przypomnienie 24 h', 'SMS i e-mail', 'bell')]
+NODES = [(22, 150, 'Wybór terminu', 'Klient', 'cal'), (230, 62, 'Wolny termin?', 'Kalendarz', 'search'), (438, 62, 'Płatność online', 'Płatności', 'card'),
+         (646, 62, 'Potwierdzenie', 'E-mail', 'mail'), (438, 238, 'Inny termin', 'Gdy zajęte', 'cal'), (646, 238, 'Przypomnienie 24 h', 'SMS i e-mail', 'bell')]
 EDGES = [(0, 1), (1, 2), (2, 3), (1, 4), (3, 5)]
-NW, NH = 168, 58
+NW, NH = 190, 58
 nh, eh = [], []
 for i, (xx, yy, t, s_, icn) in enumerate(NODES):
     a = .1 + i * .07
@@ -475,15 +481,11 @@ final = f'''<section class="sc" data-sec="@@IDX@@" data-name="Kontakt" aria-labe
 <span style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: #9C9B96"><svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M5 3.2 L13 8 L5 12.8 Z" fill="currentColor"></path></svg>Showreel · wkrótce</span>
 <button type="button" onClick="{{{{replay}}}}" style="background: transparent; border: 0; color: #F3F2EE; font-size: 13px; cursor: pointer; padding: 10px 4px">Odtwórz historię</button>
 </div>
-<p class="mono" style="margin: 16px 0 0; font-size: 10.5px; color: #C9C7C1; text-align: center">Strony kodowane ręcznie · motion design · rolki i filmy promo</p>
-<div class="cols3" style="margin-top: calc(var(--vh) * .12); width: min(780px, 100%)">
-{''.join(f'<div style="border-top: 1px solid rgba(243,242,238,.14); padding-top: 14px; display: flex; gap: 8px; font-size: 14px; font-weight: 600"><i style="flex: none; margin-top: 7px; width: 5px; height: 5px; border-radius: 50%; background: #F3F2EE"></i>{t}</div>' for t in ['Kod należy do Ciebie.', 'Jeden kontakt od briefu do startu.', 'Strony po polsku i angielsku.'])}
-</div>
-<footer style="margin-top: calc(var(--vh) * .1); width: min(780px, 100%); font-size: 13px; color: #C9C7C1; line-height: 1.6; background: rgba(11,11,11,.82); border: 1px solid rgba(243,242,238,.1); border-radius: 18px; padding: 20px 22px; box-sizing: border-box">
+<footer style="margin-top: calc(var(--vh) * .2); width: min(780px, 100%); font-size: 13px; color: #C9C7C1; line-height: 1.6; background: rgba(11,11,11,.82); border: 1px solid rgba(243,242,238,.1); border-radius: 18px; padding: 20px 22px; box-sizing: border-box">
 <p style="margin: 0; color: #F3F2EE; font-weight: 600">© 2026 The Domain · CEO Jakub (aixkuba)</p>
 <p style="margin: 6px 0 0">Projekty oznaczone „w toku” są w budowie. Liczby na wykresach to przykładowe dane, nie wyniki klientów.</p>
 <div class="foot" style="margin-top: 16px; align-items: center; font-size: 13.5px">
-<span style="display: flex; flex-wrap: wrap; gap: 16px"><a href="https://instagram.com/aixkuba" target="_blank" rel="noopener" style="color: #F3F2EE">Instagram @aixkuba</a><a href="mailto:kub.mktg@gmail.com" style="color: #F3F2EE">E-mail</a><span>Regulamin · wkrótce</span><span>Prywatność · wkrótce</span></span>
+<span style="display: flex; flex-wrap: wrap; gap: 16px"><a href="https://instagram.com/aixkuba" target="_blank" rel="noopener" style="color: #F3F2EE">Instagram @aixkuba</a><a href="mailto:kub.mktg@gmail.com" style="color: #F3F2EE">E-mail</a></span>
 <span style="display: flex; align-items: center; gap: 10px"><span style="color: #F3F2EE">kub.mktg@gmail.com</span><button type="button" onClick="{{{{copyMail}}}}" style="font-size: 12px; font-weight: 600; background: #F3F2EE; color: #0B0B0B; border: 0; border-radius: 14px; padding: 6px 12px; cursor: pointer">{{{{copyLabel}}}}</button></span>
 </div>
 </footer>
@@ -496,12 +498,8 @@ bul = ''.join(f'<span style="display: flex; align-items: center; gap: 8px; font-
 
 chrome = f'''{DEFS}
 <canvas ref="{{{{cv}}}}" aria-hidden="true" style="position: fixed; left: 0; top: 0; width: 100%; height: 100vh; display: block; pointer-events: none; z-index: 0"></canvas>
-<div ref="{{{{orbRef}}}}" class="orb" aria-hidden="true" style="position: fixed; left: 0; top: 0; width: 76px; height: 76px; z-index: 3; pointer-events: none; opacity: 0; will-change: transform, opacity">
-<div style="position: absolute; inset: -30px; border-radius: 50%; background: radial-gradient(circle, rgba(243,242,238,.18), transparent 65%)"></div>
-<div class="orb-bob">{chrome_mark(76)}</div>
-</div>
 <header class="topbar" style="position: fixed; left: 0; right: 0; top: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; padding: 16px clamp(16px, 1.8vw, 26px); pointer-events: none">
-<a href="#top" data-nav="" aria-label="The Domain, na początek" class="glass logo-pill" style="pointer-events: auto; display: flex; align-items: center; gap: 9px; height: 44px; padding: 0 16px 0 13px; border-radius: 24px; color: #F3F2EE; text-decoration: none; font-weight: 500; font-size: 16px; letter-spacing: -.03em; white-space: nowrap">{mark(20)}the domain</a>
+<a href="#top" data-nav="" aria-label="The Domain, na początek" class="logo-d"><svg viewBox="0 0 136 120" width="34" height="30" aria-hidden="true"><path d="M0 0 H52 A55 60 0 0 1 52 120 H0 Z" fill="#F3F2EE"></path><rect x="118" y="102" width="18" height="18" fill="#F3F2EE"></rect></svg></a>
 <span style="pointer-events: auto; display: flex; gap: 8px; align-items: center">
 <a class="btn btn-w" href="#umow" data-book="" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 24px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 13.5px; font-weight: 600">{ic("cal", 15)}<span class="hide-s" style="white-space: nowrap">Umów się na call</span><span class="show-s" style="white-space: nowrap">Call</span></a>
 <button type="button" class="glass burger" data-menu="" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>

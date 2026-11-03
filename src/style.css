@@ -125,9 +125,9 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 .menu-open .mi{opacity:1;transform:none}
 .menu-cta{margin-top:8px;height:50px;border-radius:26px;background:#F3F2EE;color:#0B0B0B !important;display:flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;font-size:15px;font-weight:600}
 /* ---- start: glass booking card ---- */
-.halo{position:absolute;inset:-90px -120px;pointer-events:none;background:radial-gradient(40% 40% at 25% 30%,rgba(243,242,238,.16),transparent 70%),radial-gradient(35% 35% at 80% 75%,rgba(160,170,255,.12),transparent 70%);filter:blur(20px);animation:td-halo 9s ease-in-out infinite alternate}
+.halo{position:absolute;inset:-90px -120px;pointer-events:none;background:radial-gradient(40% 40% at 25% 30%,rgba(243,242,238,.08),transparent 70%),radial-gradient(35% 35% at 80% 75%,rgba(160,170,255,.05),transparent 70%);filter:blur(20px);animation:td-halo 9s ease-in-out infinite alternate}
 @keyframes td-halo{to{transform:translate(30px,-20px) rotate(8deg)}}
-.gcard{position:relative;width:560px;box-sizing:border-box;padding:24px;border-radius:32px;background:linear-gradient(150deg,rgba(255,255,255,.13),rgba(255,255,255,.03) 38%,rgba(255,255,255,.07));box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 1px rgba(255,255,255,.1),inset 0 0 40px rgba(255,255,255,.04),0 50px 120px rgba(0,0,0,.6);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);overflow:hidden}
+.gcard{position:relative;width:560px;box-sizing:border-box;padding:24px;border-radius:32px;background:linear-gradient(150deg,rgba(38,38,38,.86),rgba(10,10,10,.9) 42%,rgba(22,22,22,.88));box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 1px rgba(255,255,255,.1),inset 0 0 40px rgba(255,255,255,.04),0 50px 120px rgba(0,0,0,.6);-webkit-backdrop-filter:blur(30px) saturate(140%) brightness(.7);backdrop-filter:blur(30px) saturate(140%) brightness(.7);overflow:hidden}
 .gcard::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:conic-gradient(from var(--ga,0deg),rgba(255,255,255,.08),rgba(255,255,255,.75),rgba(255,255,255,.08) 30%,rgba(255,255,255,.08) 60%,rgba(255,255,255,.55),rgba(255,255,255,.08));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:td-ga 6s linear infinite;pointer-events:none}
 @property --ga{syntax:'<angle>';inherits:false;initial-value:0deg}
 @keyframes td-ga{to{--ga:360deg}}
@@ -155,10 +155,10 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 .gc-foot b{display:block;font-family:Geist,sans-serif;font-size:18px;letter-spacing:-.02em;text-transform:none;color:#F3F2EE;margin-bottom:3px}
 /* ---- booking modal ---- */
 .bk{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;font-family:Geist,ui-sans-serif,system-ui,sans-serif;color:#F3F2EE}
-.bk::before{content:"";position:absolute;inset:0;background:rgba(5,5,5,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .45s}
+.bk::before{content:"";position:absolute;inset:0;background:rgba(5,5,5,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .45s}
 .bk-open .bk{pointer-events:auto}
 .bk-open .bk::before{opacity:1}
-.bk-p{position:relative;width:min(620px,100%);max-height:calc(100vh - 32px);overflow:auto;border-radius:30px;padding:26px;box-sizing:border-box;background:linear-gradient(150deg,rgba(40,40,40,.75),rgba(16,16,16,.82));transform:translateY(40px) scale(.94);opacity:0;filter:blur(10px);transition:transform .6s cubic-bezier(.2,.9,.2,1),opacity .4s,filter .5s}
+.bk-p{position:relative;width:min(620px,100%);max-height:calc(100vh - 32px);overflow:auto;border-radius:30px;padding:26px;box-sizing:border-box;background:linear-gradient(150deg,rgba(30,30,30,.9),rgba(8,8,8,.94));-webkit-backdrop-filter:blur(30px) saturate(140%) brightness(.7);backdrop-filter:blur(30px) saturate(140%) brightness(.7);transform:translateY(40px) scale(.94);opacity:0;filter:blur(10px);transition:transform .6s cubic-bezier(.2,.9,.2,1),opacity .4s,filter .5s}
 .bk-open .bk-p{transform:none;opacity:1;filter:none}
 .bk-x{position:absolute;right:16px;top:16px;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#F3F2EE;cursor:pointer;font-size:18px;line-height:1;z-index:2}
 .bk h3{margin:0;font-size:28px;font-weight:600;letter-spacing:-.03em}
@@ -193,3 +193,16 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
   .bk h3{font-size:23px}
 }
 @media (prefers-reduced-motion:reduce){.gcard::before,.gcard::after,.halo,.gc-orb .orb-spin{animation:none}}
+
+/* ---- header logo: hidden at the top, bare solid D. after scrolling ---- */
+.logo-d{pointer-events:none;display:flex;align-items:center;height:44px;padding:0 4px;opacity:0;transform:translateY(-10px) scale(.86);filter:blur(6px);transition:opacity .5s ease,transform .6s cubic-bezier(.2,.9,.2,1),filter .5s ease}
+.scrolled .logo-d{pointer-events:auto;opacity:1;transform:none;filter:none}
+.logo-d:hover{transform:scale(1.06)}
+/* ---- projects: each card stands up from the floor, older ones sink back into a deck ---- */
+.pj{transform-origin:50% 100%;transform:translateY(calc((1 - var(--j)) * 34%)) rotateX(calc((1 - var(--j)) * 58deg)) scale(calc(.88 + .12 * var(--j)));opacity:clamp(0,calc(var(--j) * 2.4),1);filter:blur(calc((1 - var(--j)) * 7px))}
+.pj-out{transform-origin:50% 0;transform:translateY(calc(var(--j) * -50px)) scale(calc(1 - .09 * var(--j))) rotateX(calc(var(--j) * 9deg));filter:brightness(calc(1 - .6 * var(--j)))}
+.pj-card{box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 calc(20px + 40px * var(--e)) 90px rgba(0,0,0,.6)}
+.pj-img{transform:scale(calc(1.22 - .22 * var(--e)));transform-origin:50% 0}
+.pj-txt{opacity:clamp(0,calc((var(--e) - .55) * 3),1);transform:translateY(calc((1 - clamp(0,calc((var(--e) - .55) * 3),1)) * 18px))}
+.pj-sh{position:absolute;z-index:3;top:-20%;bottom:-20%;width:38%;left:calc(-50% + var(--e) * 180%);pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.16) 50%,transparent);transform:skewX(-14deg);opacity:calc(1 - var(--e) * var(--e))}
+@media (prefers-reduced-motion:reduce){.logo-d{transition:none}}
