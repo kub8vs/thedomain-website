@@ -35,6 +35,9 @@
   }
   // the story template can re-render; keep the day pickers filled
   setInterval(fillDays, 600);
+  function onScroll() { R.classList.toggle('scrolled', (window.scrollY || 0) > 80); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
   D.addEventListener('DOMContentLoaded', fillDays);
   fillDays();
 
