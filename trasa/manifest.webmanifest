@@ -1,0 +1,1 @@
+{"name":"Trasa","short_name":"Trasa","description":"Piesza nawigacja 3D z krokami i kaloriami","lang":"pl","start_url":"./","scope":"./","display":"standalone","background_color":"#e9ebee","theme_color":"#0d1117","icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}

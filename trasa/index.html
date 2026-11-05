@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Trasa</title>
+<meta name="theme-color" content="#0d1117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Trasa">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="map"></div>
+
+<!-- search -->
+<div class="top" id="top">
+  <div class="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Dokąd idziesz?" autocomplete="off" enterkeyhint="search">
+    <button id="me" class="iconbtn" aria-label="Moja lokalizacja"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 4.5 20.5 12 16.6l7.5 3.9L12 3Z"/></svg></button>
+  </div>
+  <div id="results" class="results" hidden></div>
+</div>
+
+<!-- instruction card during navigation -->
+<div class="instr" id="instr" hidden>
+  <div class="ii" id="iIcon"></div>
+  <div class="it"><b id="iDist">120 m</b><span id="iText">Skręć w lewo</span></div>
+</div>
+
+<!-- bottom sheet -->
+<div class="sheet" id="sheet">
+  <!-- HOME -->
+  <section data-v="home">
+    <div class="today">
+      <div class="tl"><span>Dziś</span><b id="tSteps">0</b><small>/ <span id="tGoal">8 000</span> kroków</small></div>
+      <div class="tr"><b id="tKcal">0</b><small>kcal</small></div>
+    </div>
+    <div class="bar"><i id="tBar"></i></div>
+    <div class="row2">
+      <button class="ghost" data-go="history">Historia</button>
+      <button class="ghost" data-go="profile">Profil</button>
+    </div>
+    <p class="hint">Wpisz cel u góry albo przytrzymaj palec na mapie, żeby wyznaczyć trasę pieszą.</p>
+  </section>
+
+  <!-- ROUTE -->
+  <section data-v="route" hidden>
+    <div class="dest"><div><small>Pieszo do</small><b id="rDest">Cel</b></div><button class="x" id="rClose" aria-label="Zamknij">✕</button></div>
+    <div id="opts"></div>
+    <div class="row2">
+      <button class="ghost" id="sim">Symuluj spacer</button>
+      <button class="primary" id="go">Start</button>
+    </div>
+  </section>
+
+  <!-- NAV -->
+  <section data-v="nav" hidden>
+    <div class="navstats">
+      <div><b id="nMin">0</b><span>min</span></div>
+      <div><b id="nDist">0</b><span id="nDistU">m</span></div>
+      <div class="k"><b id="nKcal">0</b><span>kcal</span></div>
+      <div><b id="nSteps">0</b><span>kroków</span></div>
+    </div>
+    <div class="bar"><i id="nBar"></i></div>
+    <button class="stop" id="stop">Zakończ spacer</button>
+  </section>
+
+  <!-- DONE -->
+  <section data-v="done" hidden>
+    <div class="donehead"><small>Spacer zakończony</small><b id="dTitle">Brawo!</b></div>
+    <div class="navstats">
+      <div><b id="dMin">0</b><span>min</span></div>
+      <div><b id="dDist">0</b><span>km</span></div>
+      <div class="k"><b id="dKcal">0</b><span>kcal</span></div>
+      <div><b id="dSteps">0</b><span>kroków</span></div>
+    </div>
+    <button class="primary" data-go="home">Gotowe</button>
+  </section>
+
+  <!-- HISTORY -->
+  <section data-v="history" hidden>
+    <div class="dest"><div><small>Twoje spacery</small><b id="hTotal">0 km</b></div><button class="x" data-go="home" aria-label="Zamknij">✕</button></div>
+    <div id="hList" class="hlist"></div>
+  </section>
+
+  <!-- PROFILE -->
+  <section data-v="profile" hidden>
+    <div class="dest"><div><small>Profil</small><b>Ustawienia</b></div><button class="x" data-go="home" aria-label="Zamknij">✕</button></div>
+    <label class="f">Waga (kg)<input id="pW" type="number" inputmode="numeric" min="30" max="200"></label>
+    <label class="f">Długość kroku (cm)<input id="pS" type="number" inputmode="numeric" min="40" max="120"></label>
+    <label class="f">Cel dzienny (kroki)<input id="pG" type="number" inputmode="numeric" min="1000" max="50000" step="500"></label>
+    <button class="primary" id="pSave">Zapisz</button>
+    <p class="hint">Dane zostają tylko na Twoim telefonie. Mapa © OpenStreetMap contributors, OpenFreeMap. Trasy: FOSSGIS OSRM. Wyszukiwarka: Photon.</p>
+  </section>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
