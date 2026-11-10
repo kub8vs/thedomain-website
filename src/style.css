@@ -213,3 +213,5 @@ a:focus-visible,button:focus-visible{outline:2px solid #F3F2EE;outline-offset:3p
 .bk-cal iframe{width:100%!important}
 .bk-load{margin:0;padding:200px 0;text-align:center;color:#9C9B96;font-size:14px}
 .bk-note a{color:#C9C7C1}
+/* ---- long CTA label on phones ---- */
+@media (max-width:480px){a.btn-w[data-book]{max-width:calc(100vw - 32px);font-size:13.5px!important;gap:8px!important;padding-left:16px!important;white-space:normal!important;line-height:1.2;text-align:left}a.btn-w[data-book] span{white-space:normal!important}a.btn-w[data-book] > span:last-child{flex:none}}
