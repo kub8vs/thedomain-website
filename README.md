@@ -19,7 +19,7 @@ i wejść na http://localhost:8000. Nadaje się od razu na GitHub Pages, Netlify
 - `assets/img/`: screeny realizacji (Himera, Adriatico, Tirenders)
 - `src/build.py`, `src/figs.py`: treść i układ scen
 - `src/style.css`, `src/logic.js`: style i logika (scroll, kropki, autoplay)
-- `src/site.js`, `src/booking.html`: menu z sekcjami i okno „Umów się na call” z kalendarzem Cal.com (cal.com/jakub-zimnicki-dusys3/the-domain: wolne terminy z Google Calendar, link do Meet)
+- `src/site.js`, `src/booking.html`: menu z sekcjami i okno „Zamów swój mockup” z kalendarzem Cal.com (cal.com/jakub-zimnicki-dusys3/the-domain: wolne terminy z Google Calendar, link do Meet)
 - `src/export.py`: składa wszystko w `index.html`
 
 ## Zmiany
