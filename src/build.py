@@ -104,7 +104,7 @@ def sec(i, name, h, inner, pinned=True, sid=None):
         S.append(inner.replace('@@IDX@@', str(i)))
 
 
-def cta_w(label='Umów się na call', href='#umow', size=54, extra=''):
+def cta_w(label='Dostań darmowy mockup Twojej marki', href='#umow', size=54, extra=''):
     ext = ' target="_blank" rel="noopener"' if href.startswith('http') else ' data-book=""'
     return (f'<a class="btn btn-w" href="{href}"{ext} style="display: inline-flex; align-items: center; gap: 12px; height: {size}px; padding: 0 {size*0.11:.0f}px 0 22px; box-sizing: border-box; border-radius: 30px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 15px; font-weight: 600; white-space: nowrap{extra}">'
             f'{ic("cal", 16)}<span>{label}</span><span style="width: {size-12}px; height: {size-12}px; border-radius: 50%; background: #0B0B0B; color: #F3F2EE; display: flex; align-items: center; justify-content: center">{ic("right", 15, 1.8)}</span></a>')
@@ -119,7 +119,7 @@ HERO_BUL = ['Strony kodowane ręcznie', 'Motion w każdym detalu', 'Rolki i film
 hbul = ''.join(f'<span style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 500; white-space: nowrap"><span style="width: 17px; height: 17px; border-radius: 50%; background: #F3F2EE; color: #0B0B0B; display: flex; align-items: center; justify-content: center">{ic("check", 11, 2.2)}</span>{t}</span>' for t in HERO_BUL)
 hero = f'''<div class="hero-l">
 <h1 class="k" style="{K(-1, .001, .03, .42, dy=60)}; margin: 0; font-size: clamp(44px, 5.6vw, 82px); line-height: 1.02; letter-spacing: -.045em; font-weight: 600"><span class="intro" style="display: block">Ty masz pomysł.</span><span class="intro2" style="display: block; font-weight: 400">The Domain buduje resztę.</span></h1>
-<div class="k" style="{K(-1, .001, .02, .3, dy=40)}; margin-top: 34px"><div class="intro3 hrow" style="display: flex; flex-wrap: wrap; gap: 10px">{cta_w('Umów się na call')}{cta_o('Zobacz realizacje', '#realizacje')}</div></div>
+<div class="k" style="{K(-1, .001, .02, .3, dy=40)}; margin-top: 34px"><div class="intro3 hrow" style="display: flex; flex-wrap: wrap; gap: 10px">{cta_w('Dostań darmowy mockup Twojej marki')}{cta_o('Zobacz realizacje', '#realizacje')}</div></div>
 <div class="k bul hrow" style="{K(-1, .001, .02, .25, dy=20)}; margin-top: 30px">{hbul}</div>
 </div>
 <button type="button" class="k btn btn-w" onClick="{{{{playStory}}}}" style="{K(-1, .001, .0, .07, dy=12)}; position: absolute; left: 50%; bottom: 14px; margin-left: -97px; width: 194px; height: 48px; display: flex; align-items: center; gap: 12px; padding: 0 16px 0 6px; box-sizing: border-box; border: 0; border-radius: 26px; background: #F3F2EE; color: #0B0B0B; cursor: pointer; text-align: left">
@@ -148,7 +148,7 @@ questions = f'''<p class="mono" style="position: absolute; left: 0; right: 0; to
 <div style="position: absolute; left: 0; right: 0; top: 0; text-align: center">
 <h2 style="margin: 0; font-size: clamp(44px, 7vw, 112px); line-height: 1; letter-spacing: -.05em; font-weight: 600">{words('To jest The Domain.', fa, .012, .04, 2, 3)}</h2>
 <p class="k" style="{K(fa + .05, fa + .09, dy=16)}; margin: 18px 0 0; font-size: clamp(16px, 1.4vw, 20px); color: #C9C7C1">Strona kodowana ręcznie, motion i wideo. Jeden zespół, jeden kontakt.</p>
-<div class="k" style="{K(fa + .07, fa + .11, dy=20)}; margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px">{cta_w('Umów się na call')}{cta_o('Zobacz realizacje', '#realizacje')}</div>
+<div class="k" style="{K(fa + .07, fa + .11, dy=20)}; margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px">{cta_w('Dostań darmowy mockup Twojej marki')}{cta_o('Zobacz realizacje', '#realizacje')}</div>
 </div>
 </div>
 <div style="position: absolute; left: 0; right: 0; bottom: 90px; display: flex; justify-content: center; gap: 6px">{''.join(qd)}</div>'''
@@ -190,7 +190,7 @@ projects = f'''<div class="ev-t">
 <p class="mono k" style="{K(0, .05, .93, .99, dy=10)}; margin: 0 0 16px; font-size: 10px; color: #9C9B96">Realizacje · 2026</p>
 <h2 class="t-st" style="font-size: clamp(36px, 3.7vw, 54px); line-height: 1.04"><span class="k" style="{K(0, .06, .93, .99, dy=24, bl=8)}; display: block">Projekty,</span><span class="k" style="{K(.02, .08, .93, .99, dy=24, bl=8)}; display: block; font-weight: 400">które właśnie</span><span class="k" style="{K(.04, .1, .93, .99, dy=24, bl=8)}; display: block; font-weight: 400">powstają.</span></h2>
 <div class="k hide-s" style="{K(.06, .12, .93, .99, dy=20)}; position: relative; margin-top: 28px; height: 110px; font-family: Syne, sans-serif; font-weight: 800; font-size: 108px; line-height: 1; letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 1px rgba(243,242,238,.55)">{''.join(nums)}<span style="position: absolute; left: 150px; top: 18px; font-size: 22px; -webkit-text-stroke: 0; color: #9C9B96; font-family: Geist, sans-serif; font-weight: 400; letter-spacing: 0">/ 03</span></div>
-<div class="k" style="{K(.08, .14, .93, .99, dy=14)}; margin-top: 22px">{cta_w('Umów się na call', size=48)}</div>
+<div class="k" style="{K(.08, .14, .93, .99, dy=14)}; margin-top: 22px">{cta_w('Dostań darmowy mockup Twojej marki', size=48)}</div>
 </div>
 <div class="ev-c" style="height: 440px">
 <div class="k" style="{K(-1, .001, .93, .99, dy=40)}; position: absolute; inset: 0; perspective: 1500px">
@@ -460,14 +460,14 @@ start = f'''<div class="st-t"><h2 class="t-st"><span class="k" style="{K(.04, .1
 <div class="gcard">
 <div class="gc-top">
 <span class="gc-orb" style="perspective: 240px">{chrome_mark(54, 7, 1.1)}</span>
-<span style="flex: 1; min-width: 0"><span style="display: block; font-size: 19px; font-weight: 600; letter-spacing: -.02em">Call z The Domain</span><span class="mono" style="display: block; margin-top: 5px; font-size: 9.5px; color: #C9C7C1">30 min · Google Meet · bezpłatnie</span></span>
+<span style="flex: 1; min-width: 0"><span style="display: block; font-size: 19px; font-weight: 600; letter-spacing: -.02em">Darmowy mockup Twojej marki</span><span class="mono" style="display: block; margin-top: 5px; font-size: 9.5px; color: #C9C7C1">0 zł · call 30 min · Google Meet</span></span>
 <span class="gc-live"><i></i>Wolne terminy</span>
 </div>
 <p class="mono" style="margin: 20px 0 10px; font-size: 9px; color: #9C9B96">Dzień</p>
 <div class="gc-days" data-days></div>
 <p class="mono" style="margin: 18px 0 10px; font-size: 9px; color: #9C9B96">Godzina</p>
 <div class="gc-times">{''.join(f'<button type="button" class="gc-t" data-time="{t}">{t}</button>' for t in SLOTS)}</div>
-<a class="btn btn-w gc-cta" href="#umow" data-book="" >{ic("cal", 16)}<span>Umów się na call</span><span class="gc-arr">{ic("right", 15, 1.8)}</span></a>
+<a class="btn btn-w gc-cta" href="#umow" data-book="" >{ic("cal", 16)}<span>Dostań darmowy mockup Twojej marki</span><span class="gc-arr">{ic("right", 15, 1.8)}</span></a>
 <div class="gc-foot">{''.join(f'<span><b>{v}</b>{l}</span>' for v, l in [('0', 'szablonów'), ('100%', 'kodu dla Ciebie'), ('24 h', 'na odpowiedź')])}</div>
 </div></div></div>'''
 sec(13, 'Współpraca', 2.6, start)
@@ -476,7 +476,7 @@ sec(13, 'Współpraca', 2.6, start)
 final = f'''<section class="sc" data-sec="@@IDX@@" data-name="Kontakt" aria-label="Kontakt" style="min-height: var(--vh); padding: calc(var(--vh) * .18) 16px 130px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center">
 <h2 class="k" style="{K(.2, .7, dy=40, bl=10)}; margin: 0; text-align: center; font-size: clamp(44px, 6.2vw, 96px); line-height: 1; letter-spacing: -.045em; font-weight: 600">Skup się na pomysłach.<br><span style="font-weight: 400">Your domain. Built to grow.</span></h2>
 <div class="k" style="{K(.35, .8, dy=20)}; margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 18px">
-{cta_w('Umów się na call', size=48)}
+{cta_w('Dostań darmowy mockup Twojej marki', size=48)}
 <a class="btn btn-o glass" href="https://instagram.com/aixkuba" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 18px; border-radius: 26px; color: #F3F2EE; text-decoration: none; font-size: 14px; font-weight: 500">{ic("ig", 15)}Instagram @aixkuba</a>
 <span style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: #9C9B96"><svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M5 3.2 L13 8 L5 12.8 Z" fill="currentColor"></path></svg>Showreel · wkrótce</span>
 <button type="button" onClick="{{{{replay}}}}" style="background: transparent; border: 0; color: #F3F2EE; font-size: 13px; cursor: pointer; padding: 10px 4px">Odtwórz historię</button>
@@ -501,11 +501,11 @@ chrome = f'''{DEFS}
 <header class="topbar" style="position: fixed; left: 0; right: 0; top: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; padding: 16px clamp(16px, 1.8vw, 26px); pointer-events: none">
 <a href="#top" data-nav="" aria-label="The Domain, na początek" class="logo-d"><svg viewBox="0 0 136 120" width="34" height="30" aria-hidden="true"><path d="M0 0 H52 A55 60 0 0 1 52 120 H0 Z" fill="#F3F2EE"></path><rect x="118" y="102" width="18" height="18" fill="#F3F2EE"></rect></svg></a>
 <span style="pointer-events: auto; display: flex; gap: 8px; align-items: center">
-<a class="btn btn-w" href="#umow" data-book="" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 24px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 13.5px; font-weight: 600">{ic("cal", 15)}<span class="hide-s" style="white-space: nowrap">Umów się na call</span><span class="show-s" style="white-space: nowrap">Call</span></a>
+<a class="btn btn-w" href="#umow" data-book="" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 24px; background: #F3F2EE; color: #0B0B0B; text-decoration: none; font-size: 13.5px; font-weight: 600">{ic("cal", 15)}<span class="hide-s" style="white-space: nowrap">Dostań darmowy mockup Twojej marki</span><span class="show-s" style="white-space: nowrap">Darmowy mockup</span></a>
 <button type="button" class="glass burger" data-menu="" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
 </span>
 </header>
-<nav class="menu" aria-label="Sekcje strony"><div class="menu-p glass"><a href="#top" class="mi" data-nav="" style="--i: 0"><span class="mono">01</span>Start</a><a href="#pytania" class="mi" data-nav="" style="--i: 1"><span class="mono">02</span>To jest The Domain</a><a href="#realizacje" class="mi" data-nav="" style="--i: 2"><span class="mono">03</span>Realizacje</a><a href="#proces" class="mi" data-nav="" style="--i: 3"><span class="mono">04</span>Jak pracujemy</a><a href="#strony" class="mi" data-nav="" style="--i: 4"><span class="mono">05</span>Strony</a><a href="#wideo" class="mi" data-nav="" style="--i: 5"><span class="mono">06</span>Wideo</a><a href="#automatyzacje" class="mi" data-nav="" style="--i: 6"><span class="mono">07</span>Automatyzacje</a><a href="#efekty" class="mi" data-nav="" style="--i: 7"><span class="mono">08</span>Efekty</a><a href="#wspolpraca" class="mi" data-nav="" style="--i: 8"><span class="mono">09</span>Zacznij teraz</a><a href="#kontakt" class="mi" data-nav="" style="--i: 9"><span class="mono">10</span>Kontakt</a><a href="#umow" data-book="" class="btn btn-w menu-cta">{ic("cal", 16)}Umów się na call</a></div></nav>
+<nav class="menu" aria-label="Sekcje strony"><div class="menu-p glass"><a href="#top" class="mi" data-nav="" style="--i: 0"><span class="mono">01</span>Start</a><a href="#pytania" class="mi" data-nav="" style="--i: 1"><span class="mono">02</span>To jest The Domain</a><a href="#realizacje" class="mi" data-nav="" style="--i: 2"><span class="mono">03</span>Realizacje</a><a href="#proces" class="mi" data-nav="" style="--i: 3"><span class="mono">04</span>Jak pracujemy</a><a href="#strony" class="mi" data-nav="" style="--i: 4"><span class="mono">05</span>Strony</a><a href="#wideo" class="mi" data-nav="" style="--i: 5"><span class="mono">06</span>Wideo</a><a href="#automatyzacje" class="mi" data-nav="" style="--i: 6"><span class="mono">07</span>Automatyzacje</a><a href="#efekty" class="mi" data-nav="" style="--i: 7"><span class="mono">08</span>Efekty</a><a href="#wspolpraca" class="mi" data-nav="" style="--i: 8"><span class="mono">09</span>Zacznij teraz</a><a href="#kontakt" class="mi" data-nav="" style="--i: 9"><span class="mono">10</span>Kontakt</a><a href="#umow" data-book="" class="btn btn-w menu-cta">{ic("cal", 16)}Dostań darmowy mockup Twojej marki</a></div></nav>
 
 <div ref="{{{{plRef}}}}" role="region" class="glass" aria-label="Odtwarzacz historii" style="position: fixed; left: 50%; bottom: 14px; z-index: 45; width: 264px; margin-left: -132px; height: 50px; box-sizing: border-box; border-radius: 26px; display: flex; align-items: center; gap: 10px; padding: 0 8px 0 7px; opacity: max(min(1, calc(var(--hp) * 10 - .6)), var(--pl)); pointer-events: none">
 <span style="flex: none; width: 36px; height: 36px; border-radius: 10px; background: #1C1C1B; display: flex; align-items: center; justify-content: center; perspective: 200px">{chrome_mark(24, 5, .8)}</span>
