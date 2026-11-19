@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BTD Detailing Łódź — rezerwacja online</title>
+<meta name="description" content="BTD Detailing Łódź: mycie detailingowe, wnętrze, polerowanie, ceramika i łodzie. Wycena w 10 sekund i rezerwacja terminu online, bez pisania na DM.">
+<meta property="og:title" content="BTD Detailing Łódź">
+<meta property="og:description" content="Wyceń auto w 10 sekund i zarezerwuj termin online.">
+<meta property="og:image" content="https://thedomainstudio.com/btd/img/hero.jpg">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#070707">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23070707'/%3E%3Ctext x='32' y='42' font-family='Arial Black' font-size='22' fill='%23F3D338' text-anchor='middle'%3EBTD%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#070707;--bg2:#0e0e0d;--bg3:#151513;
+  --ink:#F4F1EA;--mute:#8d8a82;--dim:#55534e;
+  --gold:#F3D338;--gold2:#C9A227;
+  --line:rgba(244,241,234,.12);--line2:rgba(244,241,234,.22);
+  --m1:#3BA7E6;--m2:#2B3C93;--m3:#E02B2B;
+  --wide:"Archivo",Inter,system-ui,sans-serif;
+  --body:Inter,system-ui,-apple-system,sans-serif;
+  --cut:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+  --pad:clamp(16px,4vw,56px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+::selection{background:var(--gold);color:#000}
+.wide{font-family:var(--wide);font-stretch:125%;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:.92}
+.label{font-family:var(--wide);font-stretch:112%;font-weight:600;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--mute);display:flex;align-items:center;gap:12px}
+.label .m{display:inline-flex;gap:2px}
+.label .m i{width:4px;height:12px;transform:skewX(-20deg);display:block}
+.label .m i:nth-child(1){background:var(--m1)}.label .m i:nth-child(2){background:var(--m2)}.label .m i:nth-child(3){background:var(--m3)}
+.gold{color:var(--gold)}
+.wrap{padding-inline:var(--pad);max-width:1440px;margin-inline:auto}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:56px;padding:0 26px;font-family:var(--wide);font-stretch:115%;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;clip-path:var(--cut);transition:transform .25s,background .25s,color .25s;white-space:nowrap}
+.btn-gold{background:var(--gold);color:#0a0a0a}
+.btn-gold:hover{background:#fff;transform:translateY(-2px)}
+.btn-ghost{background:rgba(244,241,234,.08);color:var(--ink);backdrop-filter:blur(8px)}
+.btn-ghost:hover{background:rgba(244,241,234,.16)}
+.btn .arr{transition:transform .25s}.btn:hover .arr{transform:translateX(4px)}
+
+/* INTRO */
+#intro{position:fixed;inset:0;z-index:100;background:#000;display:grid;place-items:center;transition:clip-path 1s cubic-bezier(.77,0,.18,1);clip-path:inset(0 0 0 0)}
+#intro.out{clip-path:inset(0 0 100% 0)}
+#intro .lg{width:min(68vw,420px)}
+#intro .lg path{stroke-dasharray:420;stroke-dashoffset:420;animation:draw 1.3s cubic-bezier(.65,0,.35,1) .15s forwards}
+#intro .lg .t{opacity:0;letter-spacing:1.4em;animation:tr 1s cubic-bezier(.2,.7,.2,1) .9s forwards}
+#intro .bar{position:absolute;left:50%;bottom:16vh;width:min(50vw,260px);height:1px;background:var(--line);transform:translateX(-50%);overflow:hidden}
+#intro .bar i{position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;animation:ld 1.8s ease forwards}
+#intro .cap{position:absolute;bottom:calc(16vh - 30px);left:0;right:0;text-align:center;font-size:10px;letter-spacing:.4em;color:var(--dim);font-family:var(--wide);font-stretch:115%}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes tr{to{opacity:1;letter-spacing:.62em}}
+@keyframes ld{to{transform:scaleX(1)}}
+
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:50;height:72px;display:flex;align-items:center;justify-content:space-between;padding-inline:var(--pad);transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+header.s{background:rgba(7,7,7,.82);backdrop-filter:blur(14px);border-color:var(--line)}
+.logo{display:flex;align-items:center;gap:12px}
+.logo svg{height:26px;width:auto}
+.logo span{font-family:var(--wide);font-stretch:125%;font-weight:600;font-size:10px;letter-spacing:.45em;color:var(--gold);padding-top:2px}
+nav{display:flex;gap:30px}
+nav a{font-size:13px;font-weight:500;color:var(--mute);transition:color .2s;position:relative}
+nav a:hover{color:var(--ink)}
+.hcta{height:44px;padding:0 18px;font-size:11px}
+.burger{display:none;width:44px;height:44px;position:relative}
+.burger i{position:absolute;left:11px;right:11px;height:1.5px;background:var(--ink);transition:.3s}
+.burger i:nth-child(1){top:17px}.burger i:nth-child(2){top:25px}
+body.menu .burger i:nth-child(1){top:21px;transform:rotate(45deg)}
+body.menu .burger i:nth-child(2){top:21px;transform:rotate(-45deg)}
+#mmenu{position:fixed;inset:72px 0 0;z-index:49;background:var(--bg);padding:24px var(--pad);display:flex;flex-direction:column;transform:translateY(-8px);opacity:0;pointer-events:none;transition:.3s}
+body.menu #mmenu{opacity:1;pointer-events:auto;transform:none}
+#mmenu a{font-family:var(--wide);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:28px;padding:14px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+#mmenu a small{font-family:var(--body);font-size:12px;color:var(--mute);font-weight:500;align-self:center}
+
+/* HERO */
+.hero{position:relative;min-height:100svh;padding-top:110px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding-bottom:clamp(28px,5vh,56px)}
+.hero .bgimg{position:absolute;inset:0;z-index:0}
+.hero .bgimg img{width:100%;height:100%;object-fit:cover;object-position:62% 55%;transform:scale(1.12);transition:transform 2.6s cubic-bezier(.2,.7,.2,1)}
+body.ready .hero .bgimg img{transform:scale(1.02)}
+.hero .bgimg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,7,7,.75) 0%,rgba(7,7,7,.1) 28%,rgba(7,7,7,.15) 50%,rgba(7,7,7,.92) 86%,#070707 100%),linear-gradient(90deg,rgba(7,7,7,.65),rgba(7,7,7,0) 60%)}
+.hero .in{position:relative;z-index:2}
+.hero .live{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--ink);background:rgba(7,7,7,.55);backdrop-filter:blur(10px);border:1px solid var(--line2);padding:9px 14px 9px 12px;margin-bottom:26px}
+.hero .live b{color:var(--gold);font-weight:600}
+.dot{width:8px;height:8px;border-radius:50%;background:#3ddc84;box-shadow:0 0 0 0 rgba(61,220,132,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
+.hero h1{font-size:clamp(44px,7.6vw,128px);line-height:.98}
+.hero h1 .nw{white-space:nowrap}
+.hero h1 .ln{display:block;overflow:hidden;padding:.1em 0 .04em;margin-top:-.1em}
+.hero h1 .ln>span{display:block;transform:translateY(105%);transition:transform 1.1s cubic-bezier(.2,.8,.2,1)}
+body.ready .hero h1 .ln>span{transform:none}
+body.ready .hero h1 .ln:nth-child(2)>span{transition-delay:.1s}
+.hero h1 .o{-webkit-text-stroke:1.5px var(--ink);color:transparent}
+.hero .row{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-top:28px;flex-wrap:wrap}
+.hero p.lead{max-width:440px;font-size:17px;color:#cfccc4}
+.hero p.lead b{color:var(--ink);font-weight:600}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap}
+.fade{opacity:0;transform:translateY(16px);transition:opacity .9s ease .5s,transform .9s cubic-bezier(.2,.8,.2,1) .5s}
+body.ready .fade{opacity:1;transform:none}
+.scrollhint{position:absolute;right:var(--pad);top:50%;z-index:2;writing-mode:vertical-rl;font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:var(--mute);display:flex;align-items:center;gap:14px;font-family:var(--wide);font-stretch:115%}
+.scrollhint i{width:1px;height:70px;background:var(--line2);position:relative;overflow:hidden}
+.scrollhint i::after{content:"";position:absolute;left:0;right:0;height:24px;background:var(--gold);animation:sh 2s infinite}
+@keyframes sh{from{top:-24px}to{top:70px}}
+
+/* INFO BAR */
+.info{border-block:1px solid var(--line);background:var(--bg2);overflow:hidden}
+.info .facts{display:grid;grid-template-columns:repeat(4,1fr)}
+.info .facts div{padding:22px var(--pad);border-right:1px solid var(--line)}
+.info .facts div:last-child{border-right:0}
+.info .facts b{display:block;font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:22px;text-transform:uppercase}
+.info .facts span{font-size:13px;color:var(--mute)}
+.marq{border-top:1px solid var(--line);white-space:nowrap;overflow:hidden;padding:16px 0}
+.marq .t{display:inline-flex;animation:mq 38s linear infinite}
+.marq span{font-family:var(--wide);font-stretch:125%;font-weight:700;text-transform:uppercase;font-size:14px;letter-spacing:.12em;padding-right:36px;color:var(--mute);display:inline-flex;align-items:center;gap:36px}
+.marq span::after{content:"";width:7px;height:7px;background:var(--gold);transform:rotate(45deg)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* SECTIONS */
+section{position:relative}
+.sec{padding-block:clamp(80px,12vw,160px)}
+.sh{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:clamp(36px,5vw,64px);flex-wrap:wrap}
+.sh h2{font-size:clamp(36px,6.4vw,96px);margin-top:18px}
+.sh p{max-width:380px;color:var(--mute)}
+.rv{opacity:0;transform:translateY(40px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.8,.2,1)}
+.rv.on{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+
+/* SERVICES list */
+.svc{border-top:1px solid var(--line)}
+.svc a{display:grid;grid-template-columns:70px 1fr 220px 160px 48px;align-items:center;gap:20px;padding:30px 0;border-bottom:1px solid var(--line);position:relative;transition:padding .35s}
+.svc a:hover{padding-left:16px}
+.svc .n{font-family:var(--wide);font-stretch:110%;font-size:12px;color:var(--dim);letter-spacing:.2em}
+.svc h3{font-family:var(--wide);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,3.4vw,46px);line-height:1;transition:color .3s}
+.svc a:hover h3{color:var(--gold)}
+.svc .d{font-size:14px;color:var(--mute)}
+.svc .p{font-family:var(--wide);font-stretch:110%;font-weight:600;font-size:15px;text-align:right}
+.svc .p small{display:block;color:var(--dim);font-size:11px;font-weight:500;letter-spacing:.1em}
+.svc .go{width:44px;height:44px;border:1px solid var(--line2);display:grid;place-items:center;transition:.3s;clip-path:var(--cut)}
+.svc a:hover .go{background:var(--gold);color:#000;border-color:var(--gold)}
+#peek{position:fixed;z-index:40;width:300px;height:220px;pointer-events:none;overflow:hidden;opacity:0;transform:translate(-50%,-50%) scale(.85);transition:opacity .3s,transform .3s;clip-path:var(--cut)}
+#peek.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+#peek img{width:100%;height:100%;object-fit:cover}
+
+/* CALC */
+.calc{background:var(--bg2);border-block:1px solid var(--line)}
+.cgrid{display:grid;grid-template-columns:1fr 400px;gap:clamp(32px,5vw,80px);align-items:start}
+.step{padding:28px 0;border-top:1px solid var(--line)}
+.step .q{display:flex;align-items:baseline;gap:14px;margin-bottom:18px}
+.step .q b{font-family:var(--wide);font-stretch:110%;color:var(--gold);font-size:12px;letter-spacing:.2em}
+.step .q h4{font-family:var(--wide);font-stretch:118%;font-weight:700;font-size:20px;text-transform:uppercase}
+.sizes{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line)}
+.sizes button{padding:18px 12px 16px;border-right:1px solid var(--line);text-align:left;transition:background .25s;position:relative}
+.sizes button:last-child{border-right:0}
+.sizes button svg{width:100%;height:46px;margin-bottom:12px;stroke:var(--mute);transition:stroke .25s}
+.sizes button b{display:block;font-size:14px;font-weight:600}
+.sizes button span{font-size:12px;color:var(--mute)}
+.sizes button.on{background:var(--ink);color:#0a0a0a}
+.sizes button.on svg{stroke:#0a0a0a}
+.sizes button.on span{color:#55534e}
+.conds{display:flex;flex-wrap:wrap;gap:8px}
+.conds button{height:44px;padding:0 16px;border:1px solid var(--line2);font-size:14px;transition:.25s}
+.conds button.on{background:var(--gold);color:#000;border-color:var(--gold);font-weight:600}
+.opts{border-top:1px solid var(--line)}
+.opt{display:grid;grid-template-columns:28px 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);cursor:pointer;user-select:none}
+.opt .bx{width:24px;height:24px;border:1.5px solid var(--line2);display:grid;place-items:center;transition:.2s}
+.opt .bx svg{opacity:0;transition:.2s}
+.opt.on .bx{background:var(--gold);border-color:var(--gold)}
+.opt.on .bx svg{opacity:1}
+.opt b{font-weight:600;font-size:15px;display:block}
+.opt span{font-size:13px;color:var(--mute)}
+.opt .pr{font-family:var(--wide);font-stretch:110%;font-weight:600;font-size:14px;color:var(--mute);white-space:nowrap}
+.opt.on .pr{color:var(--ink)}
+.rcpt{position:sticky;top:96px;background:var(--bg);border:1px solid var(--line2);padding:28px}
+.rcpt .top{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px dashed var(--line2)}
+.rcpt .top svg{height:18px}
+.rcpt .top small{font-size:11px;color:var(--mute);letter-spacing:.14em;text-transform:uppercase}
+.rcpt ul{list-style:none;padding:16px 0;min-height:120px;border-bottom:1px dashed var(--line2)}
+.rcpt li{display:flex;justify-content:space-between;font-size:14px;padding:5px 0;color:#cfccc4;animation:li .35s ease}
+@keyframes li{from{opacity:0;transform:translateX(-6px)}}
+.rcpt li.empty{color:var(--dim)}
+.rcpt .tot{display:flex;justify-content:space-between;align-items:flex-end;padding:20px 0 8px}
+.rcpt .tot>span{font-size:12px;color:var(--mute);letter-spacing:.14em;text-transform:uppercase}
+.rcpt .tot b{font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:46px;line-height:1}
+.rcpt .tot b small{font-size:18px;margin-left:4px}
+.rcpt .meta{display:flex;gap:18px;font-size:13px;color:var(--mute);padding-bottom:20px}
+.rcpt .meta b{color:var(--ink);font-weight:600}
+.rcpt .btn{width:100%}
+.rcpt .note{font-size:12px;color:var(--dim);margin-top:12px;text-align:center}
+
+/* BOOKING */
+.book .bk{display:grid;grid-template-columns:320px 1fr;border:1px solid var(--line2);min-height:560px}
+.bk .side{border-right:1px solid var(--line);padding:28px;background:var(--bg2);display:flex;flex-direction:column}
+.bk .side ol{list-style:none;counter-reset:s}
+.bk .side li{display:flex;gap:14px;align-items:center;padding:14px 0;color:var(--dim);font-size:15px;font-weight:500;border-bottom:1px solid var(--line);transition:color .3s}
+.bk .side li i{width:30px;height:30px;border:1px solid var(--line2);display:grid;place-items:center;font-style:normal;font-family:var(--wide);font-size:12px;font-weight:700;flex:none;transition:.3s}
+.bk .side li.on{color:var(--ink)}
+.bk .side li.on i{background:var(--gold);color:#000;border-color:var(--gold)}
+.bk .side li.ok{color:var(--mute)}
+.bk .side li.ok i{background:var(--ink);color:#000;border-color:var(--ink)}
+.bk .side .sum{margin-top:auto;padding-top:24px;font-size:13px;color:var(--mute);line-height:1.8}
+.bk .side .sum b{color:var(--ink);font-weight:600}
+.bk .main{padding:clamp(20px,3vw,40px);position:relative;overflow:hidden}
+.pane{display:none;animation:pn .4s cubic-bezier(.2,.8,.2,1)}
+.pane.on{display:block}
+@keyframes pn{from{opacity:0;transform:translateX(24px)}}
+.pane h4{font-family:var(--wide);font-stretch:120%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,2.6vw,32px);margin-bottom:6px}
+.pane .sub{color:var(--mute);font-size:14px;margin-bottom:26px}
+.pk{border-top:1px solid var(--line)}
+.pk button{width:100%;display:grid;grid-template-columns:1fr auto auto;gap:18px;align-items:center;text-align:left;padding:18px 4px;border-bottom:1px solid var(--line);transition:background .2s,padding .25s}
+.pk button:hover{background:rgba(244,241,234,.03);padding-left:12px}
+.pk button b{font-family:var(--wide);font-stretch:118%;font-weight:700;text-transform:uppercase;font-size:17px;display:block}
+.pk button span{font-size:13px;color:var(--mute)}
+.pk button em{font-style:normal;font-size:13px;color:var(--mute)}
+.pk button strong{font-family:var(--wide);font-stretch:110%;font-weight:700;font-size:16px;min-width:90px;text-align:right}
+.pk button.on{background:rgba(243,211,56,.08);box-shadow:inset 3px 0 0 var(--gold)}
+.pk button.calcpk{display:none}
+.pk button.calcpk.show{display:grid}
+.days{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.days button{flex:none;width:68px;padding:12px 0;border:1px solid var(--line);text-align:center;scroll-snap-align:start;transition:.2s}
+.days button small{display:block;font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.1em}
+.days button b{display:block;font-family:var(--wide);font-stretch:115%;font-weight:800;font-size:22px;margin:2px 0}
+.days button em{font-style:normal;font-size:10px;color:var(--mute)}
+.days button.full{opacity:.35;pointer-events:none}
+.days button.on{background:var(--ink);color:#000;border-color:var(--ink)}
+.days button.on small,.days button.on em{color:#55534e}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px;margin-top:18px}
+.slots button{height:48px;border:1px solid var(--line2);font-family:var(--wide);font-stretch:110%;font-weight:600;font-size:15px;transition:.2s}
+.slots button:hover{border-color:var(--gold)}
+.slots button.tk{opacity:.25;text-decoration:line-through;pointer-events:none}
+.slots button.on{background:var(--gold);color:#000;border-color:var(--gold)}
+.slots-h{display:flex;justify-content:space-between;margin-top:22px;font-size:13px;color:var(--mute)}
+.slots-h b{color:var(--ink)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f label{display:block;font-size:12px;color:var(--mute);margin-bottom:6px;letter-spacing:.04em}
+.f input{width:100%;height:52px;background:transparent;border:1px solid var(--line2);padding:0 14px;font-size:16px;outline:none;transition:border-color .2s}
+.f input:focus{border-color:var(--gold)}
+.plate{display:flex;height:52px;border:2px solid #d9d9d9;background:#f4f4f2;color:#111;overflow:hidden}
+.plate i{width:30px;background:#1d3fa6;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:5px;font-style:normal;font-size:11px;color:#fff;font-weight:700}
+.plate i::before{content:"";width:14px;height:14px;border-radius:50%;border:2px dotted #ffd200;margin-bottom:auto;margin-top:6px}
+.plate input{flex:1;border:0;background:transparent;color:#111;font-family:var(--wide);font-stretch:100%;font-weight:700;font-size:22px;letter-spacing:.12em;text-transform:uppercase;padding:0 12px;outline:none;height:100%;min-width:0}
+.tog{display:flex;align-items:center;gap:14px;margin-top:18px;padding:16px;border:1px solid var(--line);cursor:pointer}
+.tog .sw{width:44px;height:24px;background:var(--line2);position:relative;flex:none;transition:.25s}
+.tog .sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;background:var(--ink);transition:.25s}
+.tog.on .sw{background:var(--gold)}
+.tog.on .sw::after{left:23px;background:#000}
+.tog b{font-size:15px;font-weight:600;display:block}
+.tog span{font-size:13px;color:var(--mute)}
+.navb{display:flex;justify-content:space-between;align-items:center;margin-top:28px;gap:12px}
+.navb .back{font-size:14px;color:var(--mute);padding:10px 0}
+.navb .back:hover{color:var(--ink)}
+.btn[disabled]{opacity:.35;pointer-events:none}
+.ticket{display:grid;grid-template-columns:1fr 200px;border:1px solid var(--line2);margin-top:6px}
+.ticket .l{padding:24px;border-right:1px dashed var(--line2)}
+.ticket .l dl{display:grid;grid-template-columns:110px 1fr;gap:10px 16px;font-size:14px}
+.ticket dt{color:var(--mute)}
+.ticket dd{font-weight:600}
+.ticket .r{padding:24px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;background:var(--bg2)}
+.ticket .r small{font-size:11px;letter-spacing:.2em;color:var(--mute);text-transform:uppercase}
+.ticket .r b{font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:28px;color:var(--gold)}
+.okmark{width:56px;height:56px;background:var(--gold);color:#000;display:grid;place-items:center;margin-bottom:18px;clip-path:var(--cut)}
+.okmark svg path{stroke-dasharray:40;stroke-dashoffset:40;animation:draw .6s ease .2s forwards}
+.sms{margin-top:16px;display:flex;gap:12px;align-items:flex-start;font-size:14px;color:#cfccc4;padding:14px 16px;background:var(--bg2);border-left:2px solid var(--gold)}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+
+/* BEFORE AFTER */
+.ba{position:relative;aspect-ratio:1168/880;max-height:86vh;width:100%;overflow:hidden;user-select:none;touch-action:pan-y;cursor:ew-resize;background:#000}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.ba .after{clip-path:inset(0 0 0 var(--x,50%))}
+.ba .h{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:var(--gold);transform:translateX(-1px)}
+.ba .h b{position:absolute;top:50%;left:50%;width:64px;height:64px;transform:translate(-50%,-50%);background:var(--gold);color:#000;display:grid;place-items:center;clip-path:var(--cut)}
+.ba .tg{position:absolute;bottom:20px;font-family:var(--wide);font-stretch:120%;font-weight:700;font-size:12px;letter-spacing:.2em;text-transform:uppercase;padding:8px 12px;background:rgba(7,7,7,.7);backdrop-filter:blur(6px)}
+.ba .tg.l{left:20px}.ba .tg.r{right:20px;color:var(--gold)}
+.ba-row{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-top:0}
+.ba-row div{padding:22px 24px;border-right:1px solid var(--line)}
+.ba-row div:last-child{border:0}
+.ba-row b{font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:30px;display:block}
+.ba-row span{font-size:13px;color:var(--mute)}
+
+/* TRACK */
+.track{background:var(--bg2);border-block:1px solid var(--line)}
+.tgrid>*,.cgrid>*,.agrid>*,.fgrid2>*,.bk>*{min-width:0}
+.tgrid{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(32px,6vw,96px);align-items:center}
+.tfind{display:flex;gap:8px;margin-top:30px}
+.tfind input{flex:1;height:56px;background:var(--bg);border:1px solid var(--line2);padding:0 16px;font-family:var(--wide);font-stretch:115%;font-weight:700;font-size:18px;letter-spacing:.12em;text-transform:uppercase;outline:none;min-width:0}
+.tfind input:focus{border-color:var(--gold)}
+.tl{border:1px solid var(--line2);background:var(--bg)}
+.tl .hd{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line)}
+.tl .hd b{font-family:var(--wide);font-stretch:118%;font-weight:700;font-size:15px;text-transform:uppercase}
+.tl .hd span{font-size:12px;color:var(--mute)}
+.tl .pb{height:3px;background:var(--line)}
+.tl .pb i{display:block;height:100%;background:var(--gold);width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.tl ol{list-style:none;padding:8px 22px 14px}
+.tl li{display:grid;grid-template-columns:22px 1fr auto;gap:16px;align-items:start;padding:14px 0;border-bottom:1px solid var(--line);color:var(--dim);transition:color .4s}
+.tl li:last-child{border:0}
+.tl li i{width:14px;height:14px;border:1.5px solid var(--dim);margin-top:4px;transition:.4s;transform:rotate(45deg)}
+.tl li.ok{color:var(--ink)}
+.tl li.ok i{background:var(--gold);border-color:var(--gold)}
+.tl li.now i{border-color:var(--gold);animation:blink 1.2s infinite}
+.tl li.now{color:var(--ink)}
+@keyframes blink{50%{background:var(--gold)}}
+.tl li b{font-weight:600;font-size:15px;display:block}
+.tl li span{font-size:13px;color:var(--mute)}
+.tl li time{font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums}
+.tl li .ph{display:flex;gap:6px;margin-top:10px}
+.tl li .ph img{width:76px;height:56px;object-fit:cover}
+.tl .ft{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-top:1px solid var(--line);font-size:14px}
+.tl .ft b{color:var(--gold)}
+
+/* ABOUT */
+.about .agrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:end}
+.about .ph{position:relative;aspect-ratio:4/5;overflow:hidden}
+.about .ph img{width:100%;height:115%;object-fit:cover;will-change:transform}
+.about .ph .stamp{position:absolute;left:0;bottom:0;background:var(--gold);color:#000;padding:16px 20px;font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.about h2{font-size:clamp(34px,5.2vw,78px);margin:18px 0 28px}
+.about p{color:#cfccc4;font-size:17px;max-width:520px;margin-bottom:16px}
+.about .who{display:flex;align-items:center;gap:14px;margin:28px 0 36px;padding:16px 0;border-block:1px solid var(--line)}
+.about .who .av{width:48px;height:48px;background:var(--bg3);display:grid;place-items:center;border:1px solid var(--gold)}
+.about .who b{display:block;font-weight:600}
+.about .who span{font-size:13px;color:var(--mute)}
+.vals{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.vals div{padding:22px 18px 0 0}
+.vals b{font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:clamp(26px,3vw,40px);display:block;color:var(--gold)}
+.vals span{font-size:13px;color:var(--mute)}
+
+/* GALLERY */
+.gal{overflow:hidden}
+.gstrip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 var(--pad) 18px;scrollbar-width:none;cursor:grab}
+.gstrip::-webkit-scrollbar{display:none}
+.gstrip figure{flex:none;height:min(62vh,560px);scroll-snap-align:start;position:relative;overflow:hidden}
+.gstrip figure img{height:100%;width:auto;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.gstrip figure:hover img{transform:scale(1.04)}
+.gstrip figcaption{position:absolute;left:0;bottom:0;padding:10px 14px;background:rgba(7,7,7,.75);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-family:var(--wide);font-stretch:115%;font-weight:600}
+.gctl{display:flex;gap:6px}
+.gctl button{width:52px;height:52px;border:1px solid var(--line2);display:grid;place-items:center;transition:.2s;clip-path:var(--cut)}
+.gctl button:hover{background:var(--gold);color:#000;border-color:var(--gold)}
+
+/* FAQ */
+.faq .fgrid2{display:grid;grid-template-columns:1fr 1.4fr;gap:clamp(32px,6vw,96px)}
+.qa{border-top:1px solid var(--line)}
+.qa details{border-bottom:1px solid var(--line)}
+.qa summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;align-items:center;padding:24px 0;font-weight:600;font-size:clamp(16px,1.6vw,19px)}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary i{width:16px;height:16px;position:relative;flex:none}
+.qa summary i::before,.qa summary i::after{content:"";position:absolute;left:0;right:0;top:7px;height:1.5px;background:var(--gold);transition:.3s}
+.qa summary i::after{transform:rotate(90deg)}
+.qa details[open] summary i::after{transform:rotate(0)}
+.qa details p{color:var(--mute);padding:0 40px 24px 0;max-width:640px}
+
+/* CTA band */
+.band{position:relative;overflow:hidden;border-top:1px solid var(--line)}
+.band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35}
+.band::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#070707 20%,rgba(7,7,7,.4))}
+.band .in{position:relative;z-index:2;padding-block:clamp(80px,12vw,150px)}
+.band h2{font-size:clamp(40px,8vw,128px);margin:18px 0 32px}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:64px 0 120px}
+.fg{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px}
+.fg .brand svg{height:40px;margin-bottom:18px}
+.fg .brand p{font-size:14px;color:var(--mute);max-width:300px}
+.fg h5{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);margin-bottom:16px;font-weight:600}
+.fg ul{list-style:none}
+.fg li{padding:5px 0;font-size:14px}
+.fg li a{color:#cfccc4;transition:color .2s}
+.fg li a:hover{color:var(--gold)}
+.fb{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:56px;padding-top:24px;border-top:1px solid var(--line);font-size:12px;color:var(--dim)}
+.fb a:hover{color:var(--ink)}
+.fb .lk{display:flex;gap:20px;flex-wrap:wrap}
+
+/* sticky mobile */
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:45;display:none;grid-template-columns:1fr 1.4fr;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(7,7,7,.9);backdrop-filter:blur(14px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .4s}
+.mbar.on{transform:none}
+.mbar .btn{height:50px;font-size:11px;padding:0 12px}
+
+/* RESPONSIVE */
+@media (max-width:1100px){
+  nav{display:none}
+  .burger{display:block}
+  .cgrid{grid-template-columns:1fr}
+  .rcpt{position:relative;top:0}
+  .svc a{grid-template-columns:44px 1fr 120px 44px}
+  .svc .d{display:none}
+}
+@media (max-width:860px){
+  .hcta{display:none}
+  .mbar{display:grid}
+  .info .facts{grid-template-columns:1fr 1fr}
+  .info .facts div:nth-child(2){border-right:0}
+  .info .facts div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .book .bk{grid-template-columns:1fr}
+  .bk .side{border-right:0;border-bottom:1px solid var(--line);padding:16px 18px}
+  .bk .side ol{display:flex;gap:6px}
+  .bk .side li{flex:1;border:0;padding:0;font-size:0;gap:0}
+  .bk .side li i{width:100%;height:6px;border:0;background:var(--line2);font-size:0}
+  .bk .side .sum{display:none}
+  .tgrid,.about .agrid,.faq .fgrid2{grid-template-columns:1fr}
+  .fg{grid-template-columns:1fr 1fr}
+  .fg .brand{grid-column:1/-1}
+  .scrollhint{display:none}
+  .ticket{grid-template-columns:1fr}
+  .ticket .r{border-top:1px dashed var(--line2);flex-direction:row;align-items:center}
+  .ticket .l{border-right:0}
+}
+@media (max-width:600px){
+  body{font-size:15px}
+  header{height:64px}
+  #mmenu{inset:64px 0 0}
+  .logo span{display:none}
+  .hero .bgimg img{object-position:66% 50%}
+  .hero p.lead{font-size:15px}
+  .hero .ctas{width:100%}
+  .hero .ctas .btn{flex:1;padding:0 14px;font-size:11px;letter-spacing:.1em}
+  .hero .live{font-size:12px;margin-bottom:18px}
+  .sizes{grid-template-columns:1fr 1fr}
+  .sizes button:nth-child(2){border-right:0}
+  .sizes button:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .svc a{grid-template-columns:1fr auto;gap:6px 14px;padding:22px 0}
+  .svc .n{grid-column:1/-1}
+  .svc .go{display:none}
+  .fgrid{grid-template-columns:1fr}
+  .ba{aspect-ratio:4/5}
+  .ba-row{grid-template-columns:1fr}
+  .ba-row div{border-right:0;border-bottom:1px solid var(--line);padding:16px 18px}
+  .vals{grid-template-columns:1fr 1fr 1fr}
+  .vals b{font-size:24px}
+  .rcpt{padding:20px}
+  .rcpt .tot b{font-size:38px}
+  .pk button{grid-template-columns:1fr auto;padding:16px 2px}
+  .pk button em{display:none}
+  .tl ol{padding:4px 16px 10px}
+  .tl .hd,.tl .ft{padding:14px 16px}
+  .gstrip figure{height:52vh}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+
+<!-- reusable logo symbol -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="lc"><rect x="0" y="84.8" width="260" height="55.2"/></clipPath>
+    <symbol id="mark" viewBox="14 84 223 57">
+      <g clip-path="url(#lc)" fill="none" stroke="currentColor" stroke-width="7.6" stroke-linejoin="round">
+        <path d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/>
+        <path transform="translate(250.8 0) scale(-1 1)" d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- INTRO -->
+<div id="intro" aria-hidden="true">
+  <svg class="lg" viewBox="10 80 231 96">
+    <g clip-path="url(#lc)" fill="none" stroke="#F3D338" stroke-width="7.6" stroke-linejoin="round">
+      <path d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/>
+      <path transform="translate(250.8 0) scale(-1 1)" d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/>
+    </g>
+    <text class="t" x="125.4" y="165" text-anchor="middle" fill="#F3D338" font-family="Archivo,Arial" font-weight="700" font-size="13" style="font-stretch:125%">DETAILING</text>
+  </svg>
+  <div class="bar"><i></i></div>
+  <div class="cap">ŁÓDŹ · CAR WASH · DETAILING</div>
+</div>
+
+<header id="hdr">
+  <a href="#top" class="logo" aria-label="BTD Detailing — start">
+    <svg viewBox="14 84 223 57" style="color:var(--gold)"><defs><clipPath id="lc1"><rect x="0" y="84.8" width="260" height="55.2"/></clipPath></defs><g clip-path="url(#lc1)" fill="none" stroke="currentColor" stroke-width="7.6" stroke-linejoin="round"><path d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/><path transform="translate(250.8 0) scale(-1 1)" d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/></g></svg>
+    <span>DETAILING</span>
+  </a>
+  <nav>
+    <a href="#uslugi">Usługi</a>
+    <a href="#wycena">Wycena</a>
+    <a href="#rezerwacja">Rezerwacja</a>
+    <a href="#efekty">Przed / po</a>
+    <a href="#status">Status auta</a>
+    <a href="#o-nas">O nas</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <div style="display:flex;gap:8px;align-items:center">
+    <a href="#rezerwacja" class="btn btn-gold hcta">Zarezerwuj termin</a>
+    <button class="burger" id="burger" aria-label="Menu"><i></i><i></i></button>
+  </div>
+</header>
+<div id="mmenu">
+  <a href="#uslugi">Usługi <small>01</small></a>
+  <a href="#wycena">Wycena <small>10 s</small></a>
+  <a href="#rezerwacja">Rezerwacja <small>online</small></a>
+  <a href="#efekty">Przed / po <small>03</small></a>
+  <a href="#status">Status auta <small>live</small></a>
+  <a href="#o-nas">O nas <small>05</small></a>
+  <a href="#faq">FAQ <small>06</small></a>
+</div>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="bgimg"><img src="img/hero.jpg" alt="Pomarańczowe coupe na myjni nocą, krople wody na lakierze" fetchpriority="high"></div>
+  <div class="wrap in">
+    <div class="live fade"><span class="dot"></span>Najbliższy wolny termin: <b id="nextSlot">jutro, 9:00</b></div>
+    <h1 class="wide">
+      <span class="ln"><span>Blask, który</span></span>
+      <span class="ln"><span>widać <span class="nw"><span class="o">nocą</span><span class="gold">.</span></span></span></span>
+    </h1>
+    <div class="row">
+      <p class="lead fade">Mycie, wnętrze, polerowanie i ceramika w Łodzi. <b>Wyceniasz auto w 10 sekund i rezerwujesz termin sam</b>, bez czekania na odpowiedź na DM.</p>
+      <div class="ctas fade">
+        <a href="#rezerwacja" class="btn btn-gold">Zarezerwuj termin <span class="arr">→</span></a>
+        <a href="#wycena" class="btn btn-ghost">Wyceń auto</a>
+      </div>
+    </div>
+  </div>
+  <a href="#info" class="scrollhint">Przewiń <i></i></a>
+</section>
+
+<!-- INFO BAR -->
+<section class="info" id="info">
+  <div class="facts">
+    <div><b>24/7</b><span>rezerwacja online</span></div>
+    <div><b>10 s</b><span>wycena Twojego auta</span></div>
+    <div><b>Łódź</b><span>auta, SUV-y i łodzie</span></div>
+    <div><b>SMS</b><span>status auta na żywo</span></div>
+  </div>
+  <div class="marq"><div class="t">
+    <span>Detale zewnętrzne i wewnętrzne</span><span>Mycie detailingowe</span><span>Polerowanie lakieru</span><span>Powłoki ceramiczne</span><span>Pranie tapicerki</span><span>Łodzie</span><span>Auta sportowe</span>
+    <span>Detale zewnętrzne i wewnętrzne</span><span>Mycie detailingowe</span><span>Polerowanie lakieru</span><span>Powłoki ceramiczne</span><span>Pranie tapicerki</span><span>Łodzie</span><span>Auta sportowe</span>
+  </div></div>
+</section>
+
+<!-- SERVICES -->
+<section class="sec" id="uslugi">
+  <div class="wrap">
+    <div class="sh">
+      <div class="rv"><div class="label"><span class="m"><i></i><i></i><i></i></span>01 · Usługi</div><h2 class="wide">Co robimy<br>z Twoim autem</h2></div>
+      <p class="rv d1">Wybierz usługę, a od razu zobaczysz cenę i czas. Kliknięcie przenosi do rezerwacji z tą usługą już wybraną.</p>
+    </div>
+    <div class="svc" id="svcList">
+      <a href="#rezerwacja" data-pk="daily" data-img="img/foam.jpg" class="rv"><span class="n">01</span><h3>Mycie Daily</h3><span class="d">Piana aktywna, mycie ręczne dwoma wiadrami, felgi, osuszanie, szyby.</span><span class="p">od 120 zł<small>ok. 1,5 h</small></span><span class="go">→</span></a>
+      <a href="#rezerwacja" data-pk="inside" data-img="img/interior.jpg" class="rv"><span class="n">02</span><h3>Inside Out</h3><span class="d">Wnętrze i karoseria: pranie tapicerki, skóra, plastiki, odkurzanie, mycie.</span><span class="p">od 390 zł<small>ok. 4 h</small></span><span class="go">→</span></a>
+      <a href="#rezerwacja" data-pk="gloss" data-img="img/polish.jpg" class="rv"><span class="n">03</span><h3>Gloss</h3><span class="d">Dekontaminacja, polerowanie jednoetapowe, wosk. Rysy i hologramy znikają.</span><span class="p">od 890 zł<small>1 dzień</small></span><span class="go">→</span></a>
+      <a href="#rezerwacja" data-pk="shield" data-img="img/after.jpg" class="rv"><span class="n">04</span><h3>Shield Ceramic</h3><span class="d">Korekta lakieru i powłoka ceramiczna na 3 lata. Woda spływa sama.</span><span class="p">od 1 690 zł<small>2 dni</small></span><span class="go">→</span></a>
+      <a href="#rezerwacja" data-pk="boat" data-img="img/boat.jpg" class="rv"><span class="n">05</span><h3>Boat</h3><span class="d">Łodzie i skutery: mycie, polerowanie gelcoatu, zabezpieczenie na sezon.</span><span class="p">od 690 zł<small>wycena</small></span><span class="go">→</span></a>
+    </div>
+  </div>
+</section>
+<div id="peek"><img alt="" src="img/foam.jpg"></div>
+
+<!-- CALCULATOR -->
+<section class="sec calc" id="wycena">
+  <div class="wrap">
+    <div class="sh">
+      <div class="rv"><div class="label"><span class="m"><i></i><i></i><i></i></span>02 · Wycena w 10 sekund</div><h2 class="wide">Ile to<br>będzie <span class="gold">kosztować?</span></h2></div>
+      <p class="rv d1">Trzy kliknięcia i masz cenę. Bez pisania, bez „zależy”. Jeden przycisk przenosi wycenę prosto do kalendarza.</p>
+    </div>
+    <div class="cgrid">
+      <div>
+        <div class="step rv">
+          <div class="q"><b>01</b><h4>Jakie masz auto?</h4></div>
+          <div class="sizes" id="sizes">
+            <button data-m="1" data-n="Małe auto"><svg viewBox="0 0 120 46" fill="none" stroke-width="2"><path d="M14 34h-4v-8l8-3 14-11h34l14 11 14 3v8h-6M34 34h40"/><circle cx="25" cy="34" r="7"/><circle cx="83" cy="34" r="7"/></svg><b>Małe</b><span>Yaris, Fiat 500</span></button>
+            <button data-m="1.15" data-n="Średnie auto" class="on"><svg viewBox="0 0 120 46" fill="none" stroke-width="2"><path d="M14 34H6v-7l10-4 18-11h36l18 11 18 3v8h-8M34 34h50"/><circle cx="24" cy="34" r="7"/><circle cx="93" cy="34" r="7"/></svg><b>Średnie</b><span>Golf, BMW 3</span></button>
+            <button data-m="1.3" data-n="Duże auto"><svg viewBox="0 0 120 46" fill="none" stroke-width="2"><path d="M12 34H4v-7l12-4 20-10h34l22 10 22 3v8h-8M32 34h54"/><circle cx="22" cy="34" r="7"/><circle cx="96" cy="34" r="7"/></svg><b>Duże</b><span>BMW 5, M4, A6</span></button>
+            <button data-m="1.5" data-n="SUV / Van"><svg viewBox="0 0 120 46" fill="none" stroke-width="2"><path d="M12 34H5V20l9-3 8-9h56l16 9 18 3v14h-8M32 34h54"/><circle cx="22" cy="34" r="8"/><circle cx="96" cy="34" r="8"/></svg><b>SUV / Van</b><span>X5, Urus, Vito</span></button>
+          </div>
+        </div>
+        <div class="step rv">
+          <div class="q"><b>02</b><h4>W jakim jest stanie?</h4></div>
+          <div class="conds" id="conds">
+            <button data-a="0" class="on">Zadbane</button>
+            <button data-a="40">Codzienny brud</button>
+            <button data-a="90">Po zimie / po trasie</button>
+            <button data-a="120">Sierść zwierząt</button>
+          </div>
+        </div>
+        <div class="step rv">
+          <div class="q"><b>03</b><h4>Co mamy zrobić?</h4></div>
+          <div class="opts" id="opts">
+            <div class="opt on" data-p="120" data-h="1.5" data-n="Mycie detailingowe"><span class="bx"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 4" stroke="#000" stroke-width="2.2" fill="none"/></svg></span><div><b>Mycie detailingowe</b><span>piana, mycie ręczne, felgi, szyby</span></div><span class="pr">120 zł</span></div>
+            <div class="opt" data-p="220" data-h="2.5" data-n="Wnętrze + pranie tapicerki"><span class="bx"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 4" stroke="#000" stroke-width="2.2" fill="none"/></svg></span><div><b>Wnętrze + pranie tapicerki</b><span>odkurzanie, pranie, plastiki, szyby</span></div><span class="pr">220 zł</span></div>
+            <div class="opt" data-p="90" data-h="1" data-n="Skóra: czyszczenie i impregnacja"><span class="bx"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 4" stroke="#000" stroke-width="2.2" fill="none"/></svg></span><div><b>Skóra: czyszczenie i impregnacja</b><span>fotele, kierownica, boczki</span></div><span class="pr">90 zł</span></div>
+            <div class="opt" data-p="690" data-h="6" data-n="Polerowanie 1-etap"><span class="bx"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 4" stroke="#000" stroke-width="2.2" fill="none"/></svg></span><div><b>Polerowanie lakieru</b><span>usuwa hologramy i drobne rysy</span></div><span class="pr">690 zł</span></div>
+            <div class="opt" data-p="890" data-h="5" data-n="Powłoka ceramiczna 3 lata"><span class="bx"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 4" stroke="#000" stroke-width="2.2" fill="none"/></svg></span><div><b>Powłoka ceramiczna 3 lata</b><span>połysk i hydrofobowość na lata</span></div><span class="pr">890 zł</span></div>
+            <div class="opt" data-p="60" data-h=".5" data-n="Wosk na lakier"><span class="bx"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l3.5 3.5L12 4" stroke="#000" stroke-width="2.2" fill="none"/></svg></span><div><b>Wosk na lakier</b><span>szybki połysk i ochrona na 2–3 miesiące</span></div><span class="pr">60 zł</span></div>
+          </div>
+        </div>
+      </div>
+      <aside class="rcpt rv d2" aria-live="polite">
+        <div class="top"><svg viewBox="14 84 223 57" style="color:var(--gold)"><defs><clipPath id="lc2"><rect x="0" y="84.8" width="260" height="55.2"/></clipPath></defs><g clip-path="url(#lc2)" fill="none" stroke="currentColor" stroke-width="7.6" stroke-linejoin="round"><path d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/><path transform="translate(250.8 0) scale(-1 1)" d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/></g></svg><small>Twoja wycena</small></div>
+        <ul id="rList"></ul>
+        <div class="tot"><span>Razem</span><b><span id="rTot">0</span><small>zł</small></b></div>
+        <div class="meta"><span>Czas: <b id="rTime">1,5 h</b></span><span>Auto: <b id="rCar">Średnie</b></span></div>
+        <a href="#rezerwacja" class="btn btn-gold" id="rBook">Zarezerwuj ten zestaw <span class="arr">→</span></a>
+        <p class="note">Cena orientacyjna. Ostateczną potwierdzamy przy odbiorze auta.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="sec book" id="rezerwacja">
+  <div class="wrap">
+    <div class="sh">
+      <div class="rv"><div class="label"><span class="m"><i></i><i></i><i></i></span>03 · Rezerwacja online</div><h2 class="wide">Termin<br>bez <span class="gold">DM.</span></h2></div>
+      <p class="rv d1">Widzisz wolne godziny na żywo i rezerwujesz w 30 sekund. Dzień wcześniej przypomnimy Ci SMS-em.</p>
+    </div>
+    <div class="bk rv">
+      <div class="side">
+        <ol id="bSteps">
+          <li class="on"><i>1</i>Usługa</li>
+          <li><i>2</i>Dzień i godzina</li>
+          <li><i>3</i>Auto i kontakt</li>
+          <li><i>4</i>Gotowe</li>
+        </ol>
+        <div class="sum" id="bSum">Wybierz usługę, żeby zacząć.</div>
+      </div>
+      <div class="main">
+        <!-- 1 -->
+        <div class="pane on" data-s="1">
+          <h4>Co robimy?</h4><p class="sub">Kliknij usługę. Możesz też wrócić do wyceny i zabrać swój zestaw.</p>
+          <div class="pk" id="pk">
+            <button class="calcpk" data-pk="calc"><div><b>Twoja wycena</b><span id="pkCalcDesc">z kalkulatora</span></div><em id="pkCalcTime"></em><strong id="pkCalcPrice"></strong></button>
+            <button data-pk="daily" data-p="120" data-t="1,5 h" data-d="1.5"><div><b>Mycie Daily</b><span>piana, mycie ręczne, felgi, szyby</span></div><em>1,5 h</em><strong>od 120 zł</strong></button>
+            <button data-pk="inside" data-p="390" data-t="4 h" data-d="4"><div><b>Inside Out</b><span>wnętrze + karoseria</span></div><em>4 h</em><strong>od 390 zł</strong></button>
+            <button data-pk="gloss" data-p="890" data-t="1 dzień" data-d="8"><div><b>Gloss</b><span>polerowanie + wosk</span></div><em>1 dzień</em><strong>od 890 zł</strong></button>
+            <button data-pk="shield" data-p="1690" data-t="2 dni" data-d="16"><div><b>Shield Ceramic</b><span>korekta + ceramika 3 lata</span></div><em>2 dni</em><strong>od 1 690 zł</strong></button>
+            <button data-pk="boat" data-p="690" data-t="wycena" data-d="8"><div><b>Boat</b><span>łodzie i skutery</span></div><em>1 dzień</em><strong>od 690 zł</strong></button>
+          </div>
+        </div>
+        <!-- 2 -->
+        <div class="pane" data-s="2">
+          <h4>Kiedy przyjedziesz?</h4><p class="sub">Szare godziny są już zajęte. Wybierz dzień, potem godzinę.</p>
+          <div class="days" id="days"></div>
+          <div class="slots-h"><span id="dayLabel"></span><span><b id="freeCount">0</b> wolnych</span></div>
+          <div class="slots" id="slots"></div>
+          <div class="navb"><button class="back" data-go="1">← Wróć</button><button class="btn btn-gold" id="to3" disabled>Dalej <span class="arr">→</span></button></div>
+        </div>
+        <!-- 3 -->
+        <div class="pane" data-s="3">
+          <h4>Twoje auto i kontakt</h4><p class="sub">Tylko to, czego naprawdę potrzebujemy. Zajmie Ci to 15 sekund.</p>
+          <div class="fgrid">
+            <div class="f"><label>Marka i model</label><input id="fCar" placeholder="np. BMW M4" autocomplete="off"></div>
+            <div class="f"><label>Numer rejestracyjny (opcjonalnie)</label><div class="plate"><i>PL</i><input id="fPlate" placeholder="EL 2RY22" maxlength="9"></div></div>
+            <div class="f"><label>Imię</label><input id="fName" placeholder="Twoje imię" autocomplete="given-name"></div>
+            <div class="f"><label>Telefon (na SMS z przypomnieniem)</label><input id="fTel" placeholder="500 600 700" inputmode="tel" autocomplete="tel"></div>
+          </div>
+          <div class="tog" id="pickup"><span class="sw"></span><div><b>Odbierzemy auto spod domu</b><span>Łódź i okolice, +50 zł. Oddamy je czyste pod te same drzwi.</span></div></div>
+          <div class="navb"><button class="back" data-go="2">← Wróć</button><button class="btn btn-gold" id="to4" disabled>Rezerwuję <span class="arr">→</span></button></div>
+        </div>
+        <!-- 4 -->
+        <div class="pane" data-s="4">
+          <div class="okmark"><svg width="26" height="26" viewBox="0 0 26 26"><path d="M4 13l6 6L22 6" stroke="#000" stroke-width="3" fill="none"/></svg></div>
+          <h4>Zarezerwowane<span class="gold">.</span></h4><p class="sub" id="okSub">Do zobaczenia!</p>
+          <div class="ticket">
+            <div class="l"><dl id="tk"></dl></div>
+            <div class="r"><small>Kod rezerwacji</small><b id="tkCode">BTD-0000</b></div>
+          </div>
+          <div class="sms"><span>💬</span><span id="smsTxt">SMS: Twoje auto czeka na nas. Przypomnimy Ci dzień wcześniej o 18:00.</span></div>
+          <div class="acts">
+            <a href="#status" class="btn btn-gold" id="goTrack">Śledź swoje auto <span class="arr">→</span></a>
+            <button class="btn btn-ghost" id="ics">Dodaj do kalendarza</button>
+            <button class="btn btn-ghost" id="again">Nowa rezerwacja</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="sec" id="efekty" style="padding-top:0">
+  <div class="wrap">
+    <div class="sh">
+      <div class="rv"><div class="label"><span class="m"><i></i><i></i><i></i></span>04 · Przed / po</div><h2 class="wide">Przeciągnij<br>i <span class="gold">zobacz.</span></h2></div>
+      <p class="rv d1">To samo auto, ten sam kadr. Po lewej po zimie, po prawej po pakiecie Gloss. Przesuń suwak palcem.</p>
+    </div>
+    <div class="ba rv" id="ba">
+      <img src="img/before.jpg" alt="Brudne auto po zimie">
+      <img class="after" src="img/after.jpg" alt="To samo auto po detailingu">
+      <span class="tg l">Przed</span><span class="tg r">Po · Gloss</span>
+      <div class="h"><b><svg width="26" height="14" viewBox="0 0 26 14" fill="none" stroke="#000" stroke-width="2"><path d="M7 1L1 7l6 6M19 1l6 6-6 6"/></svg></b></div>
+    </div>
+    <div class="ba-row rv">
+      <div><b>1 dzień</b><span>czas pracy nad tym autem</span></div>
+      <div><b>0 rys</b><span>hologramy usunięte polerką</span></div>
+      <div><b>3 lata</b><span>ochrona po ceramice Shield</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRACKER -->
+<section class="sec track" id="status">
+  <div class="wrap tgrid">
+    <div class="rv">
+      <div class="label"><span class="m"><i></i><i></i><i></i></span>05 · Status auta na żywo</div>
+      <h2 class="wide" style="font-size:clamp(36px,5.6vw,84px);margin-top:18px">Gdzie jest<br>moje <span class="gold">auto?</span></h2>
+      <p style="color:var(--mute);margin-top:22px;max-width:420px">Nie musisz dzwonić z pytaniem „kiedy gotowe?”. Wpisz kod z SMS-a i patrz, co się dzieje z Twoim autem. Dostajesz też zdjęcia z każdego etapu.</p>
+      <div class="tfind"><input id="tCode" value="BTD-4821" aria-label="Kod rezerwacji"><button class="btn btn-gold" id="tGo">Sprawdź</button></div>
+    </div>
+    <div class="tl rv d2" id="tl">
+      <div class="hd"><b id="tlCar">BMW M4 · Gloss</b><span id="tlCode">BTD-4821</span></div>
+      <div class="pb"><i id="tlBar"></i></div>
+      <ol id="tlList">
+        <li data-i="0"><i></i><div><b>Auto przyjęte</b><span>Oględziny i zdjęcia lakieru</span></div><time>09:02</time></li>
+        <li data-i="1"><i></i><div><b>Mycie i dekontaminacja</b><span>Piana, glinkowanie, usuwanie smoły</span><div class="ph"><img src="img/foam.jpg" alt=""></div></div><time>09:40</time></li>
+        <li data-i="2"><i></i><div><b>Polerowanie lakieru</b><span>Teraz: maska i błotniki</span><div class="ph"><img src="img/polish.jpg" alt=""></div></div><time>11:15</time></li>
+        <li data-i="3"><i></i><div><b>Wnętrze i kontrola</b><span>Ostatnie sprawdzenie w świetle LED</span></div><time>—</time></li>
+        <li data-i="4"><i></i><div><b>Gotowe do odbioru</b><span>Dostaniesz SMS z godziną</span></div><time>—</time></li>
+      </ol>
+      <div class="ft"><span>Szacowany odbiór</span><b id="tlEta">dziś, 16:30</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="sec about" id="o-nas">
+  <div class="wrap agrid">
+    <div class="ph rv"><img src="img/polish.jpg" alt="Polerowanie czarnego lakieru" id="aboutImg"><div class="stamp">Łódź · od zajawki</div></div>
+    <div>
+      <div class="label rv"><span class="m"><i></i><i></i><i></i></span>06 · O nas</div>
+      <h2 class="wide rv">Robimy auta tak, jak robilibyśmy <span class="gold">swoje.</span></h2>
+      <p class="rv">BTD zaczęło się od zajawki do aut i nocnych zdjęć na myjni. Dziś przez nasze ręce przechodzą codzienne auta, M-ki, SUV-y i łodzie, a każde dostaje tyle samo uwagi.</p>
+      <p class="rv">Nie mamy taśmy. Jedno auto, jedna osoba odpowiedzialna od przyjęcia do wydania. Przed oddaniem kluczyków sprawdzamy lakier w świetle LED, bo tam widać wszystko.</p>
+      <div class="who rv"><div class="av"><svg viewBox="14 84 223 57" style="width:34px;color:var(--gold)"><defs><clipPath id="lc3"><rect x="0" y="84.8" width="260" height="55.2"/></clipPath></defs><g clip-path="url(#lc3)" fill="none" stroke="currentColor" stroke-width="7.6" stroke-linejoin="round"><path d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/><path transform="translate(250.8 0) scale(-1 1)" d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/></g></svg></div><div><b>Właściciel BTD</b><span><a href="https://instagram.com/btd__davidek" target="_blank" rel="noopener">@btd__davidek</a> · osobiście sprawdza każde auto</span></div></div>
+      <div class="vals rv">
+        <div><b>1:1</b><span>jedno auto, jedna osoba</span></div>
+        <div><b>LED</b><span>kontrola przed wydaniem</span></div>
+        <div><b>Foto</b><span>zdjęcia z każdej realizacji</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="sec gal" id="galeria" style="padding-top:0">
+  <div class="wrap"><div class="sh">
+    <div class="rv"><div class="label"><span class="m"><i></i><i></i><i></i></span>07 · Galeria</div><h2 class="wide">Z naszego<br>stanowiska</h2></div>
+    <div class="gctl rv d1"><button id="gPrev" aria-label="Wstecz">←</button><button id="gNext" aria-label="Dalej">→</button></div>
+  </div></div>
+  <div class="gstrip" id="gstrip">
+    <figure><img src="img/hero.jpg" alt="Coupe po myciu nocą" loading="lazy"><figcaption>Mycie nocą</figcaption></figure>
+    <figure><img src="img/interior.jpg" alt="Czyszczenie skórzanego fotela" loading="lazy"><figcaption>Skóra</figcaption></figure>
+    <figure><img src="img/foam.jpg" alt="Piana aktywna" loading="lazy"><figcaption>Piana aktywna</figcaption></figure>
+    <figure><img src="img/polish.jpg" alt="Polerowanie lakieru" loading="lazy"><figcaption>Polerowanie</figcaption></figure>
+    <figure><img src="img/boat.jpg" alt="Polerowanie łodzi" loading="lazy"><figcaption>Boat</figcaption></figure>
+    <figure><img src="img/after.jpg" alt="Czarny sedan po detailingu" loading="lazy"><figcaption>Gloss</figcaption></figure>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec faq" id="faq" style="padding-top:clamp(40px,6vw,80px)">
+  <div class="wrap fgrid2">
+    <div class="rv"><div class="label"><span class="m"><i></i><i></i><i></i></span>08 · FAQ</div><h2 class="wide" style="font-size:clamp(36px,5.6vw,84px);margin-top:18px">Szybkie<br><span class="gold">odpowiedzi</span></h2></div>
+    <div class="qa rv d1">
+      <details open><summary>Jak zarezerwować termin?<i></i></summary><p>Kliknij „Zarezerwuj termin”, wybierz usługę, dzień i godzinę. Wszystko na tej stronie, w 30 sekund. Potwierdzenie i przypomnienie przyjdą SMS-em.</p></details>
+      <details><summary>Ile trwa detailing mojego auta?<i></i></summary><p>Mycie Daily to ok. 1,5 h, Inside Out ok. 4 h, polerowanie 1 dzień, a ceramika 2 dni. Dokładny czas widzisz w wycenie, zanim cokolwiek zarezerwujesz.</p></details>
+      <details><summary>Czy muszę czekać na miejscu?<i></i></summary><p>Nie. Zostawiasz auto, a postęp śledzisz w sekcji „Status auta” po kodzie z SMS-a. Możemy też odebrać auto spod domu.</p></details>
+      <details><summary>Czy robicie łodzie i skutery?<i></i></summary><p>Tak. Mycie, polerowanie gelcoatu i zabezpieczenie na sezon. Wybierz pakiet Boat, a ostateczną cenę potwierdzimy po zdjęciach.</p></details>
+      <details><summary>Jak mogę zapłacić?<i></i></summary><p>Gotówką, kartą lub BLIK-iem przy odbiorze auta. Przy ceramice prosimy o zadatek przy rezerwacji.</p></details>
+      <details><summary>Co jeśli nie zdążę na swoją godzinę?<i></i></summary><p>Zmienisz termin jednym kliknięciem w linku z SMS-a. Zwolniona godzina od razu wraca do kalendarza dla innych.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="band">
+  <img src="img/foam.jpg" alt="" loading="lazy">
+  <div class="wrap in">
+    <div class="label rv"><span class="m"><i></i><i></i><i></i></span>Wolne terminy w tym tygodniu</div>
+    <h2 class="wide rv">Twoje auto<br>zasługuje na <span class="gold">więcej.</span></h2>
+    <div class="rv" style="display:flex;gap:10px;flex-wrap:wrap"><a href="#rezerwacja" class="btn btn-gold">Zarezerwuj termin <span class="arr">→</span></a><a href="#wycena" class="btn btn-ghost">Wyceń auto w 10 s</a></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fg">
+      <div class="brand">
+        <svg viewBox="14 84 223 57" style="color:var(--gold)"><defs><clipPath id="lc4"><rect x="0" y="84.8" width="260" height="55.2"/></clipPath></defs><g clip-path="url(#lc4)" fill="none" stroke="currentColor" stroke-width="7.6" stroke-linejoin="round"><path d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/><path transform="translate(250.8 0) scale(-1 1)" d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/></g></svg>
+        <p>BTD Detailing · detale zewnętrzne i wewnętrzne. Łódź i okolice. Auta, SUV-y, łodzie.</p>
+      </div>
+      <div><h5>Strona</h5><ul><li><a href="#uslugi">Usługi</a></li><li><a href="#wycena">Wycena</a></li><li><a href="#rezerwacja">Rezerwacja</a></li><li><a href="#efekty">Przed / po</a></li><li><a href="#status">Status auta</a></li></ul></div>
+      <div><h5>Więcej</h5><ul><li><a href="#o-nas">O nas</a></li><li><a href="#galeria">Galeria</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+      <div><h5>Kontakt</h5><ul><li><a href="mailto:btdcardetailing@gmail.com">btdcardetailing@gmail.com</a></li><li><a href="https://instagram.com/btd_car_detailing" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.facebook.com/" target="_blank" rel="noopener">Facebook</a></li></ul></div>
+    </div>
+    <div class="fb">
+      <span>© <span id="yr">2026</span> BTD Detailing. Wszystkie prawa zastrzeżone.</span>
+      <div class="lk"><a href="#">Polityka prywatności</a><a href="#">Cookies</a><a href="#">Regulamin rezerwacji</a><a href="https://thedomainstudio.com" target="_blank" rel="noopener">Strona: The Domain</a></div>
+    </div>
+  </div>
+</footer>
+
+<div class="mbar" id="mbar"><a href="#wycena" class="btn btn-ghost">Wyceń</a><a href="#rezerwacja" class="btn btn-gold">Zarezerwuj termin</a></div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const fmt=n=>Math.round(n).toLocaleString('pl-PL').replace(/ /g,' ');
+
+/* intro */
+const intro=$('#intro');
+const seen=(()=>{try{return sessionStorage.getItem('btdIntro')}catch(e){return null}})();
+const endIntro=()=>{intro.classList.add('out');document.body.classList.add('ready');setTimeout(()=>intro.remove(),1100)};
+if(seen){intro.style.display='none';document.body.classList.add('ready')}else{setTimeout(endIntro,2300);try{sessionStorage.setItem('btdIntro','1')}catch(e){}}
+
+/* header + mobile bar */
+const hdr=$('#hdr'),mbar=$('#mbar');
+const onScroll=()=>{const y=scrollY;hdr.classList.toggle('s',y>40);mbar.classList.toggle('on',y>innerHeight*.6);
+  const ai=$('#aboutImg');if(ai){const r=ai.parentElement.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0){ai.style.transform=`translateY(${-(1-(r.top+r.height)/(innerHeight+r.height))*12}%)`}}};
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+$('#burger').onclick=()=>document.body.classList.toggle('menu');
+$$('#mmenu a').forEach(a=>a.onclick=()=>document.body.classList.remove('menu'));
+
+/* reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+$$('.rv').forEach(el=>io.observe(el));
+
+/* service peek (desktop) */
+const peek=$('#peek'),pimg=peek.querySelector('img');
+if(matchMedia('(hover:hover)').matches){
+  $$('#svcList a').forEach(a=>{
+    a.addEventListener('mouseenter',()=>{pimg.src=a.dataset.img;peek.classList.add('on')});
+    a.addEventListener('mouseleave',()=>peek.classList.remove('on'));
+    a.addEventListener('mousemove',e=>{peek.style.left=e.clientX+'px';peek.style.top=e.clientY+'px'});
+  });
+}
+$$('#svcList a').forEach(a=>a.addEventListener('click',()=>pickPk(a.dataset.pk)));
+
+/* ---------- CALCULATOR ---------- */
+const st={m:1.15,car:'Średnie auto',add:0,cond:'Zadbane'};
+let calc={total:0,hours:0,items:[]};
+const rList=$('#rList'),rTot=$('#rTot');let shown=0,raf;
+function animTo(v){cancelAnimationFrame(raf);const s=shown,t0=performance.now();const step=t=>{const k=Math.min(1,(t-t0)/500),e=1-Math.pow(1-k,3);shown=s+(v-s)*e;rTot.textContent=fmt(shown);if(k<1)raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)}
+function hrs(h){if(h>=8){const d=Math.ceil(h/8);return d+(d===1?' dzień':' dni')}return String(h).replace('.',',')+' h'}
+function recalc(){
+  const items=[];let tot=0,h=0;
+  $$('#opts .opt').forEach(o=>{const p=+o.dataset.p*st.m;o.querySelector('.pr').textContent=fmt(Math.round(p/10)*10)+' zł';if(o.classList.contains('on')){const v=Math.round(p/10)*10;items.push([o.dataset.n,v]);tot+=v;h+=+o.dataset.h}});
+  if(items.length&&st.add){items.push(['Stan: '+st.cond.toLowerCase(),st.add]);tot+=st.add;h+=.5}
+  calc={total:tot,hours:h,items};
+  rList.innerHTML=items.length?items.map(i=>`<li><span>${i[0]}</span><span>${fmt(i[1])} zł</span></li>`).join(''):'<li class="empty">Zaznacz co najmniej jedną usługę</li>';
+  animTo(tot);$('#rTime').textContent=items.length?hrs(Math.round(h*2)/2):'—';$('#rCar').textContent=st.car.replace(' auto','');
+  $('#rBook').toggleAttribute('disabled',!items.length);
+}
+$$('#sizes button').forEach(b=>b.onclick=()=>{$$('#sizes button').forEach(x=>x.classList.remove('on'));b.classList.add('on');st.m=+b.dataset.m;st.car=b.dataset.n;recalc()});
+$$('#conds button').forEach(b=>b.onclick=()=>{$$('#conds button').forEach(x=>x.classList.remove('on'));b.classList.add('on');st.add=+b.dataset.a;st.cond=b.textContent;recalc()});
+$$('#opts .opt').forEach(o=>o.onclick=()=>{o.classList.toggle('on');recalc()});
+recalc();
+$('#rBook').addEventListener('click',()=>{
+  const c=$('#pk .calcpk');c.classList.add('show');
+  $('#pkCalcDesc').textContent=st.car+' · '+calc.items.filter(i=>!i[0].startsWith('Stan')).map(i=>i[0]).join(', ');
+  $('#pkCalcTime').textContent=hrs(Math.round(calc.hours*2)/2);$('#pkCalcPrice').textContent=fmt(calc.total)+' zł';
+  c.dataset.p=calc.total;c.dataset.t=hrs(Math.round(calc.hours*2)/2);c.dataset.d=calc.hours;
+  pickPk('calc');
+});
+
+/* ---------- BOOKING ---------- */
+const B={pk:null,day:null,slot:null,pickup:false};
+const names={daily:'Mycie Daily',inside:'Inside Out',gloss:'Gloss',shield:'Shield Ceramic',boat:'Boat',calc:'Twoja wycena'};
+function go(n){
+  $$('.pane').forEach(p=>p.classList.toggle('on',+p.dataset.s===n));
+  $$('#bSteps li').forEach((l,i)=>{l.classList.toggle('on',i+1===n);l.classList.toggle('ok',i+1<n)});
+  summary();
+}
+function summary(){
+  const s=[];if(B.pk)s.push('Usługa: <b>'+B.pk.name+'</b>');if(B.day)s.push('Dzień: <b>'+B.day.label+'</b>');if(B.slot)s.push('Godzina: <b>'+B.slot+'</b>');if(B.pk)s.push('Cena: <b>'+(B.pk.calc?'':'od ')+fmt(B.pk.p+(B.pickup?50:0))+' zł</b>');
+  $('#bSum').innerHTML=s.length?s.join('<br>'):'Wybierz usługę, żeby zacząć.';
+}
+function pickPk(key){
+  const b=$(`#pk button[data-pk="${key}"]`);if(!b)return;
+  $$('#pk button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  B.pk={key,name:key==='calc'?'Twój zestaw':names[key],p:+b.dataset.p,t:b.dataset.t,calc:key==='calc'};
+  setTimeout(()=>go(2),key==='calc'||!document.querySelector('.pane.on[data-s="1"]')?0:220);
+}
+$$('#pk button').forEach(b=>b.onclick=()=>pickPk(b.dataset.pk));
+$$('.back').forEach(b=>b.onclick=()=>go(+b.dataset.go));
+
+// seeded availability
+function rnd(seed){let x=Math.sin(seed)*10000;return x-Math.floor(x)}
+const DN=['nd','pn','wt','śr','cz','pt','sb'],MN=['sty','lut','mar','kwi','maj','cze','lip','sie','wrz','paź','lis','gru'];
+const HOURS=['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00'];
+const daysEl=$('#days'),slotsEl=$('#slots');const today=new Date();const dayData=[];
+for(let i=1;i<=14;i++){
+  const d=new Date(today);d.setDate(today.getDate()+i);
+  const sun=d.getDay()===0;const hrsAv=d.getDay()===6?HOURS.slice(0,7):HOURS;
+  const taken=hrsAv.map((h,j)=>rnd(d.getDate()*31+j*7+d.getMonth())<(i<3?.62:.42));
+  if(i===1){taken[1]=false}
+  const free=sun?0:taken.filter(t=>!t).length;
+  dayData.push({d,sun,hrsAv,taken,free,label:(i===1?'jutro':DN[d.getDay()])+', '+d.getDate()+' '+MN[d.getMonth()]});
+}
+dayData.forEach((x,i)=>{
+  const b=document.createElement('button');b.className=x.sun||!x.free?'full':'';
+  b.innerHTML=`<small>${i===0?'jutro':DN[x.d.getDay()]}</small><b>${x.d.getDate()}</b><em>${x.sun?'zamknięte':x.free+' wolne'}</em>`;
+  b.onclick=()=>pickDay(i,b);daysEl.appendChild(b);
+});
+function pickDay(i,b){
+  $$('#days button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  const x=dayData[i];B.day=x;B.slot=null;$('#to3').disabled=true;
+  $('#dayLabel').textContent=x.label[0].toUpperCase()+x.label.slice(1);$('#freeCount').textContent=x.free;
+  slotsEl.innerHTML='';x.hrsAv.forEach((h,j)=>{const s=document.createElement('button');s.textContent=h;if(x.taken[j])s.className='tk';
+    s.onclick=()=>{$$('#slots button').forEach(y=>y.classList.remove('on'));s.classList.add('on');B.slot=h;$('#to3').disabled=false;summary()};slotsEl.appendChild(s)});
+  summary();
+}
+const firstFree=dayData.findIndex(x=>x.free&&!x.sun);
+pickDay(firstFree,daysEl.children[firstFree]);
+const fi=dayData[firstFree];$('#nextSlot').textContent=fi.label+', '+fi.hrsAv[fi.taken.findIndex(t=>!t)];
+$('#to3').onclick=()=>go(3);
+const req=['#fCar','#fName','#fTel'];
+const chk=()=>{$('#to4').disabled=!req.every(s=>$(s).value.trim().length>1)};
+req.forEach(s=>$(s).addEventListener('input',chk));
+$('#fPlate').addEventListener('input',e=>{e.target.value=e.target.value.toUpperCase()});
+$('#pickup').onclick=()=>{B.pickup=!B.pickup;$('#pickup').classList.toggle('on',B.pickup);summary()};
+let code='BTD-4821';
+$('#to4').onclick=()=>{
+  code='BTD-'+(1000+Math.floor(Math.random()*9000));
+  const car=$('#fCar').value.trim(),name=$('#fName').value.trim().split(' ')[0];
+  const price=fmt(B.pk.p+(B.pickup?50:0))+' zł';
+  $('#tk').innerHTML=`<dt>Usługa</dt><dd>${B.pk.name}</dd><dt>Termin</dt><dd>${B.day.label}, ${B.slot}</dd><dt>Auto</dt><dd>${esc(car)}${$('#fPlate').value?' · '+esc($('#fPlate').value):''}</dd><dt>Cena</dt><dd>${B.pk.calc?'':'od '}${price}</dd><dt>${B.pickup?'Odbiór':'Miejsce'}</dt><dd>${B.pickup?'spod Twojego domu':'BTD Detailing, Łódź'}</dd>`;
+  $('#tkCode').textContent=code;$('#okSub').textContent=`Dzięki, ${esc(name)}! Twoje auto ma zarezerwowane miejsce.`;
+  $('#smsTxt').textContent=`SMS do ${$('#fTel').value.trim()}: „${B.day.label}, ${B.slot} – BTD Detailing. Kod ${code}. Przypomnimy dzień wcześniej.”`;
+  $('#tCode').value=code;$('#tlCode').textContent=code;$('#tlCar').textContent=car+' · '+B.pk.name;
+  go(4);
+};
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+$('#again').onclick=()=>{B.pk=null;B.slot=null;$$('#pk button').forEach(x=>x.classList.remove('on'));go(1)};
+$('#ics').onclick=()=>{
+  const d=B.day.d,[hh,mm]=B.slot.split(':');const s=new Date(d.getFullYear(),d.getMonth(),d.getDate(),+hh,+mm);const e=new Date(s.getTime()+2*3600e3);
+  const f=x=>x.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+  const ics=`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${f(s)}\nDTEND:${f(e)}\nSUMMARY:BTD Detailing – ${B.pk.name}\nDESCRIPTION:Kod rezerwacji ${code}\nLOCATION:BTD Detailing, Łódź\nEND:VEVENT\nEND:VCALENDAR`;
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download='btd-rezerwacja.ics';a.click();
+};
+$('#goTrack').addEventListener('click',()=>setTimeout(runTrack,500));
+
+/* ---------- BEFORE / AFTER ---------- */
+const ba=$('#ba');let drag=false;
+const setX=cx=>{const r=ba.getBoundingClientRect();const p=Math.max(0,Math.min(100,(cx-r.left)/r.width*100));ba.style.setProperty('--x',p+'%')};
+ba.addEventListener('pointerdown',e=>{drag=true;setX(e.clientX);ba.setPointerCapture(e.pointerId)});
+ba.addEventListener('pointermove',e=>{if(drag)setX(e.clientX)});
+ba.addEventListener('pointerup',()=>drag=false);ba.addEventListener('pointercancel',()=>drag=false);
+// hint animation once visible
+new IntersectionObserver((es,o)=>{es.forEach(e=>{if(e.isIntersecting){o.disconnect();let t0=performance.now();const a=t=>{if(drag)return;const k=(t-t0)/1800;if(k>1){ba.style.setProperty('--x','50%');return}ba.style.setProperty('--x',(50+Math.sin(k*Math.PI*2)*22)+'%');requestAnimationFrame(a)};setTimeout(()=>requestAnimationFrame(t=>{t0=t;a(t)}),600)}})},{threshold:.5}).observe(ba);
+
+/* ---------- TRACKER ---------- */
+let trackT=[];
+function runTrack(){
+  trackT.forEach(clearTimeout);trackT=[];
+  const lis=$$('#tlList li');lis.forEach(l=>l.classList.remove('ok','now'));$('#tlBar').style.width='0';
+  const stage=2;
+  lis.forEach((l,i)=>{if(i<=stage)trackT.push(setTimeout(()=>{if(i<stage)l.classList.add('ok');else l.classList.add('now');$('#tlBar').style.width=((i+(i===stage?.5:1))/lis.length*100)+'%'},350+i*450))});
+}
+$('#tGo').onclick=runTrack;$('#tCode').addEventListener('keydown',e=>{if(e.key==='Enter')runTrack()});
+new IntersectionObserver((es,o)=>{es.forEach(e=>{if(e.isIntersecting){o.disconnect();runTrack()}})},{threshold:.4}).observe($('#tl'));
+
+/* ---------- GALLERY ---------- */
+const gs=$('#gstrip');
+$('#gNext').onclick=()=>gs.scrollBy({left:gs.clientWidth*.6,behavior:'smooth'});
+$('#gPrev').onclick=()=>gs.scrollBy({left:-gs.clientWidth*.6,behavior:'smooth'});
+let gd=null;gs.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')return;gd={x:e.clientX,s:gs.scrollLeft};gs.style.scrollSnapType='none'});
+addEventListener('pointermove',e=>{if(gd)gs.scrollLeft=gd.s-(e.clientX-gd.x)});
+addEventListener('pointerup',()=>{if(gd){gd=null;gs.style.scrollSnapType=''}});
+
+$('#yr').textContent=new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
