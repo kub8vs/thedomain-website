@@ -1,0 +1,1435 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>retouch. — tatuaż, cover i laserowe usuwanie tatuaży · Łódź, Piotrkowska 24</title>
+<meta name="description" content="retouch. Łódź: tatuaż autorski, covery i laserowe usuwanie tatuaży laserem pikosekundowym PicoGenesis. Zarezerwuj termin online, policz usuwanie w 30 sekund.">
+<meta property="og:title" content="retouch. — tattoo. removal. recovery. realness.">
+<meta property="og:description" content="Tatuaż, cover i laserowe usuwanie tatuaży. Piotrkowska 24, Łódź.">
+<meta property="og:image" content="img/insp2a.jpg">
+<meta name="theme-color" content="#0c0c0c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0c0c0c; --paper:#f3f2ef; --white:#fff; --mid:#77766f; --soft:#d9d7d1;
+  --line:rgba(12,12,12,.14); --line-d:rgba(255,255,255,.16);
+  --laser:#ff2b17;
+  --pad:clamp(18px,4vw,56px);
+  --ease:cubic-bezier(.2,.7,0,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.locked{overflow:hidden}
+img{display:block;max-width:100%}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+a{color:inherit;text-decoration:none}
+.serif{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;letter-spacing:0}
+.dot{color:var(--ink)}
+.wrap{padding-inline:var(--pad)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.muted{color:var(--mid)}
+.btn{display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 26px;background:var(--ink);color:var(--white);font-weight:600;font-size:15px;border-radius:2px;transition:transform .4s var(--ease),background .3s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn .arr{transition:transform .4s var(--ease)}
+.btn:hover .arr{transform:translateX(4px)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.btn.light{background:var(--white);color:var(--ink)}
+.btn.ghost.light{background:transparent;color:var(--white);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
+h1,h2,h3{font-weight:700;letter-spacing:-.045em;line-height:.92}
+h2{font-size:clamp(44px,8vw,120px)}
+
+/* ---------- INTRO ---------- */
+#intro{position:fixed;inset:0;z-index:100;background:var(--ink);color:var(--white);display:grid;place-items:center;transition:clip-path 1s var(--ease)}
+#intro.out{clip-path:inset(0 0 100% 0)}
+.intro-stage{position:relative;display:grid;place-items:center;font-size:clamp(64px,15vw,220px);font-weight:700;letter-spacing:-.06em;line-height:1}
+.intro-old{grid-area:1/1;position:relative;font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;letter-spacing:-.02em;color:#cfcfcf}
+.intro-old .ink{display:inline-block;transition:opacity .6s, filter .6s}
+.intro-scan{position:absolute;top:-10%;bottom:-10%;width:60px;margin-left:-30px;left:0;background:linear-gradient(90deg,transparent,rgba(255,43,23,.28),transparent);opacity:0}.intro-scan::after{content:"";position:absolute;left:29px;top:0;bottom:0;width:2px;background:var(--laser)}
+.intro-new{grid-area:1/1;clip-path:inset(0 100% 0 0)}
+.intro-meta{position:absolute;bottom:28px;left:0;right:0;display:flex;justify-content:space-between;padding-inline:var(--pad);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8d8d8d}
+.intro-count{font-variant-numeric:tabular-nums}
+
+/* ---------- NAV ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;height:72px;padding-inline:var(--pad);transition:background .4s,color .4s,transform .5s var(--ease)}
+.nav.solid{background:rgba(243,242,239,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+.nav.hide{transform:translateY(-100%)}
+.logo{font-weight:700;font-size:26px;letter-spacing:-.06em;line-height:1}
+.nav-links{display:flex;gap:30px;font-size:14px;font-weight:500}
+.nav-links a{position:relative}
+.nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.nav .btn{height:44px;padding:0 18px;font-size:14px}
+.burger{display:none;width:44px;height:44px;position:relative}
+.burger span{position:absolute;left:11px;right:11px;height:1.5px;background:currentColor;transition:transform .4s var(--ease),top .4s var(--ease)}
+.burger span:nth-child(1){top:17px}.burger span:nth-child(2){top:26px}
+.menu-open .burger span:nth-child(1){top:21px;transform:rotate(45deg)}
+.menu-open .burger span:nth-child(2){top:21px;transform:rotate(-45deg)}
+.mobile-menu{position:fixed;inset:0;z-index:45;background:var(--paper);padding:100px var(--pad) 40px;display:flex;flex-direction:column;justify-content:space-between;clip-path:inset(0 0 100% 0);transition:clip-path .7s var(--ease)}
+.menu-open .mobile-menu{clip-path:inset(0)}
+.mobile-menu a.big{display:block;font-size:44px;font-weight:700;letter-spacing:-.05em;line-height:1.15;border-bottom:1px solid var(--line);padding:8px 0}
+
+/* ---------- HERO ---------- */
+.hero{min-height:100svh;display:grid;grid-template-columns:1.15fr .85fr;padding-top:72px}
+.hero-l{display:flex;flex-direction:column;justify-content:space-between;padding:clamp(28px,5vw,70px) var(--pad) 32px}
+.hero h1{font-size:clamp(58px,9.6vw,168px);letter-spacing:-.06em;line-height:.86}
+.hero h1 .row{display:block;overflow:hidden;padding-bottom:.04em}
+.hero h1 .row>span{display:inline-block;transform:translateY(105%);transition:transform 1.1s var(--ease)}
+.ready .hero h1 .row>span{transform:none}
+.hero h1 .row:nth-child(2)>span{transition-delay:.08s}
+.hero h1 .row:nth-child(3)>span{transition-delay:.16s}
+.hero h1 .strike{position:relative;color:var(--mid)}
+.hero h1 .strike::after{content:"";position:absolute;left:-2%;right:-2%;top:54%;height:.07em;background:var(--laser);transform:scaleX(0);transform-origin:left;transition:transform .9s var(--ease) 1.2s}
+.ready .hero h1 .strike::after{transform:scaleX(1)}
+.hero-sub{max-width:520px;font-size:clamp(17px,1.5vw,21px);line-height:1.45;margin-top:28px}
+.hero-sub .serif{font-size:1.25em}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-top:40px;font-size:13px}
+.scroll-hint{display:flex;align-items:center;gap:12px;font-weight:500}
+.scroll-hint i{display:block;width:1px;height:46px;background:var(--line);position:relative;overflow:hidden}
+.scroll-hint i::after{content:"";position:absolute;left:0;top:-40%;width:1px;height:40%;background:var(--ink);animation:drip 1.8s var(--ease) infinite}
+@keyframes drip{to{top:100%}}
+.hero-r{position:relative;background:#222;overflow:hidden}
+.hero-r .ba{position:absolute;inset:0;height:100%}
+.hero-tag{position:absolute;left:20px;bottom:20px;z-index:4;color:#fff;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;display:flex;gap:10px;align-items:center;mix-blend-mode:difference}
+.hero-tag b{display:inline-block;width:8px;height:8px;background:var(--laser);border-radius:50%;box-shadow:0 0 10px var(--laser)}
+
+/* ---------- BEFORE/AFTER ---------- */
+.ba{position:relative;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:pan-y;cursor:ew-resize;--x:50%}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.ba .before{clip-path:inset(0 calc(100% - var(--x)) 0 0)}
+.ba .handle{position:absolute;top:0;bottom:0;left:var(--x);width:2px;margin-left:-1px;background:var(--laser);box-shadow:0 0 14px 3px rgba(255,43,23,.55),0 0 50px 8px rgba(255,43,23,.2);z-index:3}
+.ba .knob{position:absolute;top:50%;left:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 6px 30px rgba(0,0,0,.25);font-size:12px;font-weight:700;letter-spacing:.02em}
+.ba .lbl{position:absolute;top:16px;z-index:2;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#fff;background:rgba(12,12,12,.55);backdrop-filter:blur(6px);padding:7px 10px}
+.ba .lbl.l{left:16px}.ba .lbl.r{right:16px}
+
+/* ---------- INFO BAR ---------- */
+.infobar{background:var(--ink);color:#fff;overflow:hidden;border-block:1px solid #000}
+.marquee{display:flex;width:max-content;animation:mq 38s linear infinite}
+.infobar:hover .marquee{animation-play-state:paused}
+.marquee span{display:flex;align-items:center;gap:22px;padding:20px 22px;font-size:15px;font-weight:500;white-space:nowrap}
+.marquee span::after{content:"";width:6px;height:6px;background:#fff;border-radius:50%;margin-left:22px}
+.marquee b{font-weight:700}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ---------- WHAT DO YOU WANT ---------- */
+.choose{padding:clamp(80px,12vw,160px) 0 0}
+.sec-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;padding-inline:var(--pad);margin-bottom:clamp(36px,5vw,64px)}
+.sec-head p{max-width:420px;font-size:17px}
+.paths{border-top:1px solid var(--line)}
+.path{position:relative;display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:20px;padding:clamp(22px,3vw,38px) var(--pad);border-bottom:1px solid var(--line);overflow:hidden;transition:color .5s var(--ease)}
+.path::before{content:"";position:absolute;inset:0;background:var(--ink);transform:scaleY(0);transform-origin:bottom;transition:transform .6s var(--ease);z-index:-1}
+.path:hover{color:#fff}
+.path:hover::before{transform:scaleY(1)}
+.path .no{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.path h3{font-size:clamp(36px,6.4vw,96px)}
+.path h3 .serif{font-weight:400;letter-spacing:-.02em}
+.path .meta{text-align:right;font-size:14px;max-width:300px}
+.path .meta strong{display:block;font-size:15px;margin-bottom:4px}
+.path .peek{position:absolute;right:28%;top:50%;width:220px;height:280px;transform:translate(0,-50%) rotate(-4deg) scale(.6);opacity:0;transition:opacity .4s,transform .7s var(--ease);pointer-events:none;object-fit:cover;z-index:2}
+.path:hover .peek{opacity:1;transform:translate(0,-50%) rotate(3deg) scale(1)}
+
+/* ---------- BOOKING ---------- */
+.book{padding:clamp(90px,12vw,170px) 0 0}
+.bk{display:grid;grid-template-columns:1fr 380px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:10px}
+.bk-main{border-right:1px solid var(--line);min-width:0}
+.steps{display:flex;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.steps::-webkit-scrollbar{display:none}
+.steps button{flex:1;min-width:120px;padding:18px 16px;text-align:left;font-size:13px;font-weight:500;color:var(--mid);border-right:1px solid var(--line);position:relative;transition:color .3s}
+.steps button:last-child{border-right:0}
+.steps button i{display:block;font-style:normal;font-size:11px;letter-spacing:.12em;margin-bottom:2px}
+.steps button.on{color:var(--ink)}
+.steps button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink)}
+.steps button.done{color:var(--ink)}
+.steps button.done i::after{content:" ✓"}
+.panes{position:relative}
+.pane{display:none;padding:clamp(24px,3.5vw,48px);min-height:520px;animation:paneIn .6s var(--ease)}
+.pane.on{display:block}
+@keyframes paneIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.q{font-size:clamp(28px,3.4vw,46px);font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:8px}
+.q-sub{color:var(--mid);margin-bottom:30px;max-width:560px}
+.opts{border-top:1px solid var(--line)}
+.opt{display:grid;grid-template-columns:28px 1fr auto;gap:18px;align-items:center;width:100%;text-align:left;padding:20px 4px;border-bottom:1px solid var(--line);transition:padding .4s var(--ease),background .3s}
+.opt:hover{padding-left:14px}
+.opt .rad{width:20px;height:20px;border:1.5px solid var(--ink);border-radius:50%;position:relative}
+.opt.sel .rad::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--ink)}
+.opt b{display:block;font-size:20px;letter-spacing:-.02em}
+.opt small{color:var(--mid);font-size:14px}
+.opt .tag{font-size:13px;font-weight:600}
+.pane-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:34px}
+.back{font-size:14px;font-weight:500;color:var(--mid)}
+.back:hover{color:var(--ink)}
+.body-wrap{display:grid;grid-template-columns:260px 1fr;gap:clamp(20px,4vw,56px);align-items:start}
+.body-svg{width:100%;max-width:260px;height:auto}
+.body-svg .fig{fill:none;stroke:var(--ink);stroke-width:1.2}
+.body-svg .zone{fill:var(--ink);opacity:0;cursor:pointer;transition:opacity .3s}
+.body-svg .hot{cursor:pointer}
+.body-svg .hot circle.r{fill:var(--paper);stroke:var(--ink);stroke-width:1.2;transition:all .3s}
+.body-svg .hot circle.c{fill:var(--ink);transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .35s var(--ease)}
+.body-svg .hot.sel circle.r{stroke:var(--laser);stroke-width:2}
+.body-svg .hot.sel circle.c{transform:scale(1);fill:var(--laser)}
+.body-svg .hot:hover circle.r{stroke-width:2.2}
+.fb-toggle{display:inline-flex;border:1px solid var(--ink);margin-bottom:14px}
+.fb-toggle button{padding:8px 16px;font-size:13px;font-weight:600}
+.fb-toggle button.on{background:var(--ink);color:#fff}
+.place-list{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line)}
+.place-list button{text-align:left;padding:14px 4px;border-bottom:1px solid var(--line);font-weight:500;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.place-list button:nth-child(odd){border-right:1px solid var(--line);padding-right:14px}
+.place-list button:nth-child(even){padding-left:14px}
+.place-list button.sel{font-weight:700}
+.place-list button.sel::after{content:"●";color:var(--laser);font-size:11px}
+.place-list button span{color:var(--mid);font-size:12px;font-weight:500}
+.size-row{display:grid;grid-template-columns:1fr 280px;gap:clamp(20px,4vw,56px);align-items:center}
+.ruler{position:relative;height:300px;border:1px solid var(--line);background:
+ linear-gradient(var(--line) 1px,transparent 1px) 0 0/20px 20px,
+ linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/20px 20px,#fff;display:grid;place-items:center;overflow:hidden}
+.ruler .shape{border:1.5px solid var(--ink);background:rgba(12,12,12,.06);transition:width .25s var(--ease),height .25s var(--ease);display:grid;place-items:center;font-size:12px;font-weight:700}
+.ruler .coin{position:absolute;left:14px;bottom:14px;display:flex;gap:8px;align-items:center;font-size:12px;color:var(--mid)}
+.ruler .coin i{display:block;border-radius:50%;border:1.5px solid var(--mid)}
+.range{width:100%;-webkit-appearance:none;appearance:none;height:2px;background:var(--ink);outline:none;margin:22px 0 10px}
+.range::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--ink);border:4px solid var(--paper);box-shadow:0 0 0 1.5px var(--ink);cursor:grab}
+.range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--ink);border:4px solid var(--paper);box-shadow:0 0 0 1.5px var(--ink);cursor:grab}
+.big-num{font-size:clamp(60px,7vw,104px);font-weight:700;letter-spacing:-.06em;line-height:1;font-variant-numeric:tabular-nums}
+.big-num small{font-size:.32em;letter-spacing:-.02em;margin-left:6px}
+.chips{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line);margin-top:26px}
+.chips button{padding:12px 16px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:14px;font-weight:500;transition:background .25s,color .25s}
+.chips button.sel{background:var(--ink);color:#fff}
+.artists-pick{border-top:1px solid var(--line)}
+.ap{display:grid;grid-template-columns:72px 1fr auto;gap:18px;align-items:center;width:100%;text-align:left;padding:14px 4px;border-bottom:1px solid var(--line);transition:background .3s}
+.ap img{width:72px;height:72px;object-fit:cover;filter:grayscale(1);transition:filter .4s}
+.ap:hover img,.ap.sel img{filter:none}
+.ap .ph{width:72px;height:72px;background:var(--soft);display:grid;place-items:center;font-weight:700;font-size:22px;letter-spacing:-.04em}
+.ap b{font-size:19px;letter-spacing:-.02em;display:block}
+.ap small{color:var(--mid);font-size:14px}
+.ap .match{font-size:13px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.ap .match em{display:block;font-style:normal;font-weight:500;color:var(--mid);font-size:12px}
+.ap.sel{background:rgba(12,12,12,.05)}
+.ap.sel b::after{content:"  ●";color:var(--laser);font-size:12px;vertical-align:middle}
+.drop{border:1.5px dashed rgba(12,12,12,.35);padding:34px;text-align:center;cursor:pointer;transition:background .3s,border-color .3s;display:block}
+.drop:hover,.drop.over{background:#fff;border-color:var(--ink)}
+.drop b{display:block;font-size:20px;letter-spacing:-.02em;margin-bottom:4px}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.thumbs div{position:relative;width:92px;height:92px}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.thumbs button{position:absolute;top:4px;right:4px;width:22px;height:22px;background:var(--ink);color:#fff;font-size:12px;line-height:22px}
+textarea.in,input.in{width:100%;border:0;border-bottom:1px solid var(--ink);background:transparent;padding:14px 0;font-size:17px;outline:none;resize:vertical}
+textarea.in{min-height:90px}
+.field-l{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-top:26px}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.cal-type{display:inline-flex;border:1px solid var(--ink)}
+.cal-type button{padding:9px 14px;font-size:13px;font-weight:600}
+.cal-type button.on{background:var(--ink);color:#fff}
+.days{display:flex;gap:0;overflow-x:auto;border-top:1px solid var(--line);border-left:1px solid var(--line);scrollbar-width:thin}
+.day{flex:0 0 76px;padding:12px 8px;text-align:center;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:background .25s,color .25s}
+.day i{display:block;font-style:normal;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid)}
+.day b{display:block;font-size:24px;letter-spacing:-.04em;line-height:1.1}
+.day small{display:block;font-size:11px;color:var(--mid)}
+.day.sel{background:var(--ink);color:#fff}.day.sel i,.day.sel small{color:#bbb}
+.day:disabled{opacity:.35;cursor:not-allowed}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));border-left:1px solid var(--line);border-top:1px solid var(--line);margin-top:18px}
+.slots button{padding:14px 6px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-weight:600;font-variant-numeric:tabular-nums;transition:background .25s,color .25s}
+.slots button.sel{background:var(--ink);color:#fff}
+.slots button:disabled{color:#bbb;text-decoration:line-through;cursor:not-allowed}
+.slot-note{font-size:13px;color:var(--mid);margin-top:12px}
+.slot-note b{color:var(--laser)}
+.pay{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line);margin-top:10px}
+.pay button{padding:16px 8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-weight:700;font-size:14px}
+.pay button.sel{background:var(--ink);color:#fff}
+.done-box{text-align:left;padding-top:10px}
+.done-box .big{font-size:clamp(44px,6vw,84px);font-weight:700;letter-spacing:-.05em;line-height:.95}
+.done-box ol{list-style:none;counter-reset:s;border-top:1px solid var(--line);margin-top:28px}
+.done-box li{counter-increment:s;display:grid;grid-template-columns:40px 1fr;padding:14px 0;border-bottom:1px solid var(--line)}
+.done-box li::before{content:"0" counter(s);font-size:13px;font-weight:600}
+.bk-side{position:relative;background:#fff}
+.sum{position:sticky;top:72px;padding:clamp(24px,3vw,36px)}
+.sum h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:18px;display:flex;justify-content:space-between}
+.sum dl{border-top:1px solid var(--line)}
+.sum dl div{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.sum dt{color:var(--mid)}
+.sum dd{font-weight:600}
+.sum dd.empty{color:#bbb;font-weight:500}
+.est{margin-top:24px}
+.est .v{font-size:40px;font-weight:700;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.est p{font-size:13px;color:var(--mid);margin-top:8px}
+.dep{margin-top:20px;padding:14px 0;border-top:1px solid var(--ink);display:flex;justify-content:space-between;font-size:14px;font-weight:600}
+.sum .btn{width:100%;justify-content:center;margin-top:16px}
+.sum .btn:disabled{background:#c9c8c3;cursor:not-allowed;transform:none}
+
+/* ---------- REMOVAL CALC ---------- */
+.calc{background:var(--ink);color:#fff;padding:clamp(90px,12vw,170px) 0 clamp(70px,9vw,120px);margin-top:clamp(90px,12vw,170px)}
+.calc .sec-head p{color:#b9b9b4}
+.calc-grid{display:grid;grid-template-columns:1.05fr .95fr;border-top:1px solid var(--line-d);border-bottom:1px solid var(--line-d)}
+.calc-l{padding:clamp(24px,3.5vw,48px) var(--pad);border-right:1px solid var(--line-d)}
+.calc-r{padding:clamp(24px,3.5vw,48px) var(--pad)}
+.calc .range{background:#fff}
+.calc .range::-webkit-slider-thumb{background:#fff;border-color:var(--ink);box-shadow:0 0 0 1.5px #fff}
+.calc .range::-moz-range-thumb{background:#fff;border-color:var(--ink);box-shadow:0 0 0 1.5px #fff}
+.calc .chips{border-color:var(--line-d)}
+.calc .chips button{border-color:var(--line-d)}
+.calc .chips button.sel{background:#fff;color:var(--ink)}
+.skin{position:relative;height:280px;border:1px solid var(--line-d);background:
+ linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px) 0 0/14px 14px,
+ linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px) 0 0/14px 14px,#161616;display:grid;place-items:center;overflow:hidden;margin-bottom:8px}
+.skin .tt{position:relative;border:1.5px solid #fff;transition:width .25s var(--ease),height .25s var(--ease)}
+.skin .tt::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.18) 0 2px,transparent 2px 7px);transition:opacity .4s}
+.skin .tt.shade::before{background:rgba(255,255,255,.35)}
+.skin .tt.color::before{background:linear-gradient(135deg,rgba(255,43,23,.55),rgba(255,180,0,.45),rgba(40,120,255,.5))}
+.skin .dim{position:absolute;font-size:12px;font-weight:600;color:#bbb;font-variant-numeric:tabular-nums}
+.skin .dim.w{left:50%;transform:translateX(-50%);top:-22px}
+.skin .dim.h{top:50%;right:-48px;transform:translateY(-50%)}
+.sl-row{display:grid;grid-template-columns:110px 1fr 72px;align-items:center;gap:16px}
+.sl-row label{font-size:13px;color:#b9b9b4}
+.sl-row output{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.res-top{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line-d)}
+.res-top div{padding:20px 0;border-bottom:1px solid var(--line-d)}
+.res-top div:nth-child(odd){padding-right:16px;border-right:1px solid var(--line-d)}
+.res-top div:nth-child(even){padding-left:20px}
+.res-top small{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#9d9d97;font-weight:600;margin-bottom:6px}
+.res-top b{font-size:clamp(26px,2.6vw,40px);white-space:nowrap;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.timeline{margin-top:30px}
+.timeline small{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#9d9d97;font-weight:600;margin-bottom:14px}
+.tl{display:flex;gap:4px;align-items:flex-end;height:74px}
+.tl i{flex:1;background:#fff;transition:height .5s var(--ease),opacity .5s;position:relative}
+.tl-l{display:flex;justify-content:space-between;font-size:12px;color:#9d9d97;margin-top:8px}
+.free-note{display:none;margin-top:24px;padding:18px 0;border-top:1px solid var(--laser);border-bottom:1px solid var(--line-d);font-size:15px}
+.free-note.on{display:block}
+.free-note b{color:var(--laser)}
+.calc-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.calc-foot{padding:22px var(--pad) 0;font-size:13px;color:#9d9d97;max-width:900px}
+
+/* ---------- RESULTS ---------- */
+.results{padding:clamp(90px,12vw,170px) 0 0}
+.res-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);border-top:1px solid var(--line)}
+.res-stage{position:relative;aspect-ratio:4/5;max-height:86vh;border-right:1px solid var(--line)}
+.res-stage .ba{position:absolute;inset:0}
+.res-info{display:flex;flex-direction:column;justify-content:space-between;padding:clamp(24px,3.5vw,48px) var(--pad)}
+.res-info .n{font-size:clamp(110px,16vw,240px);font-weight:700;letter-spacing:-.07em;line-height:.8;font-variant-numeric:tabular-nums}
+.res-info .n small{font-size:.16em;letter-spacing:-.01em;font-weight:600;margin-left:10px;display:inline-block;transform:translateY(-.4em)}
+.res-info h3{font-size:clamp(28px,3vw,42px);margin-top:20px}
+.res-info p{color:var(--mid);max-width:440px;margin-top:10px}
+.strip{display:grid;grid-template-columns:repeat(6,1fr);gap:0;border-top:1px solid var(--line);margin-top:30px}
+.strip button{position:relative;aspect-ratio:3/4;overflow:hidden;border-right:1px solid var(--line)}
+.strip button:last-child{border-right:0}
+.strip img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:filter .4s,transform .7s var(--ease)}
+.strip button:hover img{transform:scale(1.06)}
+.strip button.sel img{filter:none}
+.strip button.sel::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--laser)}
+.strip span{position:absolute;left:8px;bottom:8px;color:#fff;font-size:11px;font-weight:700;mix-blend-mode:difference}
+
+/* ---------- ARTISTS ---------- */
+.artists{padding:clamp(90px,12vw,170px) 0 0}
+.alist{border-top:1px solid var(--line);position:relative}
+.arow{border-bottom:1px solid var(--line)}
+.arow>button{display:grid;grid-template-columns:90px 1.2fr 1fr 1fr 40px;gap:20px;align-items:center;width:100%;text-align:left;padding:clamp(20px,2.6vw,32px) var(--pad);transition:padding .5s var(--ease)}
+.arow>button:hover{padding-left:calc(var(--pad) + 14px)}
+.arow .no{font-size:13px;font-weight:600}
+.arow .nm{font-size:clamp(34px,5vw,74px);font-weight:700;letter-spacing:-.05em;line-height:.95}
+.arow .nm .serif{font-size:.5em;color:var(--mid);margin-left:8px;letter-spacing:0}
+.arow .sp{font-size:15px}
+.arow .tg{font-size:13px;color:var(--mid)}
+.arow .pl{width:34px;height:34px;border:1px solid var(--ink);border-radius:50%;position:relative;justify-self:end;transition:transform .5s var(--ease),background .3s}
+.arow .pl::before,.arow .pl::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.5px;background:currentColor;transform:translate(-50%,-50%)}
+.arow .pl::after{transform:translate(-50%,-50%) rotate(90deg);transition:transform .4s var(--ease)}
+.arow.open .pl{background:var(--ink);color:#fff}
+.arow.open .pl::after{transform:translate(-50%,-50%) rotate(0)}
+.adet{display:grid;grid-template-rows:0fr;transition:grid-template-rows .7s var(--ease)}
+.arow.open .adet{grid-template-rows:1fr}
+.adet>div{overflow:hidden}
+.adet-in{display:grid;grid-template-columns:320px 1fr;gap:clamp(20px,4vw,56px);padding:0 var(--pad) clamp(28px,4vw,48px) calc(var(--pad) + 110px)}
+.adet-in .portrait{aspect-ratio:1;object-fit:cover;width:100%}
+.adet-in .portrait.ph{background:var(--soft);display:grid;place-items:center;font-size:90px;font-weight:700;letter-spacing:-.06em}
+.adet-in p{font-size:17px;max-width:620px}
+.adet-in .works{display:flex;gap:8px;margin-top:22px;overflow-x:auto}
+.adet-in .works img{height:180px;width:auto;flex:0 0 auto;object-fit:cover}
+.adet-in .btn{margin-top:24px}
+.float-pic{position:fixed;width:240px;height:300px;object-fit:cover;pointer-events:none;z-index:30;opacity:0;transform:translate(-50%,-50%) scale(.85) rotate(-3deg);transition:opacity .3s,transform .5s var(--ease);filter:grayscale(1)}
+.float-pic.on{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(2deg)}
+
+/* ---------- FOUNDATION ---------- */
+.found{margin-top:clamp(90px,12vw,170px);position:relative;background:var(--ink);color:#fff;display:grid;grid-template-columns:1fr 1fr;min-height:90vh}
+.found-img{position:relative;overflow:hidden}
+.found-img .ba{position:absolute;inset:0}
+.found-txt{padding:clamp(40px,6vw,96px) var(--pad);display:flex;flex-direction:column;justify-content:center}
+.found-txt h2{font-size:clamp(44px,6.4vw,104px)}
+.found-txt h2 .serif{font-weight:400;letter-spacing:-.02em}
+.found-txt p{color:#c9c9c4;font-size:18px;max-width:520px;margin-top:26px}
+.found-txt ul{list-style:none;border-top:1px solid var(--line-d);margin-top:30px;max-width:520px}
+.found-txt li{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line-d);font-size:15px}
+.found-txt li b{font-weight:600}
+.found-txt .btn{margin-top:30px;align-self:flex-start}
+
+/* ---------- PRICES ---------- */
+.prices{padding:clamp(90px,12vw,170px) 0 0}
+.ptabs{display:flex;gap:0;padding-inline:var(--pad);margin-bottom:24px;flex-wrap:wrap}
+.ptabs button{padding:10px 18px;font-weight:600;font-size:14px;box-shadow:inset 0 0 0 1px var(--ink);margin-right:-1px}
+.ptabs button.on{background:var(--ink);color:#fff}
+.ptable{border-top:1px solid var(--ink)}
+.prow{display:grid;grid-template-columns:1.6fr 1fr 1fr 160px;gap:16px;align-items:center;padding:20px var(--pad);border-bottom:1px solid var(--line);transition:background .3s}
+.prow:hover{background:#fff}
+.prow b{font-size:clamp(18px,1.8vw,24px);letter-spacing:-.03em}
+.prow .d{color:var(--mid);font-size:14px}
+.prow .t{font-size:14px}
+.prow .p{text-align:right;font-weight:700;font-size:clamp(20px,2vw,28px);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.prow .bk-l{font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:4px;justify-self:end;margin-top:4px;display:block;text-align:right}
+.pnote{padding:18px var(--pad);font-size:14px;color:var(--mid)}
+
+/* ---------- ABOUT ---------- */
+.about{padding:clamp(90px,12vw,170px) 0 0}
+.words{padding-inline:var(--pad)}
+.words div{font-size:clamp(56px,12.5vw,210px);font-weight:700;letter-spacing:-.065em;line-height:.88;overflow:hidden}
+.words div span{display:inline-block;transform:translateY(100%);transition:transform 1s var(--ease)}
+.words.in div span{transform:none}
+.words div:nth-child(2) span{transition-delay:.08s}.words div:nth-child(3) span{transition-delay:.16s}.words div:nth-child(4) span{transition-delay:.24s}
+.words div:nth-child(even){text-align:right}
+.words div .serif{font-weight:400;letter-spacing:-.03em}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line);margin-top:clamp(40px,6vw,80px)}
+.about-txt{padding:clamp(28px,4vw,56px) var(--pad);border-right:1px solid var(--line)}
+.about-txt p{font-size:clamp(18px,1.6vw,22px);line-height:1.5;max-width:620px}
+.about-txt p+p{margin-top:18px;font-size:16px;color:var(--mid)}
+.stats{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);margin-top:36px}
+.stats div{padding:22px 0;border-bottom:1px solid var(--line)}
+.stats div:nth-child(odd){border-right:1px solid var(--line);padding-right:16px}
+.stats div:nth-child(even){padding-left:20px}
+.stats b{display:block;font-size:clamp(40px,4.4vw,64px);letter-spacing:-.06em;line-height:1;font-variant-numeric:tabular-nums}
+.stats small{color:var(--mid);font-size:14px}
+.about-pics{display:grid;grid-template-rows:1.4fr 1fr;grid-template-columns:1fr 1fr;gap:0}
+.about-pics div{overflow:hidden;position:relative}
+.about-pics div:first-child{grid-column:1/3}
+.about-pics img{width:100%;height:100%;object-fit:cover;transform:scale(1.12);transition:transform 1.6s var(--ease)}
+.about-pics.in img{transform:scale(1)}
+.about-pics div+div{border-top:1px solid var(--paper)}
+.about-pics div:last-child{border-left:1px solid var(--paper)}
+
+/* ---------- REVIEWS ---------- */
+.reviews{padding:clamp(90px,12vw,170px) 0 0}
+.rv-wrap{border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;grid-template-columns:300px 1fr}
+.rv-score{padding:clamp(24px,3vw,40px) var(--pad);border-right:1px solid var(--line)}
+.rv-score b{font-size:110px;font-weight:700;letter-spacing:-.07em;line-height:.9;display:block}
+.rv-score .stars{letter-spacing:4px;margin:8px 0}
+.rv-list{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.rv-list::-webkit-scrollbar{display:none}
+.rv{flex:0 0 min(460px,85vw);scroll-snap-align:start;padding:clamp(24px,3vw,40px);border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;gap:30px}
+.rv q{font-size:clamp(20px,1.9vw,26px);line-height:1.3;letter-spacing:-.02em;quotes:"„" "”"}
+.rv div{font-size:13px;color:var(--mid)}
+.rv div b{color:var(--ink);font-size:14px}
+.rv-nav{display:flex;gap:8px;margin-top:20px}
+.rv-nav button{width:46px;height:46px;border:1px solid var(--ink);border-radius:50%;font-size:18px}
+.rv-nav button:hover{background:var(--ink);color:#fff}
+
+/* ---------- FAQ ---------- */
+.faq{padding:clamp(90px,12vw,170px) 0 0}
+.faq-grid{display:grid;grid-template-columns:1fr 1.4fr;border-top:1px solid var(--line)}
+.faq-l{padding:clamp(24px,3vw,40px) var(--pad);border-right:1px solid var(--line)}
+.faq-search{width:100%;border:0;border-bottom:1px solid var(--ink);background:transparent;padding:14px 0;font-size:18px;outline:none}
+.faq-l p{font-size:15px;color:var(--mid);margin-top:18px}
+.qa{border-bottom:1px solid var(--line)}
+.qa button{display:flex;justify-content:space-between;gap:20px;width:100%;text-align:left;padding:24px var(--pad);font-size:clamp(18px,1.7vw,23px);font-weight:600;letter-spacing:-.02em}
+.qa button::after{content:"+";font-weight:400;font-size:26px;line-height:1;transition:transform .4s var(--ease)}
+.qa.open button::after{transform:rotate(45deg)}
+.qa .a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+.qa.open .a{grid-template-rows:1fr}
+.qa .a>div{overflow:hidden}
+.qa .a p{padding:0 var(--pad) 24px;color:#3d3d3a;max-width:720px}
+.qa.hidden{display:none}
+
+/* ---------- VISIT / FOOTER ---------- */
+.visit{padding:clamp(90px,12vw,170px) 0 0}
+.visit-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.visit-info{padding:clamp(24px,3.5vw,48px) var(--pad);border-right:1px solid var(--line)}
+.visit-info .addr{font-size:clamp(34px,4.4vw,64px);font-weight:700;letter-spacing:-.05em;line-height:1}
+.hours{border-top:1px solid var(--line);margin-top:30px}
+.hours div{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}
+.hours .today{font-weight:700}
+.open-now{display:inline-flex;gap:8px;align-items:center;font-size:13px;font-weight:600;margin-top:18px}
+.open-now i{width:8px;height:8px;border-radius:50%;background:#18a957;box-shadow:0 0 0 4px rgba(24,169,87,.15)}
+.open-now.closed i{background:#bbb;box-shadow:none}
+.map{position:relative;min-height:420px;filter:grayscale(1) contrast(1.1)}
+.map iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+footer{background:var(--ink);color:#fff;margin-top:clamp(90px,12vw,170px);padding:clamp(50px,7vw,90px) var(--pad) 28px}
+.f-top{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:start}
+.f-logo{font-size:clamp(90px,17vw,280px);font-weight:700;letter-spacing:-.075em;line-height:.8}
+.f-tag{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#9d9d97;margin-top:20px;font-weight:600}
+.f-links{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;font-size:15px}
+.f-links h5{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9d9d97;font-weight:600;margin-bottom:14px}
+.f-links a{display:block;padding:4px 0}
+.f-links a:hover{text-decoration:underline;text-underline-offset:4px}
+.f-bot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:70px;padding-top:22px;border-top:1px solid var(--line-d);font-size:13px;color:#9d9d97}
+.f-bot nav{display:flex;gap:22px;flex-wrap:wrap}
+.f-bot a:hover{color:#fff}
+
+/* sticky mobile bar */
+.mbar{display:none}
+/* cookie */
+.cookie{position:fixed;left:16px;bottom:16px;z-index:60;max-width:380px;background:var(--white);border:1px solid var(--ink);padding:18px;font-size:13px;transform:translateY(calc(100% + 140px));visibility:hidden;transition:transform .7s var(--ease),visibility 0s .7s;transition:transform .7s var(--ease)}
+.cookie.on{transform:none;visibility:visible;transition:transform .7s var(--ease)}
+.cookie div{display:flex;gap:8px;margin-top:12px}
+.cookie button{padding:10px 14px;font-weight:600;border:1px solid var(--ink)}
+.cookie button.ok{background:var(--ink);color:#fff}
+/* modal */
+.modal{position:fixed;inset:0;z-index:80;background:rgba(12,12,12,.6);display:none;align-items:center;justify-content:center;padding:16px}
+.modal.on{display:flex}
+.modal-box{background:var(--paper);width:min(560px,100%);padding:clamp(24px,4vw,40px);position:relative;max-height:90vh;overflow:auto;animation:paneIn .5s var(--ease)}
+.modal-box .x{position:absolute;top:12px;right:12px;width:40px;height:40px;font-size:22px}
+.toast{position:fixed;left:50%;bottom:24px;z-index:90;transform:translate(-50%,200px);background:var(--ink);color:#fff;padding:14px 20px;font-size:14px;font-weight:500;transition:transform .6s var(--ease);max-width:calc(100% - 32px)}
+.toast.on{transform:translate(-50%,0)}
+
+/* reveal */
+.rv-up{opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.rv-up.in{opacity:1;transform:none}
+.line-in{transform:scaleX(0);transform-origin:left;transition:transform 1.2s var(--ease)}
+.line-in.in{transform:scaleX(1)}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:1100px){
+  .bk{grid-template-columns:1fr}
+  .bk-main{border-right:0}
+  .bk-side{border-top:1px solid var(--line)}
+  .sum{position:static}
+  .arow>button{grid-template-columns:60px 1fr auto 40px}
+  .arow .tg{display:none}
+}
+@media (max-width:900px){
+  .nav-links,.nav-cta .btn.ghost{display:none}
+  .burger{display:block}
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-r{height:72svh;order:2}
+  .hero-l{padding-bottom:40px}
+  .hero-foot{display:none}
+  .sec-head{grid-template-columns:1fr}
+  .path{grid-template-columns:44px 1fr;gap:10px}
+  .path .meta{grid-column:2;text-align:left}
+  .path .peek{display:none}
+  .body-wrap{grid-template-columns:1fr}
+  .body-svg{max-width:200px;margin:0 auto}
+  .size-row{grid-template-columns:1fr}
+  .calc-grid,.res-grid,.found,.about-grid,.faq-grid,.visit-grid{grid-template-columns:1fr}
+  .calc-l,.res-stage,.about-txt,.faq-l,.visit-info{border-right:0}
+  .calc-l{border-bottom:1px solid var(--line-d)}
+  .res-stage{max-height:none;border-bottom:1px solid var(--line)}
+  .found-img{min-height:70svh}
+  .about-pics{min-height:520px}
+  .faq-l{border-bottom:1px solid var(--line)}
+  .rv-wrap{grid-template-columns:1fr}
+  .rv-score{border-right:0;border-bottom:1px solid var(--line)}
+  .arow>button{grid-template-columns:36px 1fr 34px;gap:12px}
+  .arow .sp{display:none}
+  .adet-in{grid-template-columns:1fr;padding-left:var(--pad)}
+  .adet-in .portrait{max-width:260px}
+  .prow{grid-template-columns:1fr auto;gap:4px 16px}
+  .prow .d{grid-column:1}
+  .prow .t{grid-column:1;color:var(--mid)}
+  .prow .p{grid-row:1;grid-column:2}
+  .prow .bk-l{grid-column:2;grid-row:2/4}
+  .f-top{grid-template-columns:1fr}
+  .f-links{grid-template-columns:1fr 1fr}
+  .float-pic{display:none}
+  .mbar{display:grid;grid-template-columns:1fr 1fr;position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--ink);transform:translateY(100%);transition:transform .5s var(--ease);padding-bottom:env(safe-area-inset-bottom)}
+  .mbar.on{transform:none}
+  .mbar a{color:#fff;text-align:center;padding:17px 8px;font-weight:600;font-size:15px}
+  .mbar a+a{background:#fff;color:var(--ink)}
+  .cookie{bottom:72px;right:16px}
+  footer{padding-bottom:90px}
+}
+@media (max-width:560px){
+  .steps button{min-width:96px;padding:14px 10px}
+  .place-list{grid-template-columns:1fr}
+  .place-list button:nth-child(odd){border-right:0;padding-right:4px}
+  .place-list button:nth-child(even){padding-left:4px}
+  .strip{grid-template-columns:repeat(3,1fr)}
+  .strip button:nth-child(3){border-right:0}
+  .sl-row{grid-template-columns:80px 1fr 60px;gap:10px}
+  .res-top b{font-size:28px}
+  .pay{grid-template-columns:1fr 1fr 1fr}
+  .ap{grid-template-columns:56px 1fr auto;gap:12px}
+  .ap img,.ap .ph{width:56px;height:56px}
+  .words div:nth-child(even){text-align:left}
+  .skin .dim.h{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body class="locked">
+
+<!-- INTRO -->
+<div id="intro" aria-hidden="true">
+  <div class="intro-stage">
+    <div class="intro-old"><span class="ink" id="introInk">tatuaż</span></div>
+    <div class="intro-new" id="introNew">retouch.</div>
+    <div class="intro-scan" id="introScan"></div>
+  </div>
+  <div class="intro-meta"><span>Piotrkowska 24 · Łódź</span><span class="intro-count" id="introCount">000</span></div>
+</div>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <a href="#top" class="logo" aria-label="retouch. strona główna">retouch.</a>
+  <nav class="nav-links">
+    <a href="#rezerwacja">Tatuaż</a>
+    <a href="#usuwanie">Usuwanie</a>
+    <a href="#efekty">Efekty</a>
+    <a href="#artysci">Artyści</a>
+    <a href="#cennik">Cennik</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <div class="nav-cta">
+    <a href="#usuwanie" class="btn ghost">Policz usuwanie</a>
+    <a href="#rezerwacja" class="btn">Umów się <span class="arr">→</span></a>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu" id="mmenu">
+  <div>
+    <a class="big" href="#rezerwacja">Zarezerwuj tatuaż</a>
+    <a class="big" href="#usuwanie">Policz usuwanie</a>
+    <a class="big" href="#efekty">Efekty</a>
+    <a class="big" href="#artysci">Artyści</a>
+    <a class="big" href="#cennik">Cennik</a>
+    <a class="big" href="#faq">FAQ</a>
+  </div>
+  <div class="muted" style="font-size:14px">Piotrkowska 24, Łódź · @retouch.lodz</div>
+</div>
+
+<main id="top">
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-l">
+    <div>
+      <div class="eyebrow muted" style="margin-bottom:22px">Tattoo · Cover · Laser — Łódź</div>
+      <h1>
+        <span class="row"><span>Zrób.</span></span>
+        <span class="row"><span>Popraw.</span></span>
+        <span class="row"><span class="strike">Usuń.</span></span>
+      </h1>
+      <p class="hero-sub">Tatuaż autorski, covery i laserowe usuwanie w jednym miejscu. <span class="serif">Każda historia na skórze może dostać nowy rozdział.</span></p>
+      <div class="hero-cta">
+        <a href="#rezerwacja" class="btn">Zarezerwuj tatuaż <span class="arr">→</span></a>
+        <a href="#usuwanie" class="btn ghost">Policz usuwanie w 30 s</a>
+      </div>
+    </div>
+    <div class="hero-foot">
+      <a href="#wybor" class="scroll-hint"><i></i>Przewiń, zobacz co możemy zrobić</a>
+      <div style="text-align:right"><b>5.0 ★</b> · 130 opinii<br><span class="muted">zweryfikowane wizyty</span></div>
+    </div>
+  </div>
+  <div class="hero-r">
+    <div class="ba" id="heroBA" style="--x:100%">
+      <img src="img/insp2b.jpg" alt="Szyja po 6 sesjach usuwania tatuażu">
+      <img class="before" src="img/insp2a.jpg" alt="Tatuaż na szyi przed usuwaniem">
+      <span class="lbl l">Przed</span><span class="lbl r">Po 6 sesjach</span>
+      <div class="handle"><div class="knob">⇆</div></div>
+    </div>
+    <div class="hero-tag"><b></b>Przeciągnij. Laser PicoGenesis</div>
+  </div>
+</section>
+
+<!-- INFO BAR -->
+<div class="infobar" aria-label="Najważniejsze informacje">
+  <div class="marquee" id="marquee">
+    <span><b>5.0 ★</b> 130 opinii na Booksy</span>
+    <span>Piotrkowska 24, Łódź</span>
+    <span>Laser pikosekundowy <b>PicoGenesis</b></span>
+    <span>Chłodzenie <b>Cryo</b> = mniej bólu</span>
+    <span>Konsultacja 100 zł <b>odliczana od ceny</b></span>
+    <span>Darmowa konsultacja online ze zdjęcia</span>
+    <span>Fundacja: twarz, szyja, dłonie <b>za darmo</b></span>
+    <span>Klient powracający = ta sama cena</span>
+  </div>
+</div>
+
+<!-- CHOOSE -->
+<section class="choose" id="wybor">
+  <div class="sec-head">
+    <h2 class="rv-up">Co robimy<span class="dot">?</span></h2>
+    <p class="rv-up muted">Wybierz jedną rzecz. Resztę poprowadzimy krok po kroku, bez dzwonienia i pisania na Instagramie.</p>
+  </div>
+  <div class="paths">
+    <a href="#rezerwacja" class="path" data-path="new">
+      <span class="no">01</span>
+      <h3>Nowy <span class="serif">tatuaż</span></h3>
+      <div class="meta"><strong>Wybierz artystę i termin →</strong>realizm, grafika, fine line, mikrorealizm, napisy</div>
+      <img class="peek" src="img/praca28.jpg" alt="">
+    </a>
+    <a href="#rezerwacja" class="path" data-path="cover">
+      <span class="no">02</span>
+      <h3>Cover <span class="serif">i korekta</span></h3>
+      <div class="meta"><strong>Zakryjemy stary tatuaż →</strong>laser rozjaśnia, artysta tworzy nowy</div>
+      <img class="peek" src="img/praca26.jpg" alt="">
+    </a>
+    <a href="#usuwanie" class="path" data-path="remove">
+      <span class="no">03</span>
+      <h3>Usuwanie <span class="serif">laserem</span></h3>
+      <div class="meta"><strong>Policz cenę i liczbę sesji →</strong>tatuaże, blizny, makijaż permanentny</div>
+      <img class="peek" src="img/insp5a.jpg" alt="">
+    </a>
+  </div>
+</section>
+
+<!-- BOOKING SYSTEM -->
+<section class="book" id="rezerwacja">
+  <div class="sec-head">
+    <h2 class="rv-up">Rezerwacja<span class="dot">.</span></h2>
+    <p class="rv-up muted">Sześć prostych kroków. Na końcu wiesz, kto Cię tatuuje, kiedy i za ile. Zadatek 100 zł odliczamy od ceny.</p>
+  </div>
+  <div class="bk">
+    <div class="bk-main">
+      <div class="steps" id="steps">
+        <button data-s="0" class="on"><i>01</i>Co robimy</button>
+        <button data-s="1"><i>02</i>Miejsce</button>
+        <button data-s="2"><i>03</i>Rozmiar i styl</button>
+        <button data-s="3"><i>04</i>Artysta</button>
+        <button data-s="4"><i>05</i>Wzór</button>
+        <button data-s="5"><i>06</i>Termin</button>
+      </div>
+      <div class="panes">
+        <!-- 0 -->
+        <div class="pane on" data-p="0">
+          <div class="q">Co chcesz zrobić<span class="dot">?</span></div>
+          <p class="q-sub">Nie wiesz? Wybierz konsultację. 30 minut z artystą, a 100 zł wraca do Ciebie w cenie tatuażu.</p>
+          <div class="opts" id="optType">
+            <button class="opt" data-v="Nowy tatuaż"><span class="rad"></span><span><b>Nowy tatuaż</b><small>Projekt autorski albo Twój pomysł</small></span><span class="tag">sesja</span></button>
+            <button class="opt" data-v="Cover"><span class="rad"></span><span><b>Cover starego tatuażu</b><small>Z laserowym rozjaśnieniem albo bez</small></span><span class="tag">sesja</span></button>
+            <button class="opt" data-v="Konsultacja"><span class="rad"></span><span><b>Najpierw konsultacja</b><small>Szkic, miejsce, skala, plan działania</small></span><span class="tag">100 zł → w cenie</span></button>
+            <button class="opt" data-v="Poprawka"><span class="rad"></span><span><b>Poprawka tatuażu od nas</b><small>Dla tatuaży zrobionych w retouch.</small></span><span class="tag">gratis</span></button>
+          </div>
+        </div>
+        <!-- 1 -->
+        <div class="pane" data-p="1">
+          <div class="q">Gdzie na ciele<span class="dot">?</span></div>
+          <p class="q-sub">Kliknij punkt na sylwetce albo wybierz z listy. Od miejsca zależy czas sesji i to, jak bardzo boli.</p>
+          <div class="body-wrap">
+            <div>
+              <div class="fb-toggle"><button class="on" data-side="front">Przód</button><button data-side="back">Tył</button></div>
+              <svg class="body-svg" id="bodySvg" viewBox="0 0 200 420" aria-label="Sylwetka">
+                <g class="fig">
+                  <ellipse cx="100" cy="38" rx="21" ry="25"/>
+                  <path d="M90 62 L90 74 M110 62 L110 74"/>
+                  <path d="M90 74 C70 76 58 80 54 92 L46 150 L38 214 L34 240 M110 74 C130 76 142 80 146 92 L154 150 L162 214 L166 240"/>
+                  <path d="M60 98 L64 150 L66 200 C64 214 62 222 62 236 L68 318 L70 400 L90 402 L94 320 L98 246 L100 240 L102 246 L106 320 L110 402 L130 400 L132 318 L138 236 C138 222 136 214 134 200 L136 150 L140 98"/>
+                  <path d="M34 240 C30 252 32 262 40 262 C46 260 46 250 44 240 M166 240 C170 252 168 262 160 262 C154 260 154 250 156 240"/>
+                </g>
+                <g id="hots"></g>
+              </svg>
+            </div>
+            <div>
+              <div class="place-list" id="placeList"></div>
+            </div>
+          </div>
+        </div>
+        <!-- 2 -->
+        <div class="pane" data-p="2">
+          <div class="q">Jak duży i w jakim stylu<span class="dot">?</span></div>
+          <p class="q-sub">Przesuń suwak. Obok widzisz rozmiar 1:1 (siatka co 1 cm, moneta 5 zł dla skali).</p>
+          <div class="size-row">
+            <div class="ruler" id="ruler"><div class="shape" id="shape"></div><div class="coin"><i id="coin"></i>5 zł</div></div>
+            <div>
+              <div class="eyebrow muted">Dłuższy bok</div>
+              <div class="big-num"><span id="sizeV">8</span><small>cm</small></div>
+              <input type="range" class="range" id="sizeR" min="2" max="40" value="8" aria-label="Rozmiar w cm">
+              <div class="muted" style="font-size:14px" id="sizeHint">Średni: przedramię, łydka. Zwykle jedna sesja.</div>
+            </div>
+          </div>
+          <div class="chips" id="styleChips">
+            <button data-v="Fine line">Fine line</button>
+            <button data-v="Realizm">Realizm</button>
+            <button data-v="Mikrorealizm">Mikrorealizm</button>
+            <button data-v="Grafika">Grafika / szkic</button>
+            <button data-v="Ilustracja">Ilustracja</button>
+            <button data-v="Napis">Napis / symbol</button>
+            <button data-v="Nie wiem">Nie wiem, doradźcie</button>
+          </div>
+        </div>
+        <!-- 3 -->
+        <div class="pane" data-p="3">
+          <div class="q">Kto ma to zrobić<span class="dot">?</span></div>
+          <p class="q-sub">Ułożyliśmy artystów od najlepiej pasującego do Twojego stylu i rozmiaru.</p>
+          <div class="artists-pick" id="artistPick"></div>
+        </div>
+        <!-- 4 -->
+        <div class="pane" data-p="4">
+          <div class="q">Pokaż, co Ci chodzi po głowie<span class="dot">.</span></div>
+          <p class="q-sub">Wrzuć zdjęcia inspiracji albo zdjęcie miejsca na ciele. Artysta zobaczy je przed wizytą i przyjdzie ze szkicem.</p>
+          <label class="drop" id="drop"><input type="file" id="file" accept="image/*" multiple hidden><b>Przeciągnij zdjęcia tutaj</b><span class="muted">albo kliknij, żeby wybrać z telefonu (do 5 zdjęć)</span></label>
+          <div class="thumbs" id="thumbs"></div>
+          <label class="field-l" for="desc">Opisz pomysł w dwóch zdaniach</label>
+          <textarea class="in" id="desc" placeholder="Np. delikatna gałązka oliwna wzdłuż przedramienia, cienka kreska, bez cieniowania."></textarea>
+        </div>
+        <!-- 5 -->
+        <div class="pane" data-p="5">
+          <div class="cal-head">
+            <div><div class="q">Kiedy<span class="dot">?</span></div></div>
+          </div>
+          <p class="q-sub" id="calSub">Pokazujemy tylko wolne terminy wybranego artysty.</p>
+          <div class="days" id="days"></div>
+          <div class="slots" id="slots"></div>
+          <div class="slot-note" id="slotNote"></div>
+          <label class="field-l" for="phone">Telefon do potwierdzenia SMS</label>
+          <input class="in" id="phone" inputmode="tel" placeholder="+48 ___ ___ ___">
+          <label class="field-l">Zadatek 100 zł (odliczamy od ceny)</label>
+          <div class="pay" id="pay"><button data-v="BLIK">BLIK</button><button data-v="Karta">Karta</button><button data-v="Apple Pay">Apple&nbsp;Pay</button></div>
+        </div>
+        <!-- done -->
+        <div class="pane" data-p="6">
+          <div class="done-box">
+            <div class="eyebrow" style="color:var(--laser);margin-bottom:16px">● Zarezerwowane</div>
+            <div class="big" id="doneTitle">Do zobaczenia.</div>
+            <p class="muted" style="margin-top:14px;max-width:520px" id="doneSub"></p>
+            <ol>
+              <li>SMS z potwierdzeniem i przypomnienie 24 h przed wizytą.</li>
+              <li>Artysta przegląda Twoje zdjęcia i przygotowuje szkic.</li>
+              <li>Dzień przed: wyśpij się, zjedz, nie pij alkoholu.</li>
+              <li>Po sesji dostaniesz instrukcję gojenia na telefon.</li>
+            </ol>
+            <div class="pane-foot" style="justify-content:flex-start;gap:12px;flex-wrap:wrap">
+              <button class="btn" id="icsBtn">Dodaj do kalendarza</button>
+              <button class="btn ghost" id="again">Nowa rezerwacja</button>
+            </div>
+          </div>
+        </div>
+        <div class="pane-foot wrap" id="paneFoot" style="padding-bottom:28px;margin-top:0">
+          <button class="back" id="prevBtn">← Wstecz</button>
+          <button class="btn" id="nextBtn">Dalej <span class="arr">→</span></button>
+        </div>
+      </div>
+    </div>
+    <aside class="bk-side">
+      <div class="sum">
+        <h4><span>Twoja wizyta</span><span class="muted" id="sumStep">1/6</span></h4>
+        <dl>
+          <div><dt>Usługa</dt><dd id="sType" class="empty">wybierz</dd></div>
+          <div><dt>Miejsce</dt><dd id="sPlace" class="empty">—</dd></div>
+          <div><dt>Rozmiar</dt><dd id="sSize">8 cm</dd></div>
+          <div><dt>Styl</dt><dd id="sStyle" class="empty">—</dd></div>
+          <div><dt>Artysta</dt><dd id="sArtist" class="empty">—</dd></div>
+          <div><dt>Wzory</dt><dd id="sFiles" class="empty">brak zdjęć</dd></div>
+          <div><dt>Termin</dt><dd id="sDate" class="empty">—</dd></div>
+        </dl>
+        <div class="est">
+          <div class="eyebrow muted">Orientacyjnie</div>
+          <div class="v" id="sPrice">—</div>
+          <p id="sTime">Dokładną cenę potwierdza artysta po zobaczeniu wzoru.</p>
+        </div>
+        <div class="dep"><span>Zadatek dziś</span><span>100 zł</span></div>
+        <button class="btn" id="confirmBtn" disabled>Potwierdź i zapłać zadatek</button>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- REMOVAL CALCULATOR -->
+<section class="calc" id="usuwanie">
+  <div class="sec-head">
+    <h2 class="rv-up">Ile to kosztuje<span class="dot" style="color:#fff">?</span></h2>
+    <p class="rv-up">Ustaw wielkość tatuażu i jego typ. Od razu widzisz cenę sesji, liczbę zabiegów i kiedy skończysz. Ceny z naszego cennika.</p>
+  </div>
+  <div class="calc-grid">
+    <div class="calc-l">
+      <div class="skin" id="skin"><div class="tt" id="tt"><span class="dim w" id="dimW">5 cm</span><span class="dim h" id="dimH">5 cm</span></div></div>
+      <div class="muted" style="font-size:12px;margin-bottom:18px;color:#8d8d87">Siatka = 1 cm</div>
+      <div class="sl-row"><label for="cw">Szerokość</label><input class="range" type="range" id="cw" min="1" max="35" value="5"><output id="cwO">5 cm</output></div>
+      <div class="sl-row"><label for="ch">Wysokość</label><input class="range" type="range" id="ch" min="1" max="35" value="5"><output id="chO">5 cm</output></div>
+      <div class="eyebrow" style="margin-top:26px;color:#9d9d97">Jaki to tatuaż?</div>
+      <div class="chips" id="inkType" style="margin-top:12px">
+        <button data-v="contour" class="sel">Konturowy / napis</button>
+        <button data-v="shade">Cieniowany</button>
+        <button data-v="color">Kolorowy</button>
+        <button data-v="pmu">Makijaż permanentny brwi</button>
+      </div>
+      <div class="eyebrow" style="margin-top:26px;color:#9d9d97">Gdzie?</div>
+      <div class="chips" id="inkArea" style="margin-top:12px">
+        <button data-v="body" class="sel">Ciało</button>
+        <button data-v="face">Twarz</button>
+        <button data-v="neck">Szyja</button>
+        <button data-v="hand">Dłonie</button>
+      </div>
+      <label class="eyebrow" style="margin-top:22px;display:flex;gap:10px;align-items:center;color:#9d9d97;cursor:pointer"><input type="checkbox" id="returning" style="accent-color:#fff;width:18px;height:18px"> Wracam na kolejną sesję</label>
+    </div>
+    <div class="calc-r">
+      <div class="res-top">
+        <div><small>Cena za sesję</small><b id="rPrice">300 zł</b></div>
+        <div><small>Liczba sesji</small><b id="rSessions">8–12</b></div>
+        <div><small>Cały proces</small><b id="rTotal">2400–3600 zł</b></div>
+        <div><small>Koniec ok.</small><b id="rEnd">—</b></div>
+      </div>
+      <div class="timeline">
+        <small>Jak blednie tusz, sesja po sesji</small>
+        <div class="tl" id="tl"></div>
+        <div class="tl-l"><span>Dziś</span><span id="tlEnd">—</span></div>
+      </div>
+      <div class="free-note" id="freeNote"><b>● Fundacja retouch.</b> Tatuaże z twarzy, szyi i dłoni, które utrudniają życie i pracę, usuwamy bezpłatnie. Zgłoś się, oceniamy każdą historię indywidualnie.</div>
+      <div class="calc-cta">
+        <button class="btn light" id="sendPhoto">Wyślij zdjęcie, darmowa wycena <span class="arr">→</span></button>
+        <a href="#rezerwacja" class="btn ghost light" id="calcBook">Umów konsultację</a>
+      </div>
+    </div>
+  </div>
+  <p class="calc-foot">Laser pikosekundowy PicoGenesis rozbija tusz na mikroskopijne fragmenty, a organizm stopniowo je usuwa. Tatuaże konturowe potrzebują zwykle 8–12 sesji, cieniowane 5–6. Przerwa między sesjami to zwykle 6–8 tygodni. Wynik kalkulatora jest orientacyjny: plan ustalamy na konsultacji (100 zł, odliczane od pierwszego zabiegu).</p>
+</section>
+
+<!-- RESULTS -->
+<section class="results" id="efekty">
+  <div class="sec-head">
+    <h2 class="rv-up">Efekty<span class="dot">.</span></h2>
+    <p class="rv-up muted">Prawdziwi klienci, prawdziwe zdjęcia. Przeciągnij czerwoną linię lasera.</p>
+  </div>
+  <div class="res-grid">
+    <div class="res-stage">
+      <div class="ba" id="resBA">
+        <img id="resAfter" src="img/p32b.jpg" alt="Po usuwaniu">
+        <img id="resBefore" class="before" src="img/p32a.jpg" alt="Przed usuwaniem">
+        <span class="lbl l">Przed</span><span class="lbl r">Po</span>
+        <div class="handle"><div class="knob">⇆</div></div>
+      </div>
+    </div>
+    <div class="res-info">
+      <div>
+        <div class="n"><span id="resN">3</span><small id="resNL">sesje</small></div>
+        <h3 id="resT">Twarz i szyja</h3>
+        <p id="resD">Tatuaż na twarzy po trzech sesjach PicoGenesis. Skóra bez blizn, z resztkowym cieniem, który znika w kolejnych zabiegach.</p>
+      </div>
+      <div class="strip" id="strip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTISTS -->
+<section class="artists" id="artysci">
+  <div class="sec-head">
+    <h2 class="rv-up">Artyści<span class="dot">.</span></h2>
+    <p class="rv-up muted">Pięć stylów pod jednym dachem i laser za ścianą. Kliknij nazwisko, zobacz prace i zarezerwuj bezpośrednio.</p>
+  </div>
+  <div class="alist" id="alist"></div>
+  <img class="float-pic" id="floatPic" alt="">
+</section>
+
+<!-- FOUNDATION -->
+<section class="found" id="fundacja">
+  <div class="found-img">
+    <div class="ba" id="foundBA" style="--x:55%">
+      <img src="img/insp5b.jpg" alt="Twarz po 8 sesjach">
+      <img class="before" src="img/insp5a.jpg" alt="Tatuaż na twarzy przed">
+      <span class="lbl l">Przed</span><span class="lbl r">Po 8 sesjach</span>
+      <div class="handle"><div class="knob">⇆</div></div>
+    </div>
+  </div>
+  <div class="found-txt">
+    <div class="eyebrow" style="color:var(--laser);margin-bottom:20px">● Fundacja retouch.</div>
+    <h2 class="rv-up">Twarz. Szyja. Dłonie. <span class="serif">Za darmo.</span></h2>
+    <p class="rv-up">Niektóre tatuaże zamykają drzwi do pracy i do ludzi. Prowadzimy fundację, w której bezpłatnie usuwamy tatuaże z twarzy, szyi i dłoni. Druga szansa bez oceniania.</p>
+    <ul>
+      <li><span>Zgłoszenie</span><b>formularz, 2 minuty</b></li>
+      <li><span>Odpowiedź</span><b>do 7 dni</b></li>
+      <li><span>Koszt dla Ciebie</span><b>0 zł</b></li>
+    </ul>
+    <button class="btn light" id="foundBtn">Zgłoś się do fundacji <span class="arr">→</span></button>
+  </div>
+</section>
+
+<!-- PRICES -->
+<section class="prices" id="cennik">
+  <div class="sec-head">
+    <h2 class="rv-up">Cennik<span class="dot">.</span></h2>
+    <p class="rv-up muted">Bez gwiazdek i ukrytych kosztów. Klienci powracający na kolejne sesje płacą tyle samo, co za pierwszą.</p>
+  </div>
+  <div class="ptabs" id="ptabs"><button class="on" data-t="laser">Usuwanie laserem</button><button data-t="tattoo">Tatuaż i konsultacje</button></div>
+  <div class="ptable" id="ptable"></div>
+  <p class="pnote">Większy lub nietypowy tatuaż, kilka tatuaży naraz: przygotujemy indywidualną wycenę z lepszymi warunkami.</p>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="o-nas">
+  <div class="words" id="words">
+    <div><span>Tattoo.</span></div>
+    <div><span>Removal.</span></div>
+    <div><span>Recovery.</span></div>
+    <div><span class="serif">Realness.</span></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-txt">
+      <div class="eyebrow muted" style="margin-bottom:20px">O nas</div>
+      <p class="rv-up">retouch. to miejsce w sercu Łodzi, gdzie sztuka tatuażu spotyka technologię laserową. Artyści pracują ramię w ramię, a Ty możesz u nas zrobić tatuaż, zakryć go albo zacząć od nowa.</p>
+      <p class="rv-up">Studio założyli Konrad (Laser Daddy), od ponad 10 lat w świecie tatuażu, i Stan (Ponto Pronto), wielokrotnie nagradzany artysta realizmu. Ich duet to naturalne połączenie: usuwanie i zakrywanie. Pracujemy na laserze pikosekundowym, frakcji mikroigłowej i laserowej oraz z chłodzeniem krio.</p>
+      <div class="stats">
+        <div><b data-count="5.0">5.0</b><small>średnia z 130 opinii</small></div>
+        <div><b data-count="6">6</b><small>artystów i specjalistów</small></div>
+        <div><b>10+</b><small>lat Konrada w branży</small></div>
+        <div><b>0 zł</b><small>usuwanie w ramach fundacji</small></div>
+      </div>
+    </div>
+    <div class="about-pics" id="aboutPics">
+      <div><img src="img/wnetrze3.jpg" alt="Wnętrze studia retouch. przy Piotrkowskiej 24"></div>
+      <div><img src="img/wnetrze1.jpg" alt="Stanowiska tatuażu za szklaną ścianą"></div>
+      <div><img src="img/wnetrze4.jpg" alt="Gabinet laserowy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <div class="sec-head">
+    <h2 class="rv-up">Opinie<span class="dot">.</span></h2>
+  </div>
+  <div class="rv-wrap">
+    <div class="rv-score">
+      <b>5.0</b>
+      <div class="stars">★★★★★</div>
+      <div class="muted" style="font-size:14px">130 opinii, 100% pięciogwiazdkowych. Tylko zweryfikowane wizyty.</div>
+      <div class="rv-nav"><button id="rvPrev" aria-label="Poprzednia">←</button><button id="rvNext" aria-label="Następna">→</button></div>
+    </div>
+    <div class="rv-list" id="rvList">
+      <div class="rv"><q>Jestem zachwycona! Liza bardzo mi pomogła i z wyborem czcionki, i z wyborem miejsca na tatuaż. Wszystko bez bólu, bez stresu (a był to mój pierwszy tatuaż) i ze śmiechem.</q><div><b>Katerina</b> · sesja · Liza</div></div>
+      <div class="rv"><q>Konrad robi super robotę. Mimo że usuwanie tatuaży nie należy do przyjemnych, bardzo dba o klienta. Profesjonalizm i kontakt nawet po zabiegu.</q><div><b>Joanna</b> · usuwanie 10×15 cm · Laser Daddy</div></div>
+      <div class="rv"><q>Konrad ma ogromną wiedzę, wszystko dokładnie tłumaczy. Jestem po drugiej sesji i już mam dużą nadzieję na świetne efekty.</q><div><b>Wiktoria</b> · usuwanie tatuażu · Laser Daddy</div></div>
+      <div class="rv"><q>Super miejsce! Pełen profesjonalizm, cudowna atmosfera, fachowa obsługa. Z czystym sumieniem polecam to miejsce i Panią Karolinę. Fach w rękach.</q><div><b>Marlena</b> · sesja · Szczypta</div></div>
+      <div class="rv"><q>Polecam, miła atmosfera, Liza zadbała o komfort i samopoczucie! Tatuaż piękny.</q><div><b>Zosia</b> · sesja · Liza</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="sec-head">
+    <h2 class="rv-up">FAQ<span class="dot">.</span></h2>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-l">
+      <input class="faq-search" id="faqSearch" placeholder="Szukaj: ból, cena, gojenie…" aria-label="Szukaj w pytaniach">
+      <p>Nie ma odpowiedzi? Napisz do nas na Instagramie <b>@retouch.lodz</b> albo wyślij zdjęcie przez kalkulator, odpowiemy tego samego dnia.</p>
+    </div>
+    <div id="faqList">
+      <div class="qa"><button>Czy usuwanie tatuażu boli?</button><div class="a"><div><p>Czuć je, ale krótko. Laser pikosekundowy działa ultrakrótkimi impulsami, a chłodzenie Cryo mocno zmniejsza dyskomfort. Sesja małego tatuażu trwa kilka minut.</p></div></div></div>
+      <div class="qa"><button>Ile sesji potrzebuję do usunięcia tatuażu?</button><div class="a"><div><p>Tatuaże konturowe i napisy zwykle 8–12 sesji, cieniowane 5–6. Makijaż permanentny brwi najczęściej 3. Dokładny plan ustalamy na konsultacji. Sprawdź orientacyjnie w kalkulatorze powyżej.</p></div></div></div>
+      <div class="qa"><button>Ile kosztuje konsultacja?</button><div class="a"><div><p>100 zł, które odejmujemy od ceny pierwszego zabiegu albo tatuażu. Konsultację laserową możemy też zrobić online ze zdjęcia, przez Instagram, Facebook, mail albo telefon.</p></div></div></div>
+      <div class="qa"><button>Czy mogę zrobić cover na tatuażu rozjaśnionym laserem?</button><div class="a"><div><p>Tak, to nasza specjalność. Laser rozjaśnia stary tatuaż, a Stan albo Natalia tworzą na nim nową pracę. Dzięki temu cover może być lżejszy i nie musi być ciemną plamą.</p></div></div></div>
+      <div class="qa"><button>Jak przygotować się do sesji tatuażu?</button><div class="a"><div><p>Wyśpij się, zjedz porządny posiłek, nie pij alkoholu dzień wcześniej. Weź wygodne ubranie z dostępem do miejsca tatuażu. Resztę omówi artysta.</p></div></div></div>
+      <div class="qa"><button>Jak wygląda gojenie?</button><div class="a"><div><p>Po sesji dostajesz instrukcję na telefon. W skrócie: folia ochronna, delikatne mycie, cienka warstwa maści, bez słońca, basenu i sauny przez około 2 tygodnie.</p></div></div></div>
+      <div class="qa"><button>Jak płacę i czy zadatek przepada?</button><div class="a"><div><p>Zadatek 100 zł płacisz online (BLIK, karta, Apple Pay) przy rezerwacji i odliczamy go od ceny. Termin możesz przełożyć bezpłatnie do 48 h przed wizytą jednym kliknięciem w SMS-ie.</p></div></div></div>
+      <div class="qa"><button>Wracam na kolejną sesję usuwania. Czy cena się zmieni?</button><div class="a"><div><p>Nie. Klienci powracający płacą tyle samo, co za pierwszą sesję, żeby cały proces był przewidywalny.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VISIT -->
+<section class="visit" id="kontakt">
+  <div class="sec-head"><h2 class="rv-up">Wpadnij<span class="dot">.</span></h2></div>
+  <div class="visit-grid">
+    <div class="visit-info">
+      <div class="addr">Piotrkowska 24<br><span class="serif" style="font-weight:400">Łódź, Śródmieście</span></div>
+      <div class="open-now" id="openNow"><i></i><span>Sprawdzam godziny…</span></div>
+      <div class="hours" id="hours"></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:28px">
+        <a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=Piotrkowska+24,+90-269+%C5%81%C3%B3d%C5%BA" target="_blank" rel="noopener">Prowadź do studia <span class="arr">→</span></a>
+        <a class="btn ghost" href="https://www.instagram.com/retouch.lodz/" target="_blank" rel="noopener">@retouch.lodz</a>
+      </div>
+    </div>
+    <div class="map"><iframe loading="lazy" title="Mapa: Piotrkowska 24, Łódź" src="https://maps.google.com/maps?q=Piotrkowska%2024%2C%2090-269%20%C5%81%C3%B3d%C5%BA&z=16&output=embed"></iframe></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="f-top">
+    <div>
+      <div class="f-logo">retouch.</div>
+      <div class="f-tag">Tattoo. Removal. Recovery. Realness.</div>
+    </div>
+    <div class="f-links">
+      <div><h5>Studio</h5><a href="#rezerwacja">Rezerwacja</a><a href="#usuwanie">Kalkulator usuwania</a><a href="#efekty">Efekty</a><a href="#artysci">Artyści</a></div>
+      <div><h5>Info</h5><a href="#cennik">Cennik</a><a href="#fundacja">Fundacja</a><a href="#o-nas">O nas</a><a href="#faq">FAQ</a></div>
+      <div><h5>Social</h5><a href="https://www.instagram.com/retouch.lodz/" target="_blank" rel="noopener">Instagram</a><a href="https://www.instagram.com/laserdaddy.lodz/" target="_blank" rel="noopener">Laser Daddy</a><a href="#kontakt">Dojazd</a></div>
+    </div>
+  </div>
+  <div class="f-bot">
+    <span>© 2026 retouch. · Piotrkowska 24, 90-269 Łódź</span>
+    <nav><a href="#" data-modal="Polityka prywatności">Polityka prywatności</a><a href="#" data-modal="Regulamin rezerwacji">Regulamin</a><a href="#" id="cookieLink">Cookies</a><a href="https://thedomainstudio.com" target="_blank" rel="noopener">Strona: The Domain</a></nav>
+  </div>
+</footer>
+
+<div class="mbar" id="mbar"><a href="#rezerwacja">Umów tatuaż</a><a href="#usuwanie">Policz usuwanie</a></div>
+<div class="cookie" id="cookie">Używamy plików cookies, żeby rezerwacja działała, a strona się szybko ładowała.<div><button class="ok" id="ckOk">Akceptuję</button><button id="ckNo">Tylko niezbędne</button></div></div>
+<div class="modal" id="modal"><div class="modal-box"><button class="x" id="mx" aria-label="Zamknij">×</button><div id="mbody"></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+const toast=(t)=>{const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),2800)};
+
+/* ---------- INTRO ---------- */
+(function(){
+  const intro=$('#intro'),scan=$('#introScan'),nw=$('#introNew'),ink=$('#introInk'),cnt=$('#introCount');
+  const skip=sessionStorage.getItem('rt-intro');
+  function finish(){intro.classList.add('out');document.body.classList.remove('locked');document.body.classList.add('ready');setTimeout(()=>intro.remove(),1100)}
+  if(skip||matchMedia('(prefers-reduced-motion:reduce)').matches){finish();return}
+  try{sessionStorage.setItem('rt-intro','1')}catch(e){}
+  let t0=null;const D=1500;
+  const stage=$('.intro-stage');
+  function frame(t){
+    if(!t0)t0=t;const p=Math.min(1,(t-t0-350)/D);
+    cnt.textContent=String(Math.max(0,Math.round(p*100))).padStart(3,'0');
+    if(p>0){
+      const e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+      const w=stage.offsetWidth;scan.style.opacity=p<1?1:0;scan.style.left=(e*w)+'px';
+      nw.style.clipPath=`inset(0 ${100-e*100}% 0 0)`;
+      const old=ink.parentElement,ol=old.offsetLeft,ow=old.offsetWidth;old.style.clipPath=`inset(0 0 0 ${Math.max(0,Math.min(ow,e*w-ol))}px)`;
+    }
+    if(p<1)requestAnimationFrame(frame);else setTimeout(finish,380);
+  }
+  requestAnimationFrame(frame);
+  intro.addEventListener('click',finish);
+})();
+
+/* ---------- NAV ---------- */
+(function(){
+  const nav=$('#nav');let last=0;
+  addEventListener('scroll',()=>{
+    const y=scrollY;nav.classList.toggle('solid',y>40);
+    nav.classList.toggle('hide',y>last&&y>500&&!document.body.classList.contains('menu-open'));last=y;
+    $('#mbar').classList.toggle('on',y>innerHeight*.8);
+  },{passive:true});
+  $('#burger').onclick=()=>document.body.classList.toggle('menu-open');
+  $$('#mmenu a').forEach(a=>a.onclick=()=>document.body.classList.remove('menu-open'));
+})();
+
+/* ---------- MARQUEE duplicate ---------- */
+$('#marquee').innerHTML+= $('#marquee').innerHTML;
+
+/* ---------- BEFORE/AFTER ---------- */
+function makeBA(el,{auto=false}={}){
+  let drag=false,touched=false;
+  const set=(clientX)=>{const r=el.getBoundingClientRect();const x=Math.max(0,Math.min(100,(clientX-r.left)/r.width*100));el.style.setProperty('--x',x+'%')};
+  el.addEventListener('pointerdown',e=>{drag=true;touched=true;el.setPointerCapture(e.pointerId);set(e.clientX)});
+  el.addEventListener('pointermove',e=>{if(drag)set(e.clientX)});
+  el.addEventListener('pointerup',()=>drag=false);el.addEventListener('pointercancel',()=>drag=false);
+  el.tabIndex=0;el.setAttribute('role','slider');el.setAttribute('aria-label','Porównanie przed i po');
+  el.addEventListener('keydown',e=>{const v=parseFloat(getComputedStyle(el).getPropertyValue('--x'))||50;if(e.key==='ArrowLeft')el.style.setProperty('--x',Math.max(0,v-5)+'%');if(e.key==='ArrowRight')el.style.setProperty('--x',Math.min(100,v+5)+'%');touched=true});
+  if(auto){
+    let t0=null;
+    const loop=t=>{if(touched)return;if(!t0)t0=t;const s=((t-t0)/1000+1.7)%7;let x;
+      if(s<2.4)x=100-easeIO(s/2.4)*88;else if(s<3.6)x=12;else if(s<6)x=12+easeIO((s-3.6)/2.4)*88;else x=100;
+      el.style.setProperty('--x',x+'%');requestAnimationFrame(loop)};
+    setTimeout(()=>requestAnimationFrame(loop),1200);
+  }
+}
+const easeIO=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+makeBA($('#heroBA'),{auto:true});makeBA($('#resBA'));makeBA($('#foundBA'));
+
+/* ---------- PATHS ---------- */
+$$('.path').forEach(p=>p.addEventListener('click',()=>{
+  const v=p.dataset.path;
+  if(v==='new')pickType('Nowy tatuaż');
+  if(v==='cover')pickType('Cover');
+}));
+
+/* ---------- DATA ---------- */
+const ARTISTS=[
+  {id:'stan',name:'Ponto Pronto',real:'Stan',img:'img/stan.jpg',spec:'Realizm, duże projekty, grafika, covery',tags:['Realizm','Grafika','Cover','big'],rate:1,
+   bio:'Współzałożyciel retouch. i wielokrotny zwycięzca konwencji tatuażu w Polsce i za granicą. Przez lata specjalizował się w realizmie, dziś łączy techniczną perfekcję z graficzną, autorską wizją. Covery robi tak, że stary tatuaż znika bez śladu, często w duecie z laserem Konrada.',works:['praca16','praca24','praca26','praca28','praca29']},
+  {id:'nysna',name:'Nysna',real:'Natalia',img:'img/nysna.jpg',spec:'Grafika, szkic, ilustracja, covery po laserze',tags:['Grafika','Ilustracja','Fine line','Cover'],rate:.9,
+   bio:'Od ponad 4 lat tworzy tatuaże graficzne, szkicowe i ilustracyjne. Subtelne, kobiece wzory i duże, wielopoziomowe projekty na granicy grafiki i realizmu. Absolwentka ASP ze stypendium rektora. Specjalizuje się też w coverach na skórze po usuwaniu laserem.',works:['praca15','praca18','praca22','praca30','praca13']},
+  {id:'szczypta',name:'Szczypta',real:'Karolina',img:null,spec:'Subtelne, rysunkowe kompozycje',tags:['Fine line','Ilustracja','Grafika'],rate:.85,
+   bio:'Ponad pięć lat na łódzkim rynku. Subtelne, rysunkowe kompozycje o lekkiej, ilustracyjnej estetyce, projektowane pod anatomię i charakter klienta. Prowadzi przez cały proces spokojnie i bez presji.',works:['praca18','praca25','praca13']},
+  {id:'roma',name:'Roma',real:'Roma',img:'img/roma.jpg',spec:'Mikrorealizm',tags:['Mikrorealizm','Realizm'],rate:.85,
+   bio:'Artystka rozwijająca się w kierunku mikrorealizmu. Ogromne wyczucie formy, proporcji i kompozycji, każdy detal dopracowany z pełną odpowiedzialnością.',works:['praca29','praca27','praca17']},
+  {id:'liza',name:'Liza',real:'Liza',img:'img/liza.jpg',spec:'Małe, subtelne wzory, napisy, pierwsze tatuaże',tags:['Napis','Fine line','small'],rate:.6,
+   bio:'Mniejsze, subtelne wzory: symbole, napisy, minimalizm. Idealna na pierwszy tatuaż. Pracuje pod okiem Stana i Natalii, dlatego jej projekty są w niższych cenach.',works:['praca14','praca17','praca25']},
+];
+const LASER={id:'konrad',name:'Laser Daddy',real:'Konrad',img:'img/konrad.jpg',spec:'Laserowe usuwanie tatuaży, blizn i makijażu permanentnego',
+  bio:'Od ponad dziesięciu lat w świecie tatuażu, właściciel retouch. W usuwaniu tatuaży znalazł misję: naprawianie cudzych błędów i dawanie drugiej szansy. Z tej misji narodziła się fundacja, która bezpłatnie usuwa tatuaże z twarzy, szyi i dłoni.',works:['insp3a','insp3b','p36a','p36b']};
+
+/* ---------- BOOKING ---------- */
+const S={type:null,place:null,size:8,style:null,artist:null,files:[],day:null,slot:null,pay:null,step:0};
+const stepBtns=$$('#steps button'),panes=$$('.pane');
+function go(n){
+  S.step=n;
+  panes.forEach(p=>p.classList.toggle('on',+p.dataset.p===n));
+  stepBtns.forEach((b,i)=>{b.classList.toggle('on',i===n);b.classList.toggle('done',i<n||(n===6))});
+  $('#paneFoot').style.display=n===6?'none':'flex';
+  $('#prevBtn').style.visibility=n===0?'hidden':'visible';
+  $('#nextBtn').style.display=n===5?'none':'inline-flex';
+  $('#sumStep').textContent=n===6?'gotowe':(n+1)+'/6';
+  if(n===3)renderArtists();
+  if(n===5)renderDays();
+  update();
+}
+stepBtns.forEach((b,i)=>b.onclick=()=>go(i));
+$('#nextBtn').onclick=()=>{if(!canNext()){toast(nextMsg());return}go(Math.min(5,S.step+1));scrollBook()};
+$('#prevBtn').onclick=()=>{go(Math.max(0,S.step-1))};
+function scrollBook(){const r=$('#rezerwacja .bk').getBoundingClientRect();if(r.top<0)scrollTo({top:scrollY+r.top-80,behavior:'smooth'})}
+function canNext(){return [S.type,S.place,S.style,S.artist,true][S.step]}
+function nextMsg(){return ['Wybierz, co robimy','Wybierz miejsce na ciele','Wybierz styl (albo „Nie wiem”)','Wybierz artystę'][S.step]||''}
+
+function pickType(v){S.type=v;$$('#optType .opt').forEach(o=>o.classList.toggle('sel',o.dataset.v===v));update()}
+$$('#optType .opt').forEach(o=>o.onclick=()=>{pickType(o.dataset.v);setTimeout(()=>go(1),280)});
+
+// body map
+const PLACES={front:[
+  ['Szyja',100,70,'mocno'],['Obojczyk',78,84,'mocno'],['Klatka',112,108,'średnio'],['Ramię',52,118,'mało'],['Przedramię',44,180,'mało'],
+  ['Dłoń',38,252,'mocno'],['Żebra',134,150,'mocno'],['Brzuch',100,178,'średnio'],['Udo',84,270,'mało'],['Łydka',122,350,'średnio'],['Kostka',80,392,'mocno']],
+ back:[['Kark',100,70,'średnio'],['Łopatka',76,112,'mało'],['Plecy (całe)',118,140,'średnio'],['Ramię tył',150,124,'mało'],['Lędźwie',100,196,'średnio'],['Udo tył',118,276,'mało'],['Łydka tył',82,348,'mało']]};
+let side='front';
+function renderBody(){
+  const g=$('#hots');g.innerHTML='';
+  PLACES[side].forEach(([n,x,y])=>{
+    const h=document.createElementNS('http://www.w3.org/2000/svg','g');h.setAttribute('class','hot'+(S.place===n?' sel':''));h.dataset.v=n;
+    h.innerHTML=`<circle class="r" cx="${x}" cy="${y}" r="7"/><circle class="c" cx="${x}" cy="${y}" r="3.5"/><title>${n}</title>`;
+    h.onclick=()=>pickPlace(n);g.appendChild(h);
+  });
+  $('#placeList').innerHTML=PLACES[side].map(([n,,,p])=>`<button data-v="${n}" class="${S.place===n?'sel':''}">${n} <span>ból: ${p}</span></button>`).join('');
+  $$('#placeList button').forEach(b=>b.onclick=()=>pickPlace(b.dataset.v));
+}
+function pickPlace(n){S.place=n;renderBody();update()}
+$$('.fb-toggle button').forEach(b=>b.onclick=()=>{side=b.dataset.side;$$('.fb-toggle button').forEach(x=>x.classList.toggle('on',x===b));renderBody()});
+renderBody();
+
+// size
+function renderSize(){
+  const v=S.size,ruler=$('#ruler'),px=Math.min(1,(ruler.clientHeight-40)/ (v*10))*10; // px per cm (20px grid = 1cm ideal)
+  const cm=Math.min(20,(ruler.clientHeight-40)/v,(ruler.clientWidth-40)/(v*.75));
+  $('#shape').style.width=(v*.75*cm)+'px';$('#shape').style.height=(v*cm)+'px';
+  $('#shape').textContent=v+'×'+Math.round(v*.75)+' cm';
+  ruler.style.backgroundSize=`${cm}px ${cm}px,${cm}px ${cm}px,auto`;
+  const coin=$('#coin');coin.style.width=coin.style.height=(2.4*cm)+'px';
+  $('#sizeV').textContent=v;
+  $('#sizeHint').textContent=v<=5?'Mały: nadgarstek, kostka, palec. Zwykle do 1 godziny.':v<=12?'Średni: przedramię, łydka, ramię. Zwykle jedna sesja.':v<=22?'Duży: udo, łopatka, całe przedramię. 1–2 sesje.':'Bardzo duży: plecy, rękaw. Kilka sesji, najpierw konsultacja.';
+}
+$('#sizeR').oninput=e=>{S.size=+e.target.value;renderSize();update()};
+$$('#styleChips button').forEach(b=>b.onclick=()=>{S.style=b.dataset.v;$$('#styleChips button').forEach(x=>x.classList.toggle('sel',x===b));update()});
+
+// artists
+function score(a){
+  let s=60;if(S.style&&a.tags.includes(S.style))s+=30;if(S.style==='Nie wiem')s+=10;
+  if(S.type==='Cover'&&a.tags.includes('Cover'))s+=25;
+  if(S.size>=18&&a.tags.includes('big'))s+=12;if(S.size<=6&&a.tags.includes('small'))s+=14;
+  if(S.size>=18&&a.tags.includes('small'))s-=25;
+  return Math.max(35,Math.min(99,s));
+}
+function renderArtists(){
+  const list=ARTISTS.map(a=>({a,s:score(a)})).sort((x,y)=>y.s-x.s);
+  $('#artistPick').innerHTML=list.map(({a,s},i)=>`<button class="ap ${S.artist===a.id?'sel':''}" data-id="${a.id}">
+    ${a.img?`<img src="${a.img}" alt="${a.name}">`:`<span class="ph">${a.name[0]}</span>`}
+    <span><b>${a.name}</b><small>${a.real} · ${a.spec}${a.id==='liza'?' · niższe ceny':''}</small></span>
+    <span class="match">${s}%<em>${i===0?'najlepszy wybór':'dopasowanie'}</em></span></button>`).join('')+
+    `<button class="ap ${S.artist==='any'?'sel':''}" data-id="any"><span class="ph">?</span><span><b>Pierwszy wolny termin</b><small>Dobierzemy artystę do Twojego wzoru</small></span><span class="match">—<em>najszybciej</em></span></button>`;
+  $$('#artistPick .ap').forEach(b=>b.onclick=()=>{S.artist=b.dataset.id;S.day=null;S.slot=null;renderArtists();update();setTimeout(()=>go(4),300)});
+}
+
+// files
+const fileIn=$('#file'),drop=$('#drop');
+function addFiles(fs){[...fs].filter(f=>f.type.startsWith('image/')).slice(0,5-S.files.length).forEach(f=>S.files.push({f,u:URL.createObjectURL(f)}));renderThumbs();update()}
+function renderThumbs(){$('#thumbs').innerHTML=S.files.map((x,i)=>`<div><img src="${x.u}" alt=""><button data-i="${i}" aria-label="Usuń">×</button></div>`).join('');$$('#thumbs button').forEach(b=>b.onclick=()=>{S.files.splice(+b.dataset.i,1);renderThumbs();update()})}
+fileIn.onchange=e=>addFiles(e.target.files);
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',e=>addFiles(e.dataTransfer.files));
+
+// calendar
+const DN=['nd','pn','wt','śr','cz','pt','sb'],MN=['sty','lut','mar','kwi','maj','cze','lip','sie','wrz','paź','lis','gru'];
+function rnd(seed){let x=Math.sin(seed)*10000;return x-Math.floor(x)}
+function slotsFor(d,artist){
+  const base=artist==='any'?7:(artist.length*13);const seed=d.getDate()*31+d.getMonth()*7+base;
+  const isCons=S.type==='Konsultacja';const times=isCons?['10:00','10:30','11:00','12:30','14:00','15:30','16:00','17:30','18:00']:['10:00','12:00','14:00','16:00'];
+  const lim=d.getDay()===6?(isCons?15.5:14):99;
+  return times.filter(t=>parseFloat(t.replace(':','.'))<=lim).map((t,i)=>({t,free:rnd(seed+i*3.7)>(artist==='any'?.35:.55)}));
+}
+function renderDays(){
+  const now=new Date();let html='';S.days=[];
+  for(let i=1;i<=21;i++){const d=new Date(now);d.setDate(now.getDate()+i);S.days.push(d);
+    const closed=d.getDay()===0;const free=closed?0:slotsFor(d,S.artist||'any').filter(s=>s.free).length;
+    html+=`<button class="day ${S.day===i?'sel':''}" data-i="${i}" ${closed||!free?'disabled':''}><i>${DN[d.getDay()]}</i><b>${d.getDate()}</b><small>${closed?'zamk.':free?free+' wolne':'brak'}</small></button>`}
+  $('#days').innerHTML=html;
+  $$('#days .day').forEach(b=>b.onclick=()=>{S.day=+b.dataset.i;S.slot=null;renderDays();update()});
+  const a=[...ARTISTS].find(x=>x.id===S.artist);
+  $('#calSub').textContent=(a?`Wolne terminy: ${a.name}. `:'Wolne terminy całego studia. ')+(S.type==='Konsultacja'?'Konsultacja trwa 30 minut.':'Sesja rezerwuje blok ok. 2 godzin.');
+  if(!S.day){const f=$('#days .day:not(:disabled)');if(f){S.day=+f.dataset.i;f.classList.add('sel')}}
+  renderSlots();
+}
+function renderSlots(){
+  if(!S.day){$('#slots').innerHTML='';return}
+  const d=S.days[S.day-1];const sl=slotsFor(d,S.artist||'any');
+  $('#slots').innerHTML=sl.map(s=>`<button ${s.free?'':'disabled'} class="${S.slot===s.t?'sel':''}" data-t="${s.t}">${s.t}</button>`).join('');
+  $$('#slots button').forEach(b=>b.onclick=()=>{S.slot=b.dataset.t;renderSlots();update()});
+  const left=sl.filter(s=>s.free).length;
+  $('#slotNote').innerHTML=left<=2?`<b>●</b> Zostały ${left} wolne terminy tego dnia.`:'Przełożysz bezpłatnie do 48 h przed wizytą.';
+  $$('#days .day').forEach(b=>b.classList.toggle('sel',+b.dataset.i===S.day));
+}
+$$('#pay button').forEach(b=>b.onclick=()=>{S.pay=b.dataset.v;$$('#pay button').forEach(x=>x.classList.toggle('sel',x===b));update()});
+
+function est(){
+  if(!S.type)return null;
+  if(S.type==='Poprawka')return['0 zł','Poprawka tatuażu zrobionego u nas jest bezpłatna.'];
+  if(S.type==='Konsultacja')return['100 zł','Cała kwota wraca do Ciebie w cenie tatuażu.'];
+  const a=ARTISTS.find(x=>x.id===S.artist);const r=a?a.rate:.85;
+  const area=S.size*S.size*.75;let lo=Math.max(300,180+area*5.2),hi=lo*1.45;
+  if(S.style==='Realizm'||S.style==='Mikrorealizm'){lo*=1.25;hi*=1.3}
+  if(S.type==='Cover'){lo*=1.15;hi*=1.2}
+  lo=Math.round(lo*r/50)*50;hi=Math.round(hi*r/50)*50;
+  const h=Math.max(1,Math.round(area/40));
+  return[`${lo.toLocaleString('pl')}–${hi.toLocaleString('pl')} zł`,`Ok. ${h<=8?h+' h pracy':Math.ceil(h/6)+' sesje'}. Dokładną cenę potwierdza artysta po zobaczeniu wzoru.`];
+}
+function setDD(id,v){const el=$(id);el.textContent=v||'—';el.classList.toggle('empty',!v)}
+function update(){
+  setDD('#sType',S.type);setDD('#sPlace',S.place);setDD('#sStyle',S.style);
+  $('#sSize').textContent=S.size+' cm';
+  const a=ARTISTS.find(x=>x.id===S.artist);setDD('#sArtist',a?a.name:(S.artist==='any'?'Pierwszy wolny':null));
+  setDD('#sFiles',S.files.length?S.files.length+' zdj.':null);if(!S.files.length)$('#sFiles').textContent='brak zdjęć';
+  const d=S.day&&S.days?S.days[S.day-1]:null;
+  setDD('#sDate',d&&S.slot?`${DN[d.getDay()]} ${d.getDate()} ${MN[d.getMonth()]}, ${S.slot}`:null);
+  const e=est();$('#sPrice').textContent=e?e[0]:'—';$('#sTime').textContent=e?e[1]:'Dokładną cenę potwierdza artysta po zobaczeniu wzoru.';
+  const ok=S.type&&S.place&&S.style&&S.artist&&S.slot&&S.pay&&$('#phone').value.replace(/\D/g,'').length>=9;
+  $('#confirmBtn').disabled=!ok;
+  $('#confirmBtn').textContent=ok?'Potwierdź i zapłać 100 zł':(S.step===5?(!S.slot?'Wybierz godzinę':!S.pay?'Wybierz płatność':'Wpisz telefon'):'Uzupełnij kroki');
+}
+$('#phone').oninput=update;
+$('#confirmBtn').onclick=()=>{
+  const btn=$('#confirmBtn');btn.textContent='Łączę z płatnością…';btn.disabled=true;
+  setTimeout(()=>{const a=ARTISTS.find(x=>x.id===S.artist);const d=S.days[S.day-1];
+    $('#doneTitle').textContent=`${DN[d.getDay()]} ${d.getDate()} ${MN[d.getMonth()]}, ${S.slot}.`;
+    $('#doneSub').textContent=`${S.type} · ${S.place} · ${S.size} cm · ${a?a.name:'pierwszy wolny artysta'}. Zadatek 100 zł opłacony (${S.pay}). Piotrkowska 24, Łódź.`;
+    go(6);scrollBook();toast('Rezerwacja potwierdzona. SMS w drodze.')},1100);
+};
+$('#again').onclick=()=>{Object.assign(S,{type:null,place:null,style:null,artist:null,files:[],day:null,slot:null,pay:null});$$('.opt,.chips#styleChips button,#pay button').forEach(x=>x.classList.remove('sel'));renderThumbs();renderBody();go(0)};
+$('#icsBtn').onclick=()=>{
+  const d=S.days[S.day-1];const [h,m]=S.slot.split(':');const st=new Date(d);st.setHours(+h,+m,0);const en=new Date(st.getTime()+(S.type==='Konsultacja'?30:120)*60000);
+  const f=x=>x.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+  const ics=`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${f(st)}\nDTEND:${f(en)}\nSUMMARY:retouch. – ${S.type}\nLOCATION:Piotrkowska 24, Łódź\nEND:VEVENT\nEND:VCALENDAR`;
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download='retouch-wizyta.ics';a.click();
+};
+addEventListener('resize',renderSize);renderSize();go(0);
+
+/* ---------- REMOVAL CALC ---------- */
+const C={w:5,h:5,type:'contour',area:'body',ret:false};
+const TIERS=[[1,150,'1×1 cm'],[9,200,'3×3 cm'],[25,300,'5×5 cm'],[64,400,'8×8 cm'],[100,500,'10×10 cm'],[150,600,'10×15 cm'],[225,700,'15×15 cm'],[300,800,'15×20 cm'],[400,900,'20×20 cm'],[600,1000,'20×30 cm']];
+function calc(){
+  const skin=$('#skin'),tt=$('#tt');const cmPx=Math.min(14,(skin.clientWidth-90)/C.w,(skin.clientHeight-50)/C.h);
+  tt.style.width=C.w*cmPx+'px';tt.style.height=C.h*cmPx+'px';skin.style.backgroundSize=`${cmPx}px ${cmPx}px,${cmPx}px ${cmPx}px,auto`;
+  tt.className='tt '+(C.type==='shade'?'shade':C.type==='color'?'color':'');
+  $('#dimW').textContent=C.w+' cm';$('#dimH').textContent=C.h+' cm';$('#cwO').textContent=C.w+' cm';$('#chO').textContent=C.h+' cm';
+  let price,sMin,sMax,custom=false;
+  const a=C.w*C.h;
+  if(C.type==='pmu'){price=450;sMin=1;sMax=3}
+  else{const t=TIERS.find(t=>a<=t[0]);if(t)price=t[1];else{price=null;custom=true}
+    if(C.type==='contour'){sMin=8;sMax=12}else if(C.type==='shade'){sMin=5;sMax=6}else{sMin=6;sMax=10}}
+  const free=['face','neck','hand'].includes(C.area);
+  $('#rPrice').textContent=custom?'wycena':price+' zł';
+  $('#rSessions').textContent=sMin===sMax?sMin:`${sMin}–${sMax}`;
+  $('#rTotal').textContent=custom?'indywidualnie':`${(price*sMin).toLocaleString('pl')}–${(price*sMax).toLocaleString('pl')} zł`;
+  const end=new Date();end.setDate(end.getDate()+ (sMax-1)*7*7);
+  const endTxt=`${MN[end.getMonth()]} ${end.getFullYear()}`;$('#rEnd').textContent=sMax<=1?'1 wizyta':endTxt;$('#tlEnd').textContent='ok. '+endTxt;
+  const n=sMax;$('#tl').innerHTML=Array.from({length:n+1},(_,i)=>{const v=Math.max(.04,Math.pow(1-i/n,1.6));return `<i style="height:${v*100}%;opacity:${.25+v*.75}" title="${i===0?'Dziś':'Po sesji '+i}"></i>`}).join('');
+  $('#freeNote').classList.toggle('on',free);
+  $('#calcBook').textContent='Umów konsultację';
+}
+$('#cw').oninput=e=>{C.w=+e.target.value;calc()};$('#ch').oninput=e=>{C.h=+e.target.value;calc()};
+$$('#inkType button').forEach(b=>b.onclick=()=>{C.type=b.dataset.v;$$('#inkType button').forEach(x=>x.classList.toggle('sel',x===b));if(C.type==='pmu'){C.w=6;C.h=2;$('#cw').value=6;$('#ch').value=2}calc()});
+$$('#inkArea button').forEach(b=>b.onclick=()=>{C.area=b.dataset.v;$$('#inkArea button').forEach(x=>x.classList.toggle('sel',x===b));calc()});
+$('#returning').onchange=e=>{C.ret=e.target.checked;if(C.ret)toast('Klient powracający: płacisz tyle samo, co za pierwszą sesję.')};
+$('#calcBook').onclick=()=>pickType('Konsultacja');
+addEventListener('resize',calc);calc();
+$('#sendPhoto').onclick=()=>openModal(`<div class="q">Darmowa wycena ze zdjęcia<span class="dot">.</span></div><p class="q-sub">Konrad odpowie z planem usuwania, zwykle tego samego dnia.</p>
+ <label class="drop"><input type="file" accept="image/*" hidden onchange="this.parentElement.querySelector('b').textContent='Dodano: '+this.files.length+' zdj.'"><b>Dodaj zdjęcie tatuażu</b><span class="muted">w dziennym świetle, z bliska</span></label>
+ <label class="field-l">Wymiary (z kalkulatora)</label><input class="in" value="${C.w} × ${C.h} cm, ${({contour:'konturowy',shade:'cieniowany',color:'kolorowy',pmu:'makijaż permanentny'})[C.type]}">
+ <label class="field-l">Telefon lub Instagram</label><input class="in" placeholder="+48 … albo @nick">
+ <button class="btn" style="margin-top:26px" onclick="closeModal();toast('Wysłane. Odezwiemy się z wyceną.')">Wyślij do wyceny →</button>`);
+$('#foundBtn').onclick=()=>openModal(`<div class="q">Zgłoszenie do fundacji<span class="dot">.</span></div><p class="q-sub">Usuwamy bezpłatnie tatuaże z twarzy, szyi i dłoni. Opowiedz krótko swoją historię, każde zgłoszenie czytamy osobiście.</p>
+ <label class="field-l">Imię</label><input class="in"><label class="field-l">Telefon lub e-mail</label><input class="in">
+ <label class="field-l">Gdzie jest tatuaż i dlaczego chcesz go usunąć?</label><textarea class="in"></textarea>
+ <label class="drop" style="margin-top:20px"><input type="file" accept="image/*" hidden onchange="this.parentElement.querySelector('b').textContent='Dodano zdjęcie'"><b>Dodaj zdjęcie (opcjonalnie)</b></label>
+ <button class="btn" style="margin-top:26px" onclick="closeModal();toast('Dziękujemy. Odpowiemy w ciągu 7 dni.')">Wyślij zgłoszenie →</button>`);
+
+/* ---------- RESULTS ---------- */
+const CASES=[
+  ['p32',3,'Twarz i szyja','Tatuaż na twarzy po trzech sesjach PicoGenesis. Skóra bez blizn, resztkowy cień znika w kolejnych zabiegach.'],
+  ['insp3',3,'Obojczyk, napis','Napis „Satan said dance” po trzech sesjach. Kontur rozbity niemal do zera.'],
+  ['p61',3,'Kolorowy portret','Pełny kolor na ramieniu po trzech sesjach. Rozjaśniony pod cover albo do całkowitego usunięcia.'],
+  ['insp6',8,'Twarz, cyfry','„13” pod okiem po ośmiu sesjach. Usunięte w ramach naszej misji: twarz, szyja, dłonie.'],
+  ['p64',3,'Tribal, ramię','Gęsty, czarny tribal po trzech sesjach. Idealna baza pod nowy projekt.'],
+  ['p38',1,'Wnętrze wargi','Korona po jednej sesji. Błony śluzowe goją się szybko i dobrze reagują na laser.'],
+  ['insp4',2,'Palec, napis','„Love” na palcu po dwóch sesjach. Małe tatuaże znikają najszybciej.'],
+  ['p53',3,'Szyja, nietoperz','Kontur na szyi po trzech sesjach. Bez śladu po zabiegu.'],
+  ['p84',9,'Palce','Krzyżyk i diament na palcach po dziewięciu sesjach.'],
+  ['p36',2,'Łopatka, pantera','Cieniowana pantera po dwóch sesjach. Już wyraźnie wyblakła.'],
+  ['insp2',6,'Szyja, róże i wąż','Duży cieniowany tatuaż na szyi po sześciu sesjach.'],
+  ['p31',2,'Przedramię','Cieniowany wzór na przedramieniu po dwóch sesjach.'],
+];
+const plural=n=>n===1?'sesja':(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20))?'sesje':'sesji';
+function showCase(i){
+  const [k,n,t,d]=CASES[i];$('#resBefore').src=`img/${k}a.jpg`;$('#resAfter').src=`img/${k}b.jpg`;
+  $('#resN').textContent=n;$('#resNL').textContent=plural(n);$('#resT').textContent=t;$('#resD').textContent=d;
+  $('#resBA').style.setProperty('--x','50%');$$('#strip button').forEach((b,j)=>b.classList.toggle('sel',j===i));
+}
+$('#strip').innerHTML=CASES.slice(0,6).map(([k,n],i)=>`<button aria-label="Przypadek ${i+1}"><img src="img/${k}a.jpg" alt="" loading="lazy"><span>${n}×</span></button>`).join('');
+$$('#strip button').forEach((b,i)=>b.onclick=()=>showCase(i));
+showCase(0);
+
+/* ---------- ARTISTS LIST ---------- */
+(function(){
+  const all=[...ARTISTS.slice(0,2),LASER,...ARTISTS.slice(2)];
+  $('#alist').innerHTML=all.map((a,i)=>`<div class="arow" data-id="${a.id}">
+    <button aria-expanded="false"><span class="no">${String(i+1).padStart(2,'0')}</span><span class="nm">${a.name}<span class="serif">${a.real!==a.name?a.real:''}</span></span><span class="sp">${a.spec}</span><span class="tg">${a.id==='konrad'?'laser · właściciel':a.id==='stan'?'współzałożyciel':a.id==='liza'?'niższe ceny':'tatuaż'}</span><span class="pl"></span></button>
+    <div class="adet"><div><div class="adet-in">
+      ${a.img?`<img class="portrait" src="${a.img}" alt="${a.name}" loading="lazy">`:`<div class="portrait ph">${a.name[0]}.</div>`}
+      <div><p>${a.bio}</p><div class="works">${a.works.map(w=>`<img src="img/${w}.jpg" alt="" loading="lazy">`).join('')}</div>
+      <button class="btn" data-book="${a.id}">${a.id==='konrad'?'Policz usuwanie':'Zarezerwuj u '+a.name} <span class="arr">→</span></button></div>
+    </div></div></div></div>`).join('');
+  $$('.arow>button').forEach(b=>b.onclick=()=>{const r=b.parentElement;const o=!r.classList.contains('open');$$('.arow').forEach(x=>x.classList.remove('open'));r.classList.toggle('open',o);b.setAttribute('aria-expanded',o)});
+  $$('[data-book]').forEach(b=>b.onclick=()=>{const id=b.dataset.book;
+    if(id==='konrad'){$('#usuwanie').scrollIntoView({behavior:'smooth'});return}
+    S.artist=id;if(!S.type)pickType('Nowy tatuaż');update();$('#rezerwacja').scrollIntoView({behavior:'smooth'});toast('Wybrano: '+ARTISTS.find(x=>x.id===id).name)});
+  const fp=$('#floatPic');
+  $$('.arow').forEach(r=>{const a=all.find(x=>x.id===r.dataset.id);const btn=r.querySelector('button');
+    btn.addEventListener('mouseenter',()=>{if(a.img&&!r.classList.contains('open')){fp.src=a.img;fp.classList.add('on')}});
+    btn.addEventListener('mouseleave',()=>fp.classList.remove('on'));
+    btn.addEventListener('mousemove',e=>{fp.style.left=e.clientX+160+'px';fp.style.top=e.clientY+'px'});
+    btn.addEventListener('click',()=>fp.classList.remove('on'));
+  });
+})();
+
+/* ---------- PRICES ---------- */
+const PRICES={laser:[
+  ['Bardzo, bardzo mały','do 1×1 cm','30 min',150],['Bardzo mały','do 3×3 cm','30 min',200],['Mały','do 5×5 cm','30 min',300],['Mały / średni','do 8×8 cm','30 min',400],
+  ['Średni','do 10×10 cm','45 min',500],['Średni +','do 10×15 cm','1 h',600],['Duży','do 15×15 cm','1 h 30 min',700],['Duży +','do 15×20 cm','1 h 30 min',800],
+  ['Bardzo duży','do 20×20 cm','2 h',900],['Bardzo, bardzo duży','do 20×30 cm','2 h',1000],['Makijaż permanentny brwi','zwykle 3 sesje','30 min',450],['Konsultacja laserowa','odliczana od zabiegu','30 min',100]],
+ tattoo:[['Konsultacja tatuażowa','100 zł odliczane od tatuażu','30 min',100],['Konsultacja po zgłoszeniu online','ze zdjęcia','30 min',0],['Poprawka tatuażu z retouch.','dla naszych klientów','1 h',0],['Mały tatuaż','wycena po konsultacji','ok. 1 h',null],['Duży tatuaż / cover','wycena po konsultacji','sesja',null]]};
+function renderPrices(t){
+  $('#ptable').innerHTML=PRICES[t].map(([n,d,tm,p])=>`<div class="prow"><b>${n}</b><span class="d">${d}</span><span class="t">${tm}</span><div><div class="p">${p===null?'wycena':p===0?'gratis':p+' zł'}</div><a class="bk-l" href="${t==='laser'?'#usuwanie':'#rezerwacja'}">${t==='laser'?'Policz':'Umów'} →</a></div></div>`).join('');
+}
+$$('#ptabs button').forEach(b=>b.onclick=()=>{$$('#ptabs button').forEach(x=>x.classList.toggle('on',x===b));renderPrices(b.dataset.t)});
+renderPrices('laser');
+
+/* ---------- REVIEWS ---------- */
+$('#rvNext').onclick=()=>$('#rvList').scrollBy({left:400,behavior:'smooth'});
+$('#rvPrev').onclick=()=>$('#rvList').scrollBy({left:-400,behavior:'smooth'});
+
+/* ---------- FAQ ---------- */
+$$('.qa button').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
+$('#faqSearch').oninput=e=>{const q=e.target.value.toLowerCase().trim();$$('.qa').forEach(x=>{const m=!q||x.textContent.toLowerCase().includes(q);x.classList.toggle('hidden',!m);if(q&&m)x.classList.add('open')})};
+
+/* ---------- HOURS ---------- */
+(function(){
+  const H=[['Poniedziałek','10:00–19:00'],['Wtorek','10:00–19:00'],['Środa','10:00–19:00'],['Czwartek','10:00–19:00'],['Piątek','10:00–19:00'],['Sobota','10:00–16:00'],['Niedziela','zamknięte']];
+  const now=new Date();const di=(now.getDay()+6)%7;
+  $('#hours').innerHTML=H.map(([d,h],i)=>`<div class="${i===di?'today':''}"><span>${d}</span><span>${h}</span></div>`).join('');
+  const h=H[di][1];let open=false,txt='Dziś zamknięte';
+  if(h.includes('–')){const [a,b]=h.split('–').map(x=>+x.split(':')[0]);const cur=now.getHours()+now.getMinutes()/60;open=cur>=a&&cur<b;txt=open?`Otwarte teraz, do ${b}:00`:cur<a?`Dziś otwieramy o ${a}:00`:'Dziś już zamknięte'}
+  const el=$('#openNow');el.classList.toggle('closed',!open);el.querySelector('span').textContent=txt;
+})();
+
+/* ---------- MODAL / COOKIE ---------- */
+function openModal(h){$('#mbody').innerHTML=h;$('#modal').classList.add('on')}
+function closeModal(){$('#modal').classList.remove('on')}
+$('#mx').onclick=closeModal;$('#modal').onclick=e=>{if(e.target.id==='modal')closeModal()};
+$$('[data-modal]').forEach(a=>a.onclick=e=>{e.preventDefault();openModal(`<div class="q">${a.dataset.modal}<span class="dot">.</span></div><p class="q-sub">Treść dokumentu przygotujemy razem ze studiem przed publikacją strony.</p>`)});
+try{if(!localStorage.getItem('rt-ck'))setTimeout(()=>$('#cookie').classList.add('on'),4000)}catch(e){}
+const ck=()=>{$('#cookie').classList.remove('on');try{localStorage.setItem('rt-ck','1')}catch(e){}};
+$('#ckOk').onclick=ck;$('#ckNo').onclick=ck;$('#cookieLink').onclick=e=>{e.preventDefault();$('#cookie').classList.add('on')};
+
+/* ---------- REVEAL ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+$$('.rv-up,.words,.about-pics').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
