@@ -538,6 +538,74 @@ main>section,.infobar{overflow-x:clip}
   .skin .dim.h{display:none}
   .awards{grid-template-columns:1fr 1fr}
 }
+
+/* ===== v3 minimal ===== */
+body::after{display:none}
+h1,h2,h3{font-weight:500;text-transform:none;letter-spacing:-.035em;line-height:1.02}
+h2{font-size:clamp(34px,4.4vw,64px)}
+.sec{padding-top:clamp(90px,11vw,150px)}
+.sec-head p{font-size:16px}
+.hero h1{font-size:clamp(40px,5.2vw,78px);line-height:1.02}
+.hero-bot{grid-template-columns:1fr;padding-bottom:56px}
+.hero::before{background:linear-gradient(180deg,rgba(10,10,10,.5) 0%,rgba(10,10,10,0) 25%,rgba(10,10,10,.1) 45%,rgba(10,10,10,.88) 75%,rgba(10,10,10,.98) 100%)}
+.btn{text-transform:none;letter-spacing:0;font-size:15px}
+.nav-links{text-transform:none;letter-spacing:0;font-size:14px}
+.infobar{background:var(--bg)}
+.facts{display:grid;grid-template-columns:repeat(4,1fr)}
+.facts div{padding:22px var(--pad);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.facts div:last-child{border-right:0}
+.facts b{font-size:18px;font-weight:500;letter-spacing:-.02em}
+.facts span{font-size:13px;color:var(--f50)}
+.path::before{display:none}
+.path:hover{color:#fff}.path:hover .no{color:var(--f50)}.path:hover .meta{color:var(--f70)}
+.path h3{font-size:clamp(28px,3.6vw,52px);transition:transform .5s var(--ease)}
+.path:hover h3{transform:translateX(12px)}
+.path .peek,.float-pic{display:none!important}
+.q{text-transform:none;font-weight:500;letter-spacing:-.03em}
+.steps button.on::after{background:#fff}
+.opt.sel .rad::after{background:#fff}
+.body-svg .hot.sel circle.r{stroke:#fff}.body-svg .hot circle.c{fill:#fff}
+.place-list button.sel::after,.ap.sel b::after{color:#fff}
+.ruler .shape{background:rgba(255,255,255,.08)}
+.big-num,.est .v,.res-top b,.res-info .n,.stats b{font-weight:500}
+.tl i:first-child{background:#fff}
+.done-box .big{text-transform:none;font-weight:500}
+.arow .nm{text-transform:none;font-weight:500;font-size:clamp(26px,3vw,44px)}
+.arow>button:hover{padding-left:var(--pad);background:rgba(255,255,255,.02)}
+.found{min-height:0}
+.found-txt{background:var(--bg)}
+.found-txt h2{font-size:clamp(34px,4.4vw,64px)}
+.found-txt p{color:var(--f70)}
+.found-txt ul,.found-txt li{border-color:var(--line)}
+.found-img{min-height:560px}
+.wall{height:clamp(360px,62vh,640px)}
+.wall::after{background:linear-gradient(180deg,rgba(10,10,10,0) 60%,rgba(10,10,10,.6))}
+.story.one{grid-template-columns:1fr}
+.story.one .story-txt{border-right:0;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,80px)}
+.story.one .story-txt p+p{margin-top:0}
+.story.one .stats{grid-column:1/3;margin-top:10px;grid-template-columns:repeat(4,1fr)}
+.story.one .stats div{border-right:1px solid var(--line);padding:22px 16px 22px 0}
+.story.one .stats div:last-child{border-right:0}
+.story.one .stats div:nth-child(even){padding-left:16px}
+.quotes{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.quotes blockquote{padding:clamp(24px,3.5vw,48px) var(--pad)}
+.quotes blockquote+blockquote{border-left:1px solid var(--line)}
+.quotes q{font-size:clamp(19px,1.8vw,25px);line-height:1.4;letter-spacing:-.02em;quotes:"„" "”"}
+.quotes cite{display:block;margin-top:22px;font-style:normal;font-size:13px;color:var(--f50)}
+.visit-info .addr{text-transform:none;font-weight:500}
+.mbar a{text-transform:none;letter-spacing:0;font-size:15px;font-weight:600}
+.mbar a+a{background:#0a0a0a;color:#fff;border-left:1px solid var(--line)}
+.mbar{background:#fff;border-top:1px solid var(--line)}
+@media (max-width:900px){
+  .facts{grid-template-columns:1fr 1fr}
+  .facts div:nth-child(2){border-right:0}.facts div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .story.one .story-txt{grid-template-columns:1fr}
+  .story.one .stats{grid-column:1;grid-template-columns:1fr 1fr}
+  .story.one .stats div:nth-child(2){border-right:0}
+  .quotes{grid-template-columns:1fr}
+  .quotes blockquote+blockquote{border-left:0;border-top:1px solid var(--line)}
+  .hero-bot{padding-bottom:40px}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -555,11 +623,10 @@ main>section,.infobar{overflow-x:clip}
 <header class="nav" id="nav">
   <a href="#top" class="logo" aria-label="retouch. strona główna">retouch.</a>
   <nav class="nav-links">
-    <a href="#rezerwacja">Tattoo</a>
-    <a href="#usuwanie">Removal</a>
+    <a href="#rezerwacja">Rezerwacja</a>
+    <a href="#usuwanie">Usuwanie</a>
     <a href="#efekty">Efekty</a>
     <a href="#artysci">Artyści</a>
-    <a href="#fundacja">Fundacja</a>
     <a href="#cennik">Cennik</a>
     <a href="#o-nas">O nas</a>
   </nav>
@@ -584,72 +651,42 @@ main>section,.infobar{overflow-x:clip}
 <main id="top">
 <section class="hero">
   <div class="hero-bg"><img src="img/sciana.jpg" alt="Ściana studia retouch. z napisem Tattoo. Removal. Recovery. Realness."></div>
-  <div class="hero-tl mono"><span>/ Tatuaż</span><span>/ Cover</span><span>/ Laserowe usuwanie</span><span>/ Recovery</span></div>
-  <div class="hero-tr">Tatuaż, jego usuwanie i praca ze skórą. Jedno miejsce przy Piotrkowskiej 24.</div>
   <div class="hero-bot">
     <div>
-      <div class="mono muted" style="margin-bottom:18px">Piotrkowska 24 · Łódź · 5.0 ★ z 130 opinii</div>
-      <h1><span class="row"><span>Zrób. Popraw.</span></span><span class="row"><span class="x">Usuń.</span></span></h1>
-      <p class="hero-sub">Nie oceniamy decyzji o tatuażu ani o jego usunięciu. Umów się online w minutę albo policz usuwanie w 30 sekund.</p>
+            <h1><span class="row"><span>Tatuaż, cover</span></span><span class="row"><span>i usuwanie tatuaży.</span></span></h1>
+      <p class="hero-sub">Piotrkowska 24, Łódź. Umów się online w minutę albo policz usuwanie w 30 sekund.</p>
       <div class="hero-cta">
         <a href="#rezerwacja" class="btn">Zarezerwuj tatuaż <span class="arr">→</span></a>
         <a href="#usuwanie" class="btn ghost">Policz usuwanie</a>
       </div>
     </div>
-    <div class="hero-panel">
-      <div class="ba" id="heroBA" style="--x:100%">
-        <img src="img/insp2b.jpg" alt="Szyja po 6 sesjach usuwania">
-        <img class="before" src="img/insp2a.jpg" alt="Tatuaż na szyi przed usuwaniem">
-        <span class="lbl l">Przed</span><span class="lbl r">Po 6</span>
-        <div class="handle"><div class="knob">⇆</div></div>
-      </div>
-      <div class="cap"><span>Przeciągnij</span><b>Laser pikosekundowy</b></div>
-    </div>
   </div>
   <a href="#wybor" class="scroll-hint mono"><i></i></a>
 </section>
 
-<div class="infobar">
-  <div class="marquee" id="marquee">
-    <span><b>5.0 ★</b> 130 opinii</span>
-    <span>Piotrkowska 24, Łódź</span>
-    <span>Laser <b>PicoGenesis</b></span>
-    <span>Chłodzenie <b>Cryo</b></span>
-    <span>Konsultacja 100 zł <b>odliczana od ceny</b></span>
-    <span><b>1. miejsce</b> Wrocław Tattoo Show 2026</span>
-    <span><b>1. Platz</b> Würzburg 2025 Black &amp; Grey</span>
-    <span>Fundacja: twarz, szyja, dłonie <b>za darmo</b></span>
-  </div>
-</div>
+<div class="infobar"><div class="facts">
+  <div><b>5.0</b><span>130 opinii</span></div>
+  <div><b>Laser</b><span>pikosekundowy PicoGenesis</span></div>
+  <div><b>100 zł</b><span>konsultacja, odliczana od ceny</span></div>
+  <div><b>pn–pt 10–19</b><span>sob 10–16</span></div>
+</div></div>
 
 <section class="sec" id="wybor">
   <div class="sec-head">
-    <div><span class="mono">/ 01 Co robimy</span><h2 class="rv-up">Wybierz.</h2></div>
+    <div><h2 class="rv-up">Co robimy?</h2></div>
     <p class="rv-up">Jedna rzecz na start. Resztę poprowadzimy krok po kroku, bez pisania w DM i bez dzwonienia.</p>
   </div>
   <div class="paths">
-    <a href="#rezerwacja" class="path" data-path="new"><span class="no">01</span><h3>Tattoo</h3><div class="meta"><strong>Nowy tatuaż →</strong>realizm, black &amp; grey, grafika, fine line, napisy</div><img class="peek" src="img/ig-praca5.jpg" alt=""></a>
-    <a href="#rezerwacja" class="path" data-path="cover"><span class="no">02</span><h3>Cover</h3><div class="meta"><strong>Zakrycie i korekta →</strong>laser rozjaśnia, artysta tworzy nowe</div><img class="peek" src="img/ig-praca3.jpg" alt=""></a>
-    <a href="#usuwanie" class="path" data-path="remove"><span class="no">03</span><h3>Removal</h3><div class="meta"><strong>Usuwanie laserem →</strong>tatuaże, blizny, makijaż permanentny</div><img class="peek" src="img/insp5a.jpg" alt=""></a>
+    <a href="#rezerwacja" class="path" data-path="new"><span class="no">01</span><h3>Nowy tatuaż</h3><div class="meta">realizm, black &amp; grey, grafika, fine line, napisy</div><img class="peek" src="img/ig-praca5.jpg" alt=""></a>
+    <a href="#rezerwacja" class="path" data-path="cover"><span class="no">02</span><h3>Cover i korekta</h3><div class="meta">laser rozjaśnia, artysta tworzy nowe</div><img class="peek" src="img/ig-praca3.jpg" alt=""></a>
+    <a href="#usuwanie" class="path" data-path="remove"><span class="no">03</span><h3>Usuwanie laserem</h3><div class="meta">tatuaże, blizny, makijaż permanentny</div><img class="peek" src="img/insp5a.jpg" alt=""></a>
   </div>
 </section>
 
-<section class="sec" id="nagrody">
-  <div class="sec-head">
-    <div><span class="mono">/ 02 Nagrody</span><h2 class="rv-up">Wygrywamy.</h2></div>
-    <p class="rv-up">Prace z retouch. zdobywają podium na konwencjach w Polsce i za granicą.</p>
-  </div>
-  <div class="awards">
-    <div class="aw"><div class="ph"><img src="img/nagroda3.jpg" alt="Statuetka Würzburg 2025" loading="lazy"></div><div class="t"><div class="place">1<sup>st</sup></div><b>Best of Black &amp; Grey</b><span class="mono">Würzburg 2025</span></div></div>
-    <div class="aw"><div class="ph"><img src="img/nagroda1.jpg" alt="Nagroda Wrocław Tattoo Show 2026" loading="lazy"></div><div class="t"><div class="place">1<sup>st</sup></div><b>Najlepszy tatuaż graficzny (zagojony)</b><span class="mono">Wrocław Tattoo Show 2026</span></div></div>
-    <div class="aw"><div class="ph"><img src="img/nagroda2.jpg" alt="Nagroda za 2. miejsce" loading="lazy"></div><div class="t"><div class="place">2<sup>nd</sup></div><b>Podium konkursowe</b><span class="mono">Wrocław Tattoo Show 2026</span></div></div>
-    <div class="aw"><div class="ph"><img src="img/atmo-ptk.jpg" alt="Nagroda PTK" loading="lazy"></div><div class="t"><div class="place">PTK</div><b>Nagroda konwentowa</b><span class="mono">Praca kolorowa</span></div></div>
-  </div>
-</section>
 
 <section class="sec" id="rezerwacja">
   <div class="sec-head">
-    <div><span class="mono">/ 03 Rezerwacja</span><h2 class="rv-up">Umów się.</h2></div>
+    <div><h2 class="rv-up">Rezerwacja</h2></div>
     <p class="rv-up">Sześć kroków i wiesz, kto Cię tatuuje, kiedy i za ile. Zadatek 100 zł odliczamy od ceny.</p>
   </div>
   <div class="bk">
@@ -788,7 +825,7 @@ main>section,.infobar{overflow-x:clip}
 
 <section class="sec" id="usuwanie">
   <div class="sec-head">
-    <div><span class="mono">/ 04 Removal</span><h2 class="rv-up">Ile to kosztuje?</h2></div>
+    <div><h2 class="rv-up">Ile kosztuje usuwanie?</h2></div>
     <p class="rv-up">Ustaw wielkość tatuażu i jego typ. Od razu widzisz cenę sesji z naszego cennika, orientacyjną liczbę zabiegów i czas procesu.</p>
   </div>
   <div class="calc-grid">
@@ -838,7 +875,7 @@ main>section,.infobar{overflow-x:clip}
 
 <section class="sec" id="efekty">
   <div class="sec-head">
-    <div><span class="mono">/ 05 Efekty</span><h2 class="rv-up">Przed. Po.</h2></div>
+    <div><h2 class="rv-up">Efekty</h2></div>
     <p class="rv-up">Prawdziwi klienci retouch. Przeciągnij czerwoną linię lasera.</p>
   </div>
   <div class="res-grid">
@@ -861,28 +898,10 @@ main>section,.infobar{overflow-x:clip}
   </div>
 </section>
 
-<section class="sec" id="prace">
-  <div class="sec-head">
-    <div><span class="mono">/ 06 Prace</span><h2 class="rv-up">Tattoo.</h2></div>
-    <p class="rv-up">Black &amp; grey, realizm i grafika prosto ze studia. Przewiń w bok.</p>
-  </div>
-  <div class="gal" id="gal">
-    <figure><img src="img/ig-praca1.jpg" alt="Tatuaż na klatce i brzuchu" loading="lazy"><figcaption><b>Klatka i brzuch</b><span>black &amp; grey</span></figcaption></figure>
-    <figure><img src="img/ig-praca5.jpg" alt="Portret realistyczny" loading="lazy"><figcaption><b>Portret</b><span>realizm</span></figcaption></figure>
-    <figure><img src="img/ig-praca7.jpg" alt="Tatuaż na nodze z czerwienią" loading="lazy"><figcaption><b>Noga</b><span>grafika + red</span></figcaption></figure>
-    <figure><img src="img/ig-praca2.jpg" alt="Tatuaż na udzie" loading="lazy"><figcaption><b>Udo</b><span>black &amp; grey</span></figcaption></figure>
-    <figure><img src="img/ig-praca3.jpg" alt="Rękaw" loading="lazy"><figcaption><b>Rękaw</b><span>realizm</span></figcaption></figure>
-    <figure><img src="img/ig-praca6.jpg" alt="Przedramię" loading="lazy"><figcaption><b>Przedramię</b><span>realizm</span></figcaption></figure>
-    <figure><img src="img/ig-praca8.jpg" alt="Róża i zegar" loading="lazy"><figcaption><b>Przedramię</b><span>black &amp; grey</span></figcaption></figure>
-    <figure><img src="img/ig-praca4.jpg" alt="Tatuaż na nodze" loading="lazy"><figcaption><b>Noga</b><span>grafika</span></figcaption></figure>
-    <figure><img src="img/atmo-ptk.jpg" alt="Kolorowa pantera" loading="lazy"><figcaption><b>Udo</b><span>kolor</span></figcaption></figure>
-  </div>
-  <div class="gal-nav"><button id="galPrev" aria-label="Wstecz">←</button><button id="galNext" aria-label="Dalej">→</button></div>
-</section>
 
 <section class="sec" id="artysci">
   <div class="sec-head">
-    <div><span class="mono">/ 07 Artyści</span><h2 class="rv-up">Zespół.</h2></div>
+    <div><h2 class="rv-up">Artyści</h2></div>
     <p class="rv-up">Pięć stylów tatuażu i laser za ścianą. Kliknij, zobacz prace i zarezerwuj bezpośrednio.</p>
   </div>
   <div class="alist" id="alist"></div>
@@ -899,8 +918,8 @@ main>section,.infobar{overflow-x:clip}
     </div>
   </div>
   <div class="found-txt">
-    <span class="mono">/ 08 Fundacja retouch.</span>
-    <h2 class="rv-up">Twarz. Szyja. Dłonie. Za darmo.</h2>
+    
+    <h2 class="rv-up">Twarz, szyja, dłonie. Za darmo.</h2>
     <p class="rv-up">Niektóre tatuaże zamykają drzwi do pracy i do ludzi. W naszej fundacji bezpłatnie usuwamy tatuaże z twarzy, szyi i dłoni. Druga szansa, bez oceniania.</p>
     <ul>
       <li><span>Zgłoszenie</span><b>formularz, 2 minuty</b></li>
@@ -913,7 +932,7 @@ main>section,.infobar{overflow-x:clip}
 
 <section class="sec" id="cennik">
   <div class="sec-head">
-    <div><span class="mono">/ 09 Cennik</span><h2 class="rv-up">Ceny.</h2></div>
+    <div><h2 class="rv-up">Cennik</h2></div>
     <p class="rv-up">Bez gwiazdek. Klienci powracający na kolejne sesje usuwania płacą tyle samo, co za pierwszą.</p>
   </div>
   <div class="ptabs" id="ptabs"><button class="on" data-t="laser">Usuwanie laserem</button><button data-t="tattoo">Tatuaż i konsultacje</button></div>
@@ -923,14 +942,15 @@ main>section,.infobar{overflow-x:clip}
 
 <section class="sec" id="o-nas">
   <div class="sec-head">
-    <div><span class="mono">/ 10 O nas</span><h2 class="rv-up">Jeden organizm.</h2></div>
+    <div><h2 class="rv-up">O nas</h2></div>
     <p class="rv-up">retouch. nie powstał jako kolejne studio tatuażu ani jako gabinet laserowy. To jedno i drugie, pod jednym dachem.</p>
   </div>
   <div class="wall" id="wall"><img src="img/lokal2.jpg" alt="Wnętrze studia retouch."><span class="cap mono">Piotrkowska 24 · stanowiska za szklaną ścianą</span></div>
-  <div class="story">
+  <div class="story one">
     <div class="story-txt">
       <p class="rv-up">Zaczynaliśmy od surowego betonu i kredy na ścianie. Dziś przy Piotrkowskiej 24 artyści pracują obok siebie, a laser jest za ścianą. Możesz u nas zrobić tatuaż, zakryć go albo zacząć od nowa.</p>
       <p class="rv-up">Studio założyli Konrad „Laser Daddy”, od ponad 10 lat w świecie tatuażu, i Stan „Ponto Pronto”, nagradzany artysta realizmu. Ich duet to naturalne połączenie: usuwanie i zakrywanie. Pracujemy na laserze pikosekundowym, frakcji mikroigłowej i laserowej oraz z chłodzeniem krio.</p>
+      <p class="rv-up">Prace z retouch. wygrywają konwencje: 1. miejsce Best of Black &amp; Grey w Würzburgu 2025 i 1. miejsce za tatuaż graficzny na Wrocław Tattoo Show 2026.</p>
       <div class="stats">
         <div><b>5.0</b><small>średnia z 130 opinii</small></div>
         <div><b>6</b><small>artystów i specjalistów</small></div>
@@ -938,35 +958,18 @@ main>section,.infobar{overflow-x:clip}
         <div><b>0 zł</b><small>usuwanie w ramach fundacji</small></div>
       </div>
     </div>
-    <div class="about-pics" id="aboutPics">
-      <figure><img src="img/budowa.jpg" alt="Założyciele w trakcie budowy studia" loading="lazy"><figcaption>Budowa, 2024</figcaption></figure>
-      <figure><img src="img/atmo-tablica.jpg" alt="Kredowa ściana z logo retouch." loading="lazy"><figcaption>Pierwszy szkic</figcaption></figure>
-      <figure><img src="img/lokal1.jpg" alt="Studio dziś" loading="lazy"><figcaption>Dziś</figcaption></figure>
-      <figure><img src="img/wnetrze4.jpg" alt="Gabinet laserowy" loading="lazy"><figcaption>Gabinet laserowy</figcaption></figure>
-    </div>
-  </div>
 </section>
 
 <section class="sec">
-  <div class="sec-head"><div><span class="mono">/ 11 Opinie</span><h2 class="rv-up">Mówią.</h2></div></div>
-  <div class="rv-wrap">
-    <div class="rv-score">
-      <b>5.0</b><div class="stars">★★★★★</div>
-      <div class="muted" style="font-size:14px">130 opinii, wszystkie pięciogwiazdkowe. Tylko zweryfikowane wizyty.</div>
-      <div class="rv-nav"><button id="rvPrev" aria-label="Poprzednia">←</button><button id="rvNext" aria-label="Następna">→</button></div>
-    </div>
-    <div class="rv-list" id="rvList">
-      <div class="rv"><q>Jestem zachwycona! Liza bardzo mi pomogła i z wyborem czcionki, i z wyborem miejsca na tatuaż. Wszystko bez bólu, bez stresu (a był to mój pierwszy tatuaż) i ze śmiechem.</q><div><b>Katerina</b> · sesja · Liza</div></div>
-      <div class="rv"><q>Konrad robi super robotę. Mimo że usuwanie tatuaży nie należy do przyjemnych, bardzo dba o klienta. Profesjonalizm i kontakt nawet po zabiegu.</q><div><b>Joanna</b> · usuwanie 10×15 cm</div></div>
-      <div class="rv"><q>Konrad ma ogromną wiedzę, wszystko dokładnie tłumaczy. Jestem po drugiej sesji i już mam dużą nadzieję na świetne efekty.</q><div><b>Wiktoria</b> · usuwanie tatuażu</div></div>
-      <div class="rv"><q>Super miejsce! Pełen profesjonalizm, cudowna atmosfera, fachowa obsługa. Z czystym sumieniem polecam to miejsce i Panią Karolinę.</q><div><b>Marlena</b> · sesja · Szczypta</div></div>
-      <div class="rv"><q>Polecam, miła atmosfera, Liza zadbała o komfort i samopoczucie! Tatuaż piękny.</q><div><b>Zosia</b> · sesja · Liza</div></div>
-    </div>
+  <div class="sec-head"><div><h2 class="rv-up">5.0 z 130 opinii.</h2></div></div>
+  <div class="quotes">
+    <blockquote><q>Liza bardzo mi pomogła i z wyborem czcionki, i z wyborem miejsca. Bez bólu, bez stresu, a był to mój pierwszy tatuaż.</q><cite>Katerina · tatuaż</cite></blockquote>
+    <blockquote><q>Konrad ma ogromną wiedzę i wszystko dokładnie tłumaczy. Jestem po drugiej sesji i już widzę efekty.</q><cite>Wiktoria · usuwanie</cite></blockquote>
   </div>
 </section>
 
 <section class="sec" id="faq">
-  <div class="sec-head"><div><span class="mono">/ 12 FAQ</span><h2 class="rv-up">Pytania.</h2></div></div>
+  <div class="sec-head"><div><h2 class="rv-up">FAQ</h2></div></div>
   <div class="faq-grid">
     <div class="faq-l">
       <input class="faq-search" id="faqSearch" placeholder="Szukaj: ból, cena, gojenie…" aria-label="Szukaj w pytaniach">
@@ -986,7 +989,7 @@ main>section,.infobar{overflow-x:clip}
 </section>
 
 <section class="sec" id="kontakt">
-  <div class="sec-head"><div><span class="mono">/ 13 Kontakt</span><h2 class="rv-up">Wpadnij.</h2></div></div>
+  <div class="sec-head"><div><h2 class="rv-up">Kontakt</h2></div></div>
   <div class="visit-grid">
     <div class="visit-info">
       <div class="addr">Piotrkowska 24<span>90-269 Łódź, Śródmieście</span></div>
@@ -1062,7 +1065,7 @@ const toast=(t)=>{const el=$('#toast');el.textContent=t;el.classList.add('on');c
 })();
 
 /* ---------- MARQUEE duplicate ---------- */
-$('#marquee').innerHTML+= $('#marquee').innerHTML;
+
 
 /* ---------- BEFORE/AFTER ---------- */
 function makeBA(el,{auto=false}={}){
@@ -1082,7 +1085,7 @@ function makeBA(el,{auto=false}={}){
   }
 }
 const easeIO=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
-makeBA($('#heroBA'),{auto:true});makeBA($('#resBA'));makeBA($('#foundBA'));
+makeBA($('#resBA'));makeBA($('#foundBA'));
 
 /* ---------- PATHS ---------- */
 $$('.path').forEach(p=>p.addEventListener('click',()=>{
@@ -1368,8 +1371,7 @@ $$('#ptabs button').forEach(b=>b.onclick=()=>{$$('#ptabs button').forEach(x=>x.c
 renderPrices('laser');
 
 /* ---------- REVIEWS ---------- */
-$('#rvNext').onclick=()=>$('#rvList').scrollBy({left:400,behavior:'smooth'});
-$('#rvPrev').onclick=()=>$('#rvList').scrollBy({left:-400,behavior:'smooth'});
+
 
 /* ---------- FAQ ---------- */
 $$('.qa button').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
@@ -1394,12 +1396,6 @@ try{if(!localStorage.getItem('rt-ck'))setTimeout(()=>$('#cookie').classList.add(
 const ck=()=>{$('#cookie').classList.remove('on');try{localStorage.setItem('rt-ck','1')}catch(e){}};
 $('#ckOk').onclick=ck;$('#ckNo').onclick=ck;$('#cookieLink').onclick=e=>{e.preventDefault();$('#cookie').classList.add('on')};
 
-/* ---------- GALLERY ---------- */
-(function(){const g=$('#gal');const step=()=>g.querySelector('figure').offsetWidth;
-$('#galNext').onclick=()=>g.scrollBy({left:step(),behavior:'smooth'});$('#galPrev').onclick=()=>g.scrollBy({left:-step(),behavior:'smooth'});
-let down=false,sx=0,sl=0;g.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')return;down=true;sx=e.clientX;sl=g.scrollLeft;g.style.scrollSnapType='none'});
-addEventListener('pointerup',()=>{if(down){down=false;g.style.scrollSnapType=''}});g.addEventListener('pointermove',e=>{if(down)g.scrollLeft=sl-(e.clientX-sx)});
-const w=$('#wall img');addEventListener('scroll',()=>{const r=$('#wall').getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight){w.style.transform=`translateY(${(r.top/innerHeight)*-12}%)`}},{passive:true});})();
 /* ---------- REVEAL ---------- */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
 $$('.rv-up,.words,.about-pics').forEach(el=>io.observe(el));
