@@ -7,7 +7,7 @@
 <meta name="description" content="BTD Detailing Łódź: mycie detailingowe, wnętrze, polerowanie, ceramika i łodzie. Wycena w 10 sekund i rezerwacja terminu online, bez pisania na DM.">
 <meta property="og:title" content="BTD Detailing Łódź">
 <meta property="og:description" content="Wyceń auto w 10 sekund i zarezerwuj termin online.">
-<meta property="og:image" content="https://btd-detailing-lodz.vercel.app/img/hero.jpg">
+<meta property="og:image" content="https://btd-detailing-lodz.vercel.app/img/m4-myjnia.jpg">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#070707">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -86,7 +86,8 @@ body.menu #mmenu{opacity:1;pointer-events:auto;transform:none}
 /* HERO */
 .hero{position:relative;min-height:100svh;padding-top:110px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding-bottom:clamp(28px,5vh,56px)}
 .hero .bgimg{position:absolute;inset:0;z-index:0}
-.hero .bgimg img{width:100%;height:100%;object-fit:cover;object-position:62% 55%;transform:scale(1.12);transition:transform 2.6s cubic-bezier(.2,.7,.2,1)}
+.hero .bgimg picture{display:block;width:100%;height:100%}
+.hero .bgimg img{width:100%;height:100%;object-fit:cover;object-position:50% 35%;transform:scale(1.12);transition:transform 2.6s cubic-bezier(.2,.7,.2,1)}
 body.ready .hero .bgimg img{transform:scale(1.02)}
 .hero .bgimg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,7,7,.75) 0%,rgba(7,7,7,.1) 28%,rgba(7,7,7,.15) 50%,rgba(7,7,7,.92) 86%,#070707 100%),linear-gradient(90deg,rgba(7,7,7,.65),rgba(7,7,7,0) 60%)}
 .hero .in{position:relative;z-index:2}
@@ -273,7 +274,7 @@ section{position:relative}
 .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
 
 /* BEFORE AFTER */
-.ba{position:relative;aspect-ratio:1168/880;max-height:86vh;width:100%;overflow:hidden;user-select:none;touch-action:pan-y;cursor:ew-resize;background:#000}
+.ba{position:relative;aspect-ratio:16/9;max-height:86vh;width:100%;overflow:hidden;user-select:none;touch-action:pan-y;cursor:ew-resize;background:#000}
 .ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 .ba .after{clip-path:inset(0 0 0 var(--x,50%))}
 .ba .h{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:var(--gold);transform:translateX(-1px)}
@@ -505,7 +506,7 @@ footer{border-top:1px solid var(--line);padding:64px 0 120px}
 
 <!-- HERO -->
 <section class="hero">
-  <div class="bgimg"><img src="img/hero.jpg" alt="Pomarańczowe coupe na myjni nocą, krople wody na lakierze" fetchpriority="high"></div>
+  <div class="bgimg"><picture><source media="(max-width:700px)" srcset="img/m4-myjnia.jpg"><img src="img/czarne-bmw-led.jpg" alt="Czarne BMW po detailingu BTD w garażu, niebieskie światła" fetchpriority="high"></picture></div>
   <div class="wrap in">
     <div class="live fade"><span class="dot"></span>Najbliższy wolny termin: <b id="nextSlot">jutro, 9:00</b></div>
     <h1 class="wide">
@@ -545,15 +546,15 @@ footer{border-top:1px solid var(--line);padding:64px 0 120px}
       <p class="rv d1">Wybierz usługę, a od razu zobaczysz cenę i czas. Kliknięcie przenosi do rezerwacji z tą usługą już wybraną.</p>
     </div>
     <div class="svc" id="svcList">
-      <a href="#rezerwacja" data-pk="daily" data-img="img/foam.jpg" class="rv"><span class="n">01</span><h3>Mycie Daily</h3><span class="d">Piana aktywna, mycie ręczne dwoma wiadrami, felgi, osuszanie, szyby.</span><span class="p">od 120 zł<small>ok. 1,5 h</small></span><span class="go">→</span></a>
-      <a href="#rezerwacja" data-pk="inside" data-img="img/interior.jpg" class="rv"><span class="n">02</span><h3>Inside Out</h3><span class="d">Wnętrze i karoseria: pranie tapicerki, skóra, plastiki, odkurzanie, mycie.</span><span class="p">od 390 zł<small>ok. 4 h</small></span><span class="go">→</span></a>
-      <a href="#rezerwacja" data-pk="gloss" data-img="img/polish.jpg" class="rv"><span class="n">03</span><h3>Gloss</h3><span class="d">Dekontaminacja, polerowanie jednoetapowe, wosk. Rysy i hologramy znikają.</span><span class="p">od 890 zł<small>1 dzień</small></span><span class="go">→</span></a>
-      <a href="#rezerwacja" data-pk="shield" data-img="img/after.jpg" class="rv"><span class="n">04</span><h3>Shield Ceramic</h3><span class="d">Korekta lakieru i powłoka ceramiczna na 3 lata. Woda spływa sama.</span><span class="p">od 1 690 zł<small>2 dni</small></span><span class="go">→</span></a>
-      <a href="#rezerwacja" data-pk="boat" data-img="img/boat.jpg" class="rv"><span class="n">05</span><h3>Boat</h3><span class="d">Łodzie i skutery: mycie, polerowanie gelcoatu, zabezpieczenie na sezon.</span><span class="p">od 690 zł<small>wycena</small></span><span class="go">→</span></a>
+      <a href="#rezerwacja" data-pk="daily" data-img="img/owner-myjnia.jpg" class="rv"><span class="n">01</span><h3>Mycie Daily</h3><span class="d">Piana aktywna, mycie ręczne dwoma wiadrami, felgi, osuszanie, szyby.</span><span class="p">od 120 zł<small>ok. 1,5 h</small></span><span class="go">→</span></a>
+      <a href="#rezerwacja" data-pk="inside" data-img="img/wnetrze-2.jpg" class="rv"><span class="n">02</span><h3>Inside Out</h3><span class="d">Wnętrze i karoseria: pranie tapicerki, skóra, plastiki, odkurzanie, mycie.</span><span class="p">od 390 zł<small>ok. 4 h</small></span><span class="go">→</span></a>
+      <a href="#rezerwacja" data-pk="gloss" data-img="img/m4-quick.jpg" class="rv"><span class="n">03</span><h3>Gloss</h3><span class="d">Dekontaminacja, polerowanie jednoetapowe, wosk. Rysy i hologramy znikają.</span><span class="p">od 890 zł<small>1 dzień</small></span><span class="go">→</span></a>
+      <a href="#rezerwacja" data-pk="shield" data-img="img/rs3.jpg" class="rv"><span class="n">04</span><h3>Shield Ceramic</h3><span class="d">Korekta lakieru i powłoka ceramiczna na 3 lata. Woda spływa sama.</span><span class="p">od 1 690 zł<small>2 dni</small></span><span class="go">→</span></a>
+      <a href="#rezerwacja" data-pk="boat" data-img="img/urus-autoszyby.jpg" class="rv"><span class="n">05</span><h3>Premium</h3><span class="d">Urus, M-ki, S-klasa: pełny pakiet dla aut, na które wszyscy patrzą. Robione osobiście przez właściciela.</span><span class="p">od 990 zł<small>wycena</small></span><span class="go">→</span></a>
     </div>
   </div>
 </section>
-<div id="peek"><img alt="" src="img/foam.jpg"></div>
+<div id="peek"><img alt="" src="img/owner-myjnia.jpg"></div>
 
 <!-- CALCULATOR -->
 <section class="sec calc" id="wycena">
@@ -633,7 +634,7 @@ footer{border-top:1px solid var(--line);padding:64px 0 120px}
             <button data-pk="inside" data-p="390" data-t="4 h" data-d="4"><div><b>Inside Out</b><span>wnętrze + karoseria</span></div><em>4 h</em><strong>od 390 zł</strong></button>
             <button data-pk="gloss" data-p="890" data-t="1 dzień" data-d="8"><div><b>Gloss</b><span>polerowanie + wosk</span></div><em>1 dzień</em><strong>od 890 zł</strong></button>
             <button data-pk="shield" data-p="1690" data-t="2 dni" data-d="16"><div><b>Shield Ceramic</b><span>korekta + ceramika 3 lata</span></div><em>2 dni</em><strong>od 1 690 zł</strong></button>
-            <button data-pk="boat" data-p="690" data-t="wycena" data-d="8"><div><b>Boat</b><span>łodzie i skutery</span></div><em>1 dzień</em><strong>od 690 zł</strong></button>
+            <button data-pk="boat" data-p="990" data-t="1 dzień" data-d="8"><div><b>Premium</b><span>Urus, M-ki, S-klasa</span></div><em>1 dzień</em><strong>od 990 zł</strong></button>
           </div>
         </div>
         <!-- 2 -->
@@ -684,8 +685,8 @@ footer{border-top:1px solid var(--line);padding:64px 0 120px}
       <p class="rv d1">To samo auto, ten sam kadr. Po lewej po zimie, po prawej po pakiecie Gloss. Przesuń suwak palcem.</p>
     </div>
     <div class="ba rv" id="ba">
-      <img src="img/before.jpg" alt="Brudne auto po zimie">
-      <img class="after" src="img/after.jpg" alt="To samo auto po detailingu">
+      <img src="img/before.jpg" alt="BMW po zimie, przed myciem">
+      <img class="after" src="img/m4-zielone.jpg" alt="To samo BMW po detailingu BTD">
       <span class="tg l">Przed</span><span class="tg r">Po · Gloss</span>
       <div class="h"><b><svg width="26" height="14" viewBox="0 0 26 14" fill="none" stroke="#000" stroke-width="2"><path d="M7 1L1 7l6 6M19 1l6 6-6 6"/></svg></b></div>
     </div>
@@ -711,8 +712,8 @@ footer{border-top:1px solid var(--line);padding:64px 0 120px}
       <div class="pb"><i id="tlBar"></i></div>
       <ol id="tlList">
         <li data-i="0"><i></i><div><b>Auto przyjęte</b><span>Oględziny i zdjęcia lakieru</span></div><time>09:02</time></li>
-        <li data-i="1"><i></i><div><b>Mycie i dekontaminacja</b><span>Piana, glinkowanie, usuwanie smoły</span><div class="ph"><img src="img/foam.jpg" alt=""></div></div><time>09:40</time></li>
-        <li data-i="2"><i></i><div><b>Polerowanie lakieru</b><span>Teraz: maska i błotniki</span><div class="ph"><img src="img/polish.jpg" alt=""></div></div><time>11:15</time></li>
+        <li data-i="1"><i></i><div><b>Mycie i dekontaminacja</b><span>Piana, glinkowanie, usuwanie smoły</span><div class="ph"><img src="img/owner-myjnia.jpg" alt=""></div></div><time>09:40</time></li>
+        <li data-i="2"><i></i><div><b>Polerowanie lakieru</b><span>Teraz: maska i błotniki</span><div class="ph"><img src="img/wnetrze-1.jpg" alt=""></div></div><time>11:15</time></li>
         <li data-i="3"><i></i><div><b>Wnętrze i kontrola</b><span>Ostatnie sprawdzenie w świetle LED</span></div><time>—</time></li>
         <li data-i="4"><i></i><div><b>Gotowe do odbioru</b><span>Dostaniesz SMS z godziną</span></div><time>—</time></li>
       </ol>
@@ -724,13 +725,13 @@ footer{border-top:1px solid var(--line);padding:64px 0 120px}
 <!-- ABOUT -->
 <section class="sec about" id="o-nas">
   <div class="wrap agrid">
-    <div class="ph rv"><img src="img/polish.jpg" alt="Polerowanie czarnego lakieru" id="aboutImg"><div class="stamp">Łódź · od zajawki</div></div>
+    <div class="ph rv"><img src="img/owner-logo.jpg" alt="Dawid, właściciel BTD, z logo BTD" id="aboutImg"><div class="stamp">Łódź · od zajawki</div></div>
     <div>
       <div class="label rv"><span class="m"><i></i><i></i><i></i></span>06 · O nas</div>
       <h2 class="wide rv">Robimy auta tak, jak robilibyśmy <span class="gold">swoje.</span></h2>
       <p class="rv">BTD zaczęło się od zajawki do aut i nocnych zdjęć na myjni. Dziś przez nasze ręce przechodzą codzienne auta, M-ki, SUV-y i łodzie, a każde dostaje tyle samo uwagi.</p>
       <p class="rv">Nie mamy taśmy. Jedno auto, jedna osoba odpowiedzialna od przyjęcia do wydania. Przed oddaniem kluczyków sprawdzamy lakier w świetle LED, bo tam widać wszystko.</p>
-      <div class="who rv"><div class="av"><svg viewBox="14 84 223 57" style="width:34px;color:var(--gold)"><defs><clipPath id="lc3"><rect x="0" y="84.8" width="260" height="55.2"/></clipPath></defs><g clip-path="url(#lc3)" fill="none" stroke="currentColor" stroke-width="7.6" stroke-linejoin="round"><path d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/><path transform="translate(250.8 0) scale(-1 1)" d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/></g></svg></div><div><b>Właściciel BTD</b><span><a href="https://instagram.com/btd__davidek" target="_blank" rel="noopener">@btd__davidek</a> · osobiście sprawdza każde auto</span></div></div>
+      <div class="who rv"><div class="av"><svg viewBox="14 84 223 57" style="width:34px;color:var(--gold)"><defs><clipPath id="lc3"><rect x="0" y="84.8" width="260" height="55.2"/></clipPath></defs><g clip-path="url(#lc3)" fill="none" stroke="currentColor" stroke-width="7.6" stroke-linejoin="round"><path d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/><path transform="translate(250.8 0) scale(-1 1)" d="M19.6 78 L39 135 L103 135 Q109 135 105.5 130 L86.5 108 L52 108 L46.5 101.5 L60 88.75 L105 88.75 L120.4 104 L120.4 145"/></g></svg></div><div><b>Dawid, właściciel BTD</b><span><a href="https://instagram.com/btd__davidek" target="_blank" rel="noopener">@btd__davidek</a> · osobiście sprawdza każde auto</span></div></div>
       <div class="vals rv">
         <div><b>1:1</b><span>jedno auto, jedna osoba</span></div>
         <div><b>LED</b><span>kontrola przed wydaniem</span></div>
@@ -747,12 +748,16 @@ footer{border-top:1px solid var(--line);padding:64px 0 120px}
     <div class="gctl rv d1"><button id="gPrev" aria-label="Wstecz">←</button><button id="gNext" aria-label="Dalej">→</button></div>
   </div></div>
   <div class="gstrip" id="gstrip">
-    <figure><img src="img/hero.jpg" alt="Coupe po myciu nocą" loading="lazy"><figcaption>Mycie nocą</figcaption></figure>
-    <figure><img src="img/interior.jpg" alt="Czyszczenie skórzanego fotela" loading="lazy"><figcaption>Skóra</figcaption></figure>
-    <figure><img src="img/foam.jpg" alt="Piana aktywna" loading="lazy"><figcaption>Piana aktywna</figcaption></figure>
-    <figure><img src="img/polish.jpg" alt="Polerowanie lakieru" loading="lazy"><figcaption>Polerowanie</figcaption></figure>
-    <figure><img src="img/boat.jpg" alt="Polerowanie łodzi" loading="lazy"><figcaption>Boat</figcaption></figure>
-    <figure><img src="img/after.jpg" alt="Czarny sedan po detailingu" loading="lazy"><figcaption>Gloss</figcaption></figure>
+    <figure><img src="img/m4-myjnia.jpg" alt="Myjnia PFC, nocą – realizacja BTD" loading="lazy"><figcaption>Myjnia PFC, nocą</figcaption></figure>
+    <figure><img src="img/z4.jpg" alt="Z4 – realizacja BTD" loading="lazy"><figcaption>Z4</figcaption></figure>
+    <figure><img src="img/s-klasa.jpg" alt="S-klasa – realizacja BTD" loading="lazy"><figcaption>S-klasa</figcaption></figure>
+    <figure><img src="img/fiolet.jpg" alt="Sport – realizacja BTD" loading="lazy"><figcaption>Sport</figcaption></figure>
+    <figure><img src="img/biala-bmw.jpg" alt="Biała – realizacja BTD" loading="lazy"><figcaption>Biała</figcaption></figure>
+    <figure><img src="img/rs3.jpg" alt="RS3 – realizacja BTD" loading="lazy"><figcaption>RS3</figcaption></figure>
+    <figure><img src="img/wnetrze-logo.jpg" alt="Wnętrze – realizacja BTD" loading="lazy"><figcaption>Wnętrze</figcaption></figure>
+    <figure><img src="img/urus-autoszyby.jpg" alt="Urus – realizacja BTD" loading="lazy"><figcaption>Urus</figcaption></figure>
+    <figure><img src="img/m4-quick.jpg" alt="M4 – realizacja BTD" loading="lazy"><figcaption>M4</figcaption></figure>
+    <figure><img src="img/otwarcie.jpg" alt="Otwarcie – realizacja BTD" loading="lazy"><figcaption>Otwarcie</figcaption></figure>
   </div>
 </section>
 
@@ -773,7 +778,7 @@ footer{border-top:1px solid var(--line);padding:64px 0 120px}
 
 <!-- CTA BAND -->
 <section class="band">
-  <img src="img/foam.jpg" alt="" loading="lazy">
+  <img src="img/m4-zielone.jpg" alt="" loading="lazy">
   <div class="wrap in">
     <div class="label rv"><span class="m"><i></i><i></i><i></i></span>Wolne terminy w tym tygodniu</div>
     <h2 class="wide rv">Twoje auto<br>zasługuje na <span class="gold">więcej.</span></h2>
@@ -865,7 +870,7 @@ $('#rBook').addEventListener('click',()=>{
 
 /* ---------- BOOKING ---------- */
 const B={pk:null,day:null,slot:null,pickup:false};
-const names={daily:'Mycie Daily',inside:'Inside Out',gloss:'Gloss',shield:'Shield Ceramic',boat:'Boat',calc:'Twoja wycena'};
+const names={daily:'Mycie Daily',inside:'Inside Out',gloss:'Gloss',shield:'Shield Ceramic',boat:'Premium',calc:'Twoja wycena'};
 function go(n){
   $$('.pane').forEach(p=>p.classList.toggle('on',+p.dataset.s===n));
   $$('#bSteps li').forEach((l,i)=>{l.classList.toggle('on',i+1===n);l.classList.toggle('ok',i+1<n)});
