@@ -44,7 +44,7 @@ function recordEquity(state, pv, bench) {
   else state.equity.push(p);
 }
 
-export async function runTick({ source = 'cron', force = false } = {}) {
+export async function runTick({ source = 'cron', force = false, alarm = null } = {}) {
   let state = await loadState();
   const fresh = !state;
   if (fresh) state = newState();
@@ -54,14 +54,14 @@ export async function runTick({ source = 'cron', force = false } = {}) {
   const now = new Date();
   state.day = Math.min(EXPERIMENT_DAYS, Math.floor((now - new Date(state.startedAt)) / 864e5) + 1);
   const finished = now > new Date(state.endsAt);
-  const last = state.decisions.find(d => !d.error);
-  const tooSoon = last && now - new Date(last.at) < (force ? 2 : 4) * 60e3;
+  const last = state.decisions.find(d => !d.error && d.source !== 'strażnik');
+  const tooSoon = last && now - new Date(last.at) < (force ? 1.5 : 4) * 60e3;
 
   let result = { skipped: true, why: finished ? 'eksperyment zakończony' : 'za wcześnie od ostatniej decyzji' };
   if (!finished && !tooSoon) {
     const intel = await getIntel().catch(() => null);
-    const ctx = { state, market, intel, mode: 'aggro', ...snapshot(state, market) };
-    const dec = { id: crypto.randomUUID(), at: now.toISOString(), source, executed: [], rejected: [] };
+    const ctx = { state, market, intel, alarm, mode: 'aggro', ...snapshot(state, market) };
+    const dec = { id: crypto.randomUUID(), at: now.toISOString(), source, alarm: alarm || undefined, executed: [], rejected: [] };
     try {
       const { decision, usage, model } = await askAI(ctx);
       dec.model = model;

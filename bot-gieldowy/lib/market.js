@@ -93,13 +93,18 @@ async function cryptoQuote(inst) {
   const base = `https://api.exchange.coinbase.com/products/${inst.pair}`;
   const t = await getJSON(`${base}/ticker`);
   const candles = await getJSON(`${base}/candles?granularity=3600`);
-  const c5 = await getJSON(`${base}/candles?granularity=300`).catch(() => []);
+  const c1 = await getJSON(`${base}/candles?granularity=60`).catch(() => []); // 300 świec minutowych = 5 h
   const bid = +t.bid, ask = +t.ask, mid = (bid + ask) / 2;
   const closes = candles.map(c => c[4]).reverse(); // Coinbase zwraca od najnowszej
-  const k5 = c5.map(c => c[4]).reverse();
-  const back5 = n => k5.length > n ? k5[k5.length - 1 - n] : null;
+  const k1 = c1.map(c => c[4]).reverse();
+  const v1 = c1.map(c => c[5] * c[4]).reverse();
+  const back1 = n => k1.length > n ? k1[k1.length - 1 - n] : null;
+  const k5 = k1.filter((_, i) => (k1.length - 1 - i) % 5 === 0); // co 5. świeca = świece 5-min
+  const volNow = v1.slice(-15).reduce((a, b) => a + b, 0) / 15, volAvg = v1.slice(-300).reduce((a, b) => a + b, 0) / Math.max(1, Math.min(300, v1.length));
   return { ...inst, mid, bid, ask, spreadSource: 'giełda', time: t.time, ...stats(closes, mid),
-    ch5m: pct(mid, back5(1)), ch15m: pct(mid, back5(3)), rsi14_5m: rsi(k5) };
+    ch1m: pct(mid, back1(1)), ch3m: pct(mid, back1(3)), ch5m: pct(mid, back1(5)), ch15m: pct(mid, back1(15)), ch60m: pct(mid, back1(60)),
+    rsi14_1m: rsi(k1), rsi14_5m: rsi(k5), vol15m_vs_avg: volAvg ? +(volNow / volAvg).toFixed(2) : null,
+    high5h: k1.length ? Math.max(...k1) : null, low5h: k1.length ? Math.min(...k1) : null };
 }
 
 // Coinbase limituje publiczne API, więc krypto pobieramy partiami
@@ -133,4 +138,18 @@ export async function getMarket() {
     q[x.symbol] = x;
   }
   return { at: new Date().toISOString(), fx, us, quotes: q };
+}
+
+// Szybki odczyt dla strażnika (co minutę): bid/ask + świece minutowe dla wybranych par
+export async function quickQuotes(insts) {
+  return inBatches(insts, 5, async inst => {
+    const base = `https://api.exchange.coinbase.com/products/${inst.pair}`;
+    try {
+      const [t, c1] = await Promise.all([getJSON(`${base}/ticker`, 5000), getJSON(`${base}/candles?granularity=60`, 5000).catch(() => [])]);
+      const bid = +t.bid, ask = +t.ask, mid = (bid + ask) / 2;
+      const k1 = c1.map(c => c[4]).reverse();
+      const back1 = n => k1.length > n ? k1[k1.length - 1 - n] : null;
+      return { ...inst, bid, ask, mid, tradable: true, ch1m: pct(mid, back1(1)), ch3m: pct(mid, back1(3)), ch15m: pct(mid, back1(15)) };
+    } catch (e) { return { ...inst, error: String(e.message || e) }; }
+  });
 }

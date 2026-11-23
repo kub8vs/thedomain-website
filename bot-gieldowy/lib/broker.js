@@ -1,4 +1,4 @@
-import { FX_FEE, FEES, MIN_ORDER_PLN, MAX_POSITION_SHARE, TRADABLE_ONLY } from './config.js';
+import { FX_FEE, FEES, MIN_ORDER_PLN, MAX_POSITION_SHARE, TRADABLE_ONLY, DEFAULT_STOP_PCT, DEFAULT_TAKE_PCT, MIN_HOLD_MIN } from './config.js';
 
 const r2 = x => Math.round(x * 100) / 100;
 
@@ -24,7 +24,7 @@ export function portfolioValue(state, market) {
     p.lastValuePLN = v;
     positions += v;
     rows.push({ symbol: sym, name: q.name, type: q.type, qty: p.qty, price: q.bid, valuePLN: v, costPLN: p.costPLN,
-      plPLN: v - p.costPLN, plPct: (v / p.costPLN - 1) * 100, openedAt: p.openedAt });
+      plPLN: v - p.costPLN, plPct: (v / p.costPLN - 1) * 100, openedAt: p.openedAt, ...guardLevels(p) });
   }
   return { cash: state.cash, positions, total: state.cash + positions, rows };
 }
@@ -66,7 +66,13 @@ export function execute(state, market, order, now = new Date().toISOString(), ma
     const { qty, fees } = quoteBuy(q, pln, fx);
     state.cash -= pln;
     const p = state.positions[q.symbol] || { qty: 0, costPLN: 0, openedAt: now };
+    p.entryUSD = ((p.entryUSD || 0) * p.qty + q.ask * qty) / (p.qty + qty);
     p.qty += qty; p.costPLN += pln;
+    const clamp = (x, lo, hi, d) => Number.isFinite(+x) && +x > 0 ? Math.min(hi, Math.max(lo, +x)) : d;
+    p.stopPct = clamp(order.stop_loss_pct, 1.5, 15, p.stopPct || DEFAULT_STOP_PCT);
+    p.takePct = clamp(order.take_profit_pct, 2, 60, p.takePct || DEFAULT_TAKE_PCT);
+    p.peakUSD = Math.max(p.peakUSD || 0, q.bid);
+    p.tookProfit = false;
     state.positions[q.symbol] = p;
     const t = { id: crypto.randomUUID(), at: now, side: 'KUPNO', symbol: q.symbol, name: q.name, qty, priceUSD: q.ask,
       fx, amountPLN: pln, fees, feesTotal: fees.fx + fees.commission + fees.spread, reason: order.reason || '' };
@@ -77,6 +83,10 @@ export function execute(state, market, order, now = new Date().toISOString(), ma
   if (order.action === 'sell') {
     const p = state.positions[q.symbol];
     if (!p) return { ok: false, why: `${q.symbol}: brak pozycji do sprzedaży` };
+    const ageMin = (new Date(now) - new Date(p.openedAt)) / 60e3;
+    const lossPct = p.entryUSD ? (q.bid / p.entryUSD - 1) * 100 : 0;
+    if (!order.guard && ageMin < MIN_HOLD_MIN && lossPct > -(p.stopPct || DEFAULT_STOP_PCT))
+      return { ok: false, why: `${q.symbol}: pozycja ma dopiero ${Math.round(ageMin)} min (min. ${MIN_HOLD_MIN} min, żeby nie przepalać opłat; przed dużą stratą chroni stop)` };
     const frac = Math.min(1, Math.max(0, order.fraction == null ? 1 : +order.fraction));
     let qty = p.qty * frac;
     const remainingPLN = liquidationPLN(q, p.qty - qty, fx);
@@ -93,9 +103,19 @@ export function execute(state, market, order, now = new Date().toISOString(), ma
     if (p.qty <= 1e-12) delete state.positions[q.symbol];
     const fees = { fx: fxFee, commission: comm * fx, spread: spreadPLN };
     const t = { id: crypto.randomUUID(), at: now, side: 'SPRZEDAŻ', symbol: q.symbol, name: q.name, qty, priceUSD: q.bid,
-      fx, amountPLN: pln, fees, feesTotal: fees.fx + fees.commission + fees.spread, plPLN: pln - costPart, reason: order.reason || '' };
+      fx, amountPLN: pln, fees, feesTotal: fees.fx + fees.commission + fees.spread, plPLN: pln - costPart, reason: order.reason || '', guard: order.guard || undefined };
     state.trades.unshift(t);
     return { ok: true, trade: t };
   }
   return { ok: false, why: 'nieznana akcja' };
+}
+
+// Poziomy ochrony pozycji (USD): stop kroczący od szczytu i cel częściowej realizacji zysku
+export function guardLevels(p) {
+  if (!p.entryUSD) return {};
+  const stopPct = p.stopPct || DEFAULT_STOP_PCT, takePct = p.takePct || DEFAULT_TAKE_PCT;
+  const peak = Math.max(p.peakUSD || 0, p.entryUSD);
+  // po realizacji połowy zysku stop nie schodzi poniżej ceny wejścia
+  const stopUSD = Math.max(peak * (1 - stopPct / 100), p.tookProfit ? p.entryUSD * 1.003 : 0);
+  return { entryUSD: p.entryUSD, peakUSD: peak, stopUSD, takeUSD: p.tookProfit ? null : p.entryUSD * (1 + takePct / 100), stopPct, takePct, tookProfit: !!p.tookProfit };
 }

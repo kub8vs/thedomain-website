@@ -53,3 +53,9 @@ export const AGGRO_MAX_POSITION_SHARE = 1.0;
 
 // kub 23.11: AI handluje TYLKO Solaną i meme coinami. Akcje, BTC, ETH to tylko kontekst.
 export const TRADABLE_ONLY = ['SOL', 'DOGE', 'SHIB', 'PEPE', 'BONK', 'WIF', 'FARTCOIN', 'PENGU', 'TRUMP'];
+
+// Ochrona pozycji (kub 23.11: "działaj idealnie względem rynku, analizuj częściej")
+export const DEFAULT_STOP_PCT = 4;      // stop kroczący: sprzedaj, gdy cena spadnie o X% od szczytu od wejścia
+export const DEFAULT_TAKE_PCT = 8;      // przy +X% od wejścia sprzedaj połowę (zysk w kieszeni), resztę pilnuje stop
+export const MIN_HOLD_MIN = 15;         // AI nie sprzedaje pozycji młodszej niż 15 min (chyba że traci > stop)
+export const ALARM_MOVE_PCT = 1.5;      // ruch o tyle % w 3 min na którejś monecie = AI analizuje od razu

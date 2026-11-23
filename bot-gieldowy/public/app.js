@@ -10,6 +10,7 @@ const cls = x => x > 0.004 ? 'up' : x < -0.004 ? 'down' : 'mut';
 const tPL = iso => new Date(iso).toLocaleString('pl-PL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Warsaw' });
 const hm = iso => new Date(iso).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Warsaw' });
 const px = x => x == null ? '–' : x >= 10 ? zl(x, 2) : x >= 0.01 ? zl(x, 4) : x.toPrecision(3).replace('.', ',');
+const px = x => x == null ? '–' : x >= 10 ? zl(x, 2) : x >= 0.01 ? zl(x, 4) : x.toPrecision(3).replace('.', ',');
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 function toast(msg, ms = 3200) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), ms); }

@@ -7,14 +7,15 @@ const FORMAT = `Odpowiedz WYŁĄCZNIE poprawnym JSON (bez markdown) w formacie:
   "market_view": "1-2 zdania po polsku: co widzisz na rynku",
   "decision_summary": "1 zdanie po polsku, prostym językiem dla początkującego: co robisz i dlaczego",
   "actions": [
-    {"action": "buy", "symbol": "BTC", "amount_pln": 40, "reason": "krótko po polsku"},
+    {"action": "buy", "symbol": "SOL", "amount_pln": 40, "stop_loss_pct": 4, "take_profit_pct": 8, "reason": "krótko po polsku"},
     {"action": "sell", "symbol": "NVDA", "fraction": 1, "reason": "krótko po polsku"}
   ],
   "confidence": 0.0-1.0,
   "sources_used": ["nazwy źródeł, na których oparłeś decyzję, np. Coinbase (ceny), CoinGecko, Fear & Greed, CoinDesk"],
   "key_info": "1 zdanie: najważniejsza informacja ze źródeł, która wpłynęła na decyzję"
 }
-"actions" może być pustą listą. Kwoty w PLN (kwota gotówki do wydania). fraction = część pozycji do sprzedaży (0-1).`;
+"actions" może być pustą listą. Kwoty w PLN (kwota gotówki do wydania). fraction = część pozycji do sprzedaży (0-1).
+stop_loss_pct (1,5-15) = stop kroczący liczony od najwyższej ceny od wejścia; take_profit_pct (2-60) = przy tym zysku automat sprzedaje połowę pozycji.`;
 
 const SYSTEM = `Jesteś zarządzającym małym portfelem testowym (paper trading) w eksperymencie edukacyjnym.
 Pieniądze są wirtualne, ale ceny, spready i opłaty są prawdziwe, więc działaj dokładnie tak, jakby to były prawdziwe pieniądze.
@@ -34,9 +35,10 @@ const SYSTEM_AGGRO = `Zarządzasz portfelem testowym (paper trading) w trybie AG
 Pieniądze są wirtualne, ale ceny, spready i opłaty są prawdziwe.
 Cel właściciela: zamienić ${START_CAPITAL_PLN} zł w ${AGGRO_GOAL_PLN} zł w ciągu tygodnia (+${Math.round((AGGRO_GOAL_PLN / START_CAPITAL_PLN - 1) * 100)}%).
 To skrajnie trudny cel (bez dźwigni potrzeba ruchu o kilkaset procent), więc grasz o maksymalny zwrot i akceptujesz duże ryzyko straty.
-Decydujesz co 5 minut jak aktywny trader. HANDLUJESZ WYŁĄCZNIE: SOL oraz meme coinami (DOGE, SHIB, PEPE, BONK, WIF, FARTCOIN, PENGU, TRUMP), aktywnie grając na krótkich ruchach. Akcje, ETF-y, BTC i ETH są w danych tylko jako kontekst rynku i nie możesz ich kupować.
-Meme coiny (meme: true) ruszają się najmocniej, ale mają większy spread (sprawdź spread_pct) i potrafią spaść o kilkadziesiąt procent w godzinę. Możesz mieć cały portfel w jednej monecie, podzielić go albo trzymać gotówkę. Graj na krótkie momentum (ch5m, ch15m, rsi14_5m) albo odbicia: wychodź przed spadkiem, wchodź przed wzrostem.
-Koszty nadal się liczą: kupno+sprzedaż to ok. 1-1,3%, więc nie handluj bez powodu, ale nie siedź w gotówce, jeśli widzisz szansę.
+Pełną analizę robisz co 5 minut, a dodatkowo natychmiast, gdy któraś moneta ruszy się mocno w ciągu 3 minut (alarm). Między analizami co minutę działa automatyczny strażnik: pilnuje stopu kroczącego i realizuje połowę zysku przy celu. Ustawiasz mu poziomy przy każdym kupnie (stop_loss_pct, take_profit_pct); dobieraj je do zmienności monety (memy szerzej, SOL ciaśniej).
+Jak aktywny trader: HANDLUJESZ WYŁĄCZNIE: SOL oraz meme coinami (DOGE, SHIB, PEPE, BONK, WIF, FARTCOIN, PENGU, TRUMP), aktywnie grając na krótkich ruchach. Akcje, ETF-y, BTC i ETH są w danych tylko jako kontekst rynku i nie możesz ich kupować.
+Meme coiny (meme: true) ruszają się najmocniej, ale mają większy spread (sprawdź spread_pct) i potrafią spaść o kilkadziesiąt procent w godzinę. Możesz mieć cały portfel w jednej monecie, podzielić go albo trzymać gotówkę. Graj na krótkie momentum albo odbicia: wchodź, gdy ruch potwierdzają minutowe dane (ch1m, ch3m, ch5m, ch15m, rsi14_1m) RAZEM ze wzrostem obrotu (vol15m_vs_avg > 1,3) i zgodnym trendem godzinowym (ch1h, sma20h). Nie goń świecy, która już urosła kilka procent bez korekty (rsi14_1m > 80). Unikaj wejść, gdy BTC i SOL jednocześnie mocno spadają.
+KOSZTY to Twój główny wróg: kupno+sprzedaż to ok. 1,2% plus spread monety. Wchodź tylko, gdy spodziewany ruch jest co najmniej 3x większy niż koszt. Pozycji młodszej niż 15 min nie sprzedasz (chroni ją stop), więc każde wejście ma być przemyślane. Lepiej 2-4 dobre transakcje dziennie niż 20 słabych. Trzymanie zwycięskiej pozycji, gdy trend trwa, to też decyzja.
 
 Zasady:
 - Krypto handlujesz 24/7.
@@ -50,7 +52,7 @@ function compactMarket(market) {
   return Object.values(market.quotes).filter(q => q.type === 'crypto' || ['SPY', 'QQQ'].includes(q.symbol)).map(q => q.error ? { symbol: q.symbol, error: 'brak danych' } : ({
     symbol: q.symbol, name: q.name, type: q.type, tradable_now: q.tradable,
     price_usd: +q.mid.toPrecision(5), spread_pct: +(((q.ask - q.bid) / q.mid) * 100).toFixed(3),
-    ch5m: q.ch5m, ch15m: q.ch15m, rsi14_5m: q.rsi14_5m, meme: q.meme || undefined, ch1h: q.ch1h, ch24h: q.ch24h, ch7d: q.ch7d, rsi14h: q.rsi14h,
+    ch1m: q.ch1m, ch3m: q.ch3m, ch5m: q.ch5m, ch15m: q.ch15m, ch60m: q.ch60m, rsi14_1m: q.rsi14_1m, rsi14_5m: q.rsi14_5m, vol15m_vs_avg: q.vol15m_vs_avg, high5h: q.high5h, low5h: q.low5h, meme: q.meme || undefined, ch1h: q.ch1h, ch24h: q.ch24h, ch7d: q.ch7d, rsi14h: q.rsi14h,
     sma20h: q.sma20h, sma50h: q.sma50h, high7d: q.high7d, low7d: q.low7d,
   }));
 }
@@ -59,6 +61,11 @@ export function buildUserPrompt(ctx) {
   let { state, acct, market, pv, bench, mode } = ctx;
   acct = acct || state;
   const notes = state.notes.slice(0, 8).map(n => `- [${n.at}] ${n.text}`).join('\n') || '(brak)';
+  const tr = acct.trades || [];
+  const closed = tr.filter(t => t.side === 'SPRZEDAŻ');
+  const feesPaid = tr.reduce((s, t) => s + (t.feesTotal || 0), 0);
+  const record = `transakcji: ${tr.length}, zapłacone koszty razem: ${feesPaid.toFixed(2)} zł, zamknięte z zyskiem: ${closed.filter(t => t.plPLN > 0).length}, ze stratą: ${closed.filter(t => t.plPLN <= 0).length}, wynik zamkniętych: ${closed.reduce((s, t) => s + t.plPLN, 0).toFixed(2)} zł
+${closed.slice(0, 8).map(t => `- ${t.at.slice(5, 16)} ${t.symbol} ${t.plPLN >= 0 ? '+' : ''}${t.plPLN.toFixed(2)} zł${t.guard ? ' (strażnik: ' + t.guard + ')' : ''}`).join('\n')}`;
   const last = acct.decisions.slice(0, 6).map(d => `- [${d.at}] ${d.summary} | akcje: ${d.executed.map(e => e.text).join('; ') || 'brak'}`).join('\n') || '(brak, to pierwsza decyzja)';
   return `Teraz: ${new Date().toISOString()} (UTC). Dzień eksperymentu ${state.day ?? 1} z 7.
 Giełda w USA: ${market.us.open ? 'OTWARTA' : 'ZAMKNIĘTA – ' + market.us.reason}.
@@ -66,7 +73,9 @@ Kurs USD/PLN: ${market.fx.rate.toFixed(4)}.
 
 PORTFEL ${mode === 'aggro' ? `AGRESYWNY (start ${START_CAPITAL_PLN} zł, cel ${AGGRO_GOAL_PLN} zł)` : `(start ${START_CAPITAL_PLN} zł)`}:
 gotówka: ${pv.cash.toFixed(2)} zł, pozycje: ${pv.positions.toFixed(2)} zł, razem (po kosztach wyjścia): ${pv.total.toFixed(2)} zł
-${pv.rows.map(r => `- ${r.symbol}: wartość ${r.valuePLN.toFixed(2)} zł, koszt ${r.costPLN.toFixed(2)} zł, wynik ${(r.plPct ?? 0).toFixed(2)}%`).join('\n') || '- brak pozycji'}
+${pv.rows.map(r => `- ${r.symbol}: wartość ${r.valuePLN.toFixed(2)} zł, koszt ${r.costPLN.toFixed(2)} zł, wynik ${(r.plPct ?? 0).toFixed(2)}%, otwarta ${r.openedAt ? Math.round((Date.now() - new Date(r.openedAt)) / 60e3) + ' min temu' : '?'}${r.stopUSD ? `, wejście ${+r.entryUSD.toPrecision(5)} USD, stop ${+r.stopUSD.toPrecision(5)} USD (${r.stopPct}%)${r.takeUSD ? `, cel połowy ${+r.takeUSD.toPrecision(5)} USD` : ', połowa zysku już zrealizowana'}` : ''}`).join('\n') || '- brak pozycji'}
+
+TWOJA HISTORIA: ${record}
 
 BENCHMARKI teraz: ${bench.map(b => `${b.label}: ${b.value.toFixed(2)} zł`).join(' | ')}
 
@@ -82,7 +91,7 @@ ${notes}
 TWOJE OSTATNIE DECYZJE:
 ${last}
 
-Podejmij decyzję na najbliższe 5 minut.`;
+${ctx.alarm ? `ALARM: ${ctx.alarm}. Oceń, czy to okazja, czy pułapka.\n` : ''}Podejmij decyzję teraz. Aby zmienić stop/cel istniejącej pozycji bez dokupowania, nie rób nic (strażnik działa dalej).`;
 }
 
 async function authHeader() {
