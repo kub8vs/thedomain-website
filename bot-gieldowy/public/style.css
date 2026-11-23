@@ -264,3 +264,6 @@ textarea::placeholder { color: var(--fg3); }
 .quote { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .t1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .t1 .badge { vertical-align: 3px; }
+.push-state { font-size: 15px; font-weight: 600; color: var(--blue); flex-shrink: 0; }
+.push-state.on { color: var(--fg2); font-weight: 400; }
+#pushCell .t2 { white-space: normal; }

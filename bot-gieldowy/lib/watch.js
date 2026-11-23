@@ -6,6 +6,8 @@ import { quickQuotes, usdPln } from './market.js';
 import { loadState, saveState } from './store.js';
 import { execute, guardLevels } from './broker.js';
 import { runTick } from './engine.js';
+import { notify, tradeMessage } from './push.js';
+import { portfolioValue } from './broker.js';
 
 const px = x => +(+x).toPrecision(5);
 
@@ -67,6 +69,11 @@ export async function runWatch({ force = false } = {}) {
     const freshState = await loadState({ fresh: true });
     ({ dirty, dec } = guard(freshState));
     if (dirty) await saveState(freshState);
+    if (dec.executed.length) {
+      const T = Object.fromEntries(freshState.trades.slice(0, 10).map(t => [t.id, t]));
+      let total = freshState.cash; try { total = portfolioValue(freshState, market).total; } catch {}
+      await notify([tradeMessage(dec, dec.executed.map(e => T[e.tradeId]).filter(Boolean), total)]).catch(() => {});
+    }
     Object.assign(state, freshState);
   }
 

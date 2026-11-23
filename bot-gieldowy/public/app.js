@@ -297,4 +297,37 @@ drawDots();
 if (!pin) showPin(); else load().catch(e => { if (e.message !== 'auth') toast('Brak połączenia: ' + e.message); });
 setInterval(() => { if (!document.hidden && $('#pin').hidden && $('#sheetWrap').hidden) load().catch(() => {}); }, 30000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden && pin) load().catch(() => {}); });
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+// ---------- powiadomienia ----------
+const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+const standalone = window.navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+const b64 = s => { const p = '='.repeat((4 - s.length % 4) % 4); const r = atob((s + p).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from([...r].map(c => c.charCodeAt(0))); };
+async function pushStatus() {
+  const st = $('#pushState'), foot = $('#pushFoot');
+  if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) {
+    st.textContent = 'Jak?'; st.className = 'push-state';
+    foot.textContent = isIOS && !standalone ? 'Na iPhonie powiadomienia działają tylko z ikony na ekranie: w Safari stuknij Udostępnij, potem „Do ekranu początkowego”, i otwórz bota z tej ikony.' : 'Ta przeglądarka nie obsługuje powiadomień.';
+    return 'unsupported';
+  }
+  const reg = await navigator.serviceWorker.ready;
+  const sub = await reg.pushManager.getSubscription();
+  if (sub && Notification.permission === 'granted') { st.textContent = 'Włączone'; st.className = 'push-state on'; foot.textContent = 'Stuknij, żeby wysłać próbne powiadomienie.'; return 'on'; }
+  if (Notification.permission === 'denied') { st.textContent = 'Zablokowane'; st.className = 'push-state on'; foot.textContent = 'Włącz je w Ustawieniach telefonu: Powiadomienia, D. Bot.'; return 'denied'; }
+  st.textContent = 'Włącz'; st.className = 'push-state'; foot.textContent = ''; return 'off';
+}
+$('#pushCell').addEventListener('click', async () => {
+  const s = await pushStatus().catch(() => 'unsupported');
+  if (s === 'unsupported' || s === 'denied') { toast($('#pushFoot').textContent, 6000); return; }
+  try {
+    if (s === 'on') { await api('/api/push', { method: 'POST', body: JSON.stringify({ test: true }) }); toast('Wysłałem próbne powiadomienie.'); return; }
+    const perm = await Notification.requestPermission();
+    if (perm !== 'granted') { pushStatus(); return; }
+    const { publicKey } = await api('/api/push');
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64(publicKey) });
+    await api('/api/push', { method: 'POST', body: JSON.stringify({ subscription: sub.toJSON() }) });
+    toast('Powiadomienia włączone.');
+  } catch (e) { if (e.message !== 'auth') toast('Nie udało się: ' + e.message); }
+  pushStatus();
+});
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').then(() => pushStatus()).catch(() => {}); else pushStatus();

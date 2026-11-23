@@ -4,6 +4,7 @@ import { loadState, saveState } from './store.js';
 import { portfolioValue, benchmarkValue, quoteBuy, execute } from './broker.js';
 import { askAI } from './ai.js';
 import { getIntel } from './intel.js';
+import { notify, tradeMessage, moveMessage } from './push.js';
 
 export function newState() {
   const now = new Date();
@@ -93,7 +94,14 @@ export async function runTick({ source = 'cron', force = false, alarm = null } =
   }
   const snap = snapshot(state, market);
   recordEquity(state, snap.pv, snap.bench);
+  const msgs = [];
+  if (result.decision?.executed?.length) {
+    const T = Object.fromEntries(state.trades.slice(0, 20).map(t => [t.id, t]));
+    msgs.push(tradeMessage(result.decision, result.decision.executed.map(e => T[e.tradeId]).filter(Boolean), snap.pv.total));
+  }
+  msgs.push(moveMessage(state, snap.pv.total, AGGRO_GOAL_PLN));
   await saveState(state);
+  await notify(msgs).catch(e => console.error('push', e));
   return { fresh, ...result };
 }
 

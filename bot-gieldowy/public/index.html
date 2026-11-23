@@ -31,6 +31,7 @@
     <symbol id="i-chev" viewBox="0 0 10 16"><path d="M2 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-bolt" viewBox="0 0 20 20"><path d="M11 1.5 3.5 11.2h5.3L8 18.5l7.5-9.8h-5.2L11 1.5Z" fill="currentColor"/></symbol>
     <symbol id="i-shield" viewBox="0 0 20 20"><path d="M10 1.8 3.3 4.4v5c0 4.2 2.9 7.4 6.7 8.8 3.8-1.4 6.7-4.6 6.7-8.8v-5L10 1.8Z" fill="currentColor"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 20 20"><path d="M10 2.2a5 5 0 0 0-5 5v3.3L3.4 13.4c-.3.6.1 1.2.8 1.2h11.6c.7 0 1.1-.6.8-1.2L15 10.5V7.2a5 5 0 0 0-5-5Z" fill="currentColor"/><path d="M7.8 16.2a2.3 2.3 0 0 0 4.4 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
     <symbol id="i-spark" viewBox="0 0 20 20"><path d="M10 1.5l1.9 5.3 5.6.4-4.4 3.5 1.5 5.4L10 13l-4.6 3.1 1.5-5.4L2.5 7.2l5.6-.4L10 1.5Z" fill="currentColor"/></symbol>
   </defs>
 </svg>
@@ -92,6 +93,14 @@
 
     <button class="btn-primary" id="decideBtn"><svg><use href="#i-bolt"/></svg><span>Niech AI zdecyduje teraz</span></button>
     <p class="foot center" id="nextTick">Strażnik sprawdza ceny co minutę. AI analizuje co 5 minut i od razu przy mocnym ruchu.</p>
+
+    <h2 class="sec">Powiadomienia</h2>
+    <div class="group">
+      <button class="cell cell-tap" id="pushCell"><span class="log-ico" style="background:var(--down)"><svg><use href="#i-bell"/></svg></span>
+        <div class="cell-main"><p class="t1">Powiadomienia</p><p class="t2" id="pushTxt">Kupno, sprzedaż, strażnik i ruch portfela o 3%</p></div>
+        <span class="push-state" id="pushState">Włącz</span></button>
+    </div>
+    <p class="foot" id="pushFoot"></p>
 
     <h2 class="sec">Liczby</h2>
     <div class="group" id="facts"></div>

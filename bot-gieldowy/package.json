@@ -2,9 +2,12 @@
   "name": "bot-gieldowy",
   "private": true,
   "type": "module",
-  "engines": { "node": "22.x" },
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@vercel/blob": "^1.1.1",
-    "@vercel/oidc": "^2.0.2"
+    "@vercel/oidc": "^2.0.2",
+    "web-push": "^3.6.7"
   }
 }
