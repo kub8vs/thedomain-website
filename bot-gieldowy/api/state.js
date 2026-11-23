@@ -20,7 +20,7 @@ export default async function handler(req, res) {
       trades: state.trades.slice(0, 200), decisions: state.decisions.slice(0, 200), notes: state.notes,
       fees, aiCostUSD: state.aiCostUSD,
       market: { at: market.at, fx: market.fx, us: market.us, quotes: Object.values(market.quotes).map(q => ({
-        symbol: q.symbol, name: q.name, type: q.type, mid: q.mid, bid: q.bid, ask: q.ask, ch24h: q.ch24h, ch7d: q.ch7d,
+        symbol: q.symbol, name: q.name, type: q.type, mid: q.mid, bid: q.bid, ask: q.ask, ch24h: q.ch24h, ch7d: q.ch7d, ch1h: q.ch1h, ch15m: q.ch15m, rsi14h: q.rsi14h, high7d: q.high7d, low7d: q.low7d, meme: q.meme,
         spark: q.spark, tradable: q.tradable, error: q.error, spreadSource: q.spreadSource })) },
       costs: costsInfo(),
     });

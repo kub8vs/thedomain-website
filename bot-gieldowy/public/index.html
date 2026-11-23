@@ -2,10 +2,12 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>D. Bot giełdowy</title>
-<meta name="theme-color" content="#0A0A0A">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>D. Bot</title>
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="D. Bot">
 <meta name="robots" content="noindex,nofollow">
@@ -14,123 +16,166 @@
 <link rel="apple-touch-icon" href="/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<div id="intro" aria-hidden="true">
-  <svg viewBox="0 0 136 120" class="intro-mark"><path class="d" d="M3 3H52A52 57 0 0 1 52 117H3Z"/><rect class="dot" x="118" y="102" width="18" height="18"/></svg>
-</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 136 120"><path d="M4 4H52A52 56 0 0 1 52 116H4Z" fill="none" stroke="currentColor" stroke-width="8"/><rect x="118" y="102" width="18" height="18" fill="currentColor"/></symbol>
+    <symbol id="i-home" viewBox="0 0 28 28"><path d="M4 21.5 10 14l5 4.5 9-11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 7.5H24V13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 28 28"><rect x="3.5" y="7" width="21" height="15" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 7l11.5-3.2c1.4-.4 2.5.4 2.5 1.8V7" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="19.5" cy="14.5" r="1.7" fill="currentColor"/></symbol>
+    <symbol id="i-list" viewBox="0 0 28 28"><circle cx="14" cy="14" r="10.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 8v6.5l4 2.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-note" viewBox="0 0 28 28"><path d="M5 22.5h4.2L22 9.7a2.4 2.4 0 0 0 0-3.4l-.3-.3a2.4 2.4 0 0 0-3.4 0L5.5 18.8 5 22.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M16.5 8l3.5 3.5" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-info" viewBox="0 0 28 28"><circle cx="14" cy="14" r="10.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 12.5v7" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/><circle cx="14" cy="8.7" r="1.4" fill="currentColor"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 10 16"><path d="M2 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 20 20"><path d="M11 1.5 3.5 11.2h5.3L8 18.5l7.5-9.8h-5.2L11 1.5Z" fill="currentColor"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 20 20"><path d="M10 1.8 3.3 4.4v5c0 4.2 2.9 7.4 6.7 8.8 3.8-1.4 6.7-4.6 6.7-8.8v-5L10 1.8Z" fill="currentColor"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 20 20"><path d="M10 1.5l1.9 5.3 5.6.4-4.4 3.5 1.5 5.4L10 13l-4.6 3.1 1.5-5.4L2.5 7.2l5.6-.4L10 1.5Z" fill="currentColor"/></symbol>
+  </defs>
+</svg>
 
-<header class="top">
-  <div class="brand">
-    <svg viewBox="0 0 136 120" class="mark"><path d="M3 3H52A52 57 0 0 1 52 117H3Z" fill="none" stroke="currentColor" stroke-width="8"/><rect x="118" y="102" width="18" height="18" fill="currentColor"/></svg>
-    <span>bot giełdowy</span>
-  </div>
-  <div class="live"><i id="liveDot"></i><span id="liveTxt">…</span></div>
-</header>
+<div id="intro" aria-hidden="true"><svg class="intro-mark"><use href="#logo"/></svg></div>
+
+<!-- kompaktowy pasek u góry (pojawia się przy przewijaniu, jak w iOS) -->
+<header class="navbar" id="navbar"><span id="navTitle">Wynik</span></header>
 
 <main id="app">
-  <!-- WYNIK -->
+
+  <!-- ================= WYNIK ================= -->
   <section class="view" data-view="wynik">
-    <div class="hero">
-      <p class="eyebrow" id="dayLine">Tydzień próbny na wirtualnych pieniądzach</p>
-      <h1 class="big"><span id="total">—</span><small> zł</small></h1>
-      <p class="delta" id="totalDelta">&nbsp;</p>
-      <div class="goal">
-        <div class="goal-top"><span class="eyebrow">Cel tygodnia</span><span class="goal-num">1000 zł</span></div>
-        <div class="goal-bar"><b id="goalFill"></b><i style="left:0%"></i></div>
-        <p class="hint" id="goalTxt"></p>
+    <div class="large-head">
+      <p class="kicker" id="dayLine">Tydzień próbny</p>
+      <div class="lt-row"><h1 class="large-title">Wynik</h1><span class="live" id="live"><i></i><span id="liveTxt">na żywo</span></span></div>
+    </div>
+
+    <div class="balance">
+      <p class="bal-label">Wartość portfela AI</p>
+      <p class="bal"><span id="total">—</span><span class="cur"> zł</span></p>
+      <p class="bal-delta"><span class="pill" id="deltaPill">—</span><span class="muted" id="deltaTxt">od startu, po kosztach</span></p>
+    </div>
+
+    <div class="chart-card">
+      <div class="seg" id="rangeSeg" role="tablist">
+        <button data-r="6" >6 G</button><button data-r="24" class="on">24 G</button><button data-r="all">Tydzień</button>
+      </div>
+      <div class="chart-box">
+        <svg id="chart" viewBox="0 0 360 190" preserveAspectRatio="none"></svg>
+        <div class="scrub" id="scrub" hidden><span id="scrubVal"></span><span id="scrubT"></span></div>
+      </div>
+      <div class="legend"><span><i class="k-ai"></i>AI</span><span><i class="k-spy"></i>S&amp;P 500</span><span><i class="k-btc"></i>Bitcoin</span></div>
+    </div>
+
+    <h2 class="sec">Cel tygodnia</h2>
+    <div class="group goal-cell">
+      <svg class="ring" viewBox="0 0 80 80"><circle cx="40" cy="40" r="33" class="ring-bg"/><circle cx="40" cy="40" r="33" class="ring-fg" id="ringFg"/></svg>
+      <div class="goal-txt">
+        <p class="goal-big"><span id="goalPct">0</span><small>%</small> <em>drogi do 1000 zł</em></p>
+        <p class="muted" id="goalTxt"></p>
       </div>
     </div>
 
-    <div class="verdict" id="verdict">
-      <p class="eyebrow">AI kontra rynek</p>
-      <p class="verdict-txt" id="verdictTxt">Ładowanie…</p>
+    <h2 class="sec">AI kontra rynek</h2>
+    <div class="group" id="race"></div>
+    <p class="foot" id="verdictTxt">Ładowanie…</p>
+
+    <h2 class="sec">Ostatnia decyzja</h2>
+    <div class="group">
+      <button class="cell cell-tap" id="lastDecisionCell">
+        <div class="cell-main">
+          <p class="cell-meta" id="lastDecisionMeta"></p>
+          <p class="quote" id="lastDecision">—</p>
+        </div>
+        <svg class="chev"><use href="#i-chev"/></svg>
+      </button>
     </div>
 
-    <table class="race" id="race"></table>
+    <button class="btn-primary" id="decideBtn"><svg><use href="#i-bolt"/></svg><span>Niech AI zdecyduje teraz</span></button>
+    <p class="foot center" id="nextTick">Strażnik sprawdza ceny co minutę. AI analizuje co 5 minut i od razu przy mocnym ruchu.</p>
 
-    <div class="chart-wrap">
-      <div class="legend"><span class="l-ai">AI</span><span class="l-spy">S&amp;P 500</span><span class="l-btc">Bitcoin</span></div>
-      <svg id="chart" viewBox="0 0 360 180" preserveAspectRatio="none"></svg>
-      <p class="hint" id="chartHint"></p>
-    </div>
+    <h2 class="sec">Liczby</h2>
+    <div class="group" id="facts"></div>
 
-    <div class="band">
-      <p class="eyebrow">Ostatnia decyzja AI</p>
-      <p class="quote" id="lastDecision">—</p>
-      <p class="meta" id="lastDecisionMeta"></p>
-    </div>
-
-    <div class="actions">
-      <button class="btn" id="decideBtn">Niech AI zdecyduje teraz</button>
-      <p class="hint" id="nextTick">Strażnik sprawdza ceny co minutę, AI analizuje co 5 minut i od razu przy mocnym ruchu.</p>
-    </div>
-
-    <dl class="facts" id="facts"></dl>
+    <p class="sign"><em>built to grow.</em></p>
   </section>
 
-  <!-- PORTFEL -->
+  <!-- ================= PORTFEL ================= -->
   <section class="view" data-view="portfel" hidden>
-    <h2 class="h"><em>Portfel</em></h2>
-    <table class="tbl" id="positions"></table>
-    <h2 class="h"><em>Rynek teraz</em></h2>
-    <p class="hint" id="usStatus"></p>
-    <table class="tbl" id="market"></table>
+    <div class="large-head"><p class="kicker">SOL i meme coiny</p><h1 class="large-title">Portfel</h1></div>
+    <h2 class="sec">Pozycje</h2>
+    <div class="group" id="positions"></div>
+    <h2 class="sec">Rynek <span class="sec-note" id="usStatus"></span></h2>
+    <div class="group" id="market"></div>
+    <p class="foot">Ceny krypto: prawdziwy bid/ask z Coinbase. Wykres: ostatnie 48 godzin. Dotknij, żeby zobaczyć szczegóły.</p>
   </section>
 
-  <!-- DZIENNIK -->
+  <!-- ================= DZIENNIK ================= -->
   <section class="view" data-view="dziennik" hidden>
-    <h2 class="h"><em>Dziennik decyzji</em></h2>
-    <p class="hint">Każda decyzja AI z uzasadnieniem. Rozwiń, żeby zobaczyć koszty transakcji.</p>
-    <ol class="log" id="log"></ol>
+    <div class="large-head"><p class="kicker">Każda decyzja z uzasadnieniem</p><h1 class="large-title">Dziennik</h1></div>
+    <div class="seg seg-wide" id="logSeg">
+      <button data-f="all" class="on">Wszystko</button><button data-f="trades">Transakcje</button><button data-f="guard">Strażnik</button>
+    </div>
+    <div id="log"></div>
   </section>
 
-  <!-- NOTATKI -->
+  <!-- ================= NOTATKI ================= -->
   <section class="view" data-view="notatki" hidden>
-    <h2 class="h"><em>Podpowiedz AI</em></h2>
-    <p class="hint">Wpisz, co wiesz o rynku: news, przeczucie, link, wydarzenie. AI przeczyta to przy następnej decyzji i sama oceni, czy to ma sens.</p>
+    <div class="large-head"><p class="kicker">Podpowiedz AI</p><h1 class="large-title">Notatki</h1></div>
     <form id="noteForm">
-      <textarea id="noteText" rows="4" maxlength="1000" placeholder="np. Jutro wyniki Nvidii po sesji. Słyszałem, że BTC ma wsparcie na 60 tys."></textarea>
-      <button class="btn" type="submit">Wyślij do AI</button>
+      <div class="group"><textarea id="noteText" rows="5" maxlength="1000" placeholder="Np. Solana ma dziś aktualizację sieci. Słyszałem, że BTC broni 60 tys."></textarea></div>
+      <p class="foot">AI przeczyta to przy następnej analizie i samo oceni, czy ma sens.</p>
+      <button class="btn-primary" type="submit"><span>Wyślij do AI</span></button>
     </form>
-    <ul class="notes" id="notes"></ul>
+    <h2 class="sec">Wysłane</h2>
+    <div class="group" id="notes"></div>
   </section>
 
-  <!-- ZASADY -->
+  <!-- ================= ZASADY ================= -->
   <section class="view" data-view="zasady" hidden>
-    <h2 class="h"><em>Jak to działa</em></h2>
-    <ol class="rules">
-      <li><b>Pieniądze są wirtualne, rynek prawdziwy.</b> Start: 200 zł. Ceny akcji z giełdy w USA (Yahoo Finance), krypto i meme coiny (DOGE, SHIB, PEPE, BONK, WIF, FARTCOIN, PENGU, TRUMP) z giełdy Coinbase, kurs dolara z rynku walutowego (zapas: NBP). Do decyzji AI dostaje też: wolumeny i rankingi z CoinGecko, indeks strachu i chciwości (alternative.me) oraz świeże nagłówki z CoinDesk, The Block, Decrypt i Cointelegraph. W dzienniku przy każdej decyzji widać, na których źródłach się oparło.</li>
-      <li><b>Koszty jak u prawdziwego brokera.</b> Przy każdej transakcji płacisz przewalutowanie PLN↔USD 0,5% (jak w XTB), spread (krypto: prawdziwy z giełdy, akcje: typowy rynkowy) i prowizję (akcje/ETF 0%, krypto 0,1%).</li>
-      <li><b>Wartość = ile byś dostał, sprzedając wszystko teraz.</b> Po odjęciu wszystkich kosztów wyjścia. Bez upiększania.</li>
-      <li><b>Strażnik co minutę.</b> Bez AI, twarde reguły: przy każdym kupnie AI ustawia stop kroczący (sprzedaż, gdy cena spadnie o kilka procent od szczytu) i cel (przy nim automat sprzedaje połowę, reszta jedzie dalej). Gdy któraś moneta ruszy się mocno w ciągu 3 minut, strażnik od razu woła AI. Żeby nie przepalać opłat, AI nie sprzedaje pozycji młodszej niż 15 minut (przed dużą stratą chroni stop).</li>
-      <li><b>AI analizuje co 5 minut</b> na świecach minutowych (ruch z 1, 3, 5, 15 i 60 minut, RSI, obrót) i swojej historii zysków i kosztów. Claude dostaje ceny, wskaźniki, Twoje notatki i swoje poprzednie decyzje. Może kupić, sprzedać albo nic nie robić. Akcje tylko w czasie sesji (15:30–22:00), krypto 24/7.</li>
-      <li><b>Cel: 1000 zł w tydzień: Solana i meme coiny.</b> AI handluje tylko SOL, DOGE, SHIB, PEPE, BONK, WIF, FARTCOIN, PENGU i TRUMP. Co 5 minut decyduje, w co wejść, z czego wyjść albo czy trzymać gotówkę. Akcje, BTC i ETH służą mu tylko jako kontekst. Min. zlecenie 10 zł, bez dźwigni i bez shortowania (jak u zwykłego brokera w UE). Wysokie ryzyko: portfel może też mocno stracić.</li>
-      <li><b>Uczciwe porównanie.</b> Obok AI liczymy dwa portfele „kup i trzymaj”: całe 200 zł w S&amp;P 500 i całe 200 zł w Bitcoinie, z tymi samymi kosztami. Jeśli AI ich nie bije, to znaczy, że nie warto jej dawać prawdziwych pieniędzy.</li>
-    </ol>
-    <p class="hint">To eksperyment edukacyjny, nie porada inwestycyjna. Większość aktywnego tradingu przegrywa z rynkiem po kosztach. Ten tydzień ma to zmierzyć.</p>
-    <dl class="facts" id="costFacts"></dl>
-    <button class="btn ghost" id="logoutBtn">Wyloguj z tego telefonu</button>
+    <div class="large-head"><p class="kicker">Jak to działa</p><h1 class="large-title">Zasady</h1></div>
+    <div class="group rules">
+      <div class="rule"><span class="ico ico-g">1</span><div><b>Pieniądze wirtualne, rynek prawdziwy.</b><p>Start 200 zł. Ceny krypto i meme coinów z giełdy Coinbase, akcji z Yahoo Finance, kurs dolara z rynku (zapas: NBP).</p></div></div>
+      <div class="rule"><span class="ico ico-b">2</span><div><b>Koszty jak u brokera.</b><p>Przewalutowanie 0,5% (jak w XTB), prawdziwy spread z giełdy i prowizja 0,1% na krypto. Wartość portfela to kwota po sprzedaży wszystkiego teraz.</p></div></div>
+      <div class="rule"><span class="ico ico-o"><svg><use href="#i-shield"/></svg></span><div><b>Strażnik co minutę.</b><p>Bez AI, twarde reguły: stop kroczący (sprzedaż, gdy cena spadnie o kilka procent od szczytu) i cel (sprzedaje połowę, reszta jedzie dalej). Mocny ruch w 3 minuty od razu budzi AI.</p></div></div>
+      <div class="rule"><span class="ico ico-p"><svg><use href="#i-spark"/></svg></span><div><b>AI analizuje co 5 minut.</b><p>Świece minutowe, RSI, obrót, indeks strachu i chciwości, CoinGecko i nagłówki z CoinDesk, The Block, Decrypt i Cointelegraph. Pozycji młodszej niż 15 minut nie sprzedaje, żeby nie przepalać opłat.</p></div></div>
+      <div class="rule"><span class="ico ico-r">!</span><div><b>Cel 1000 zł w tydzień.</b><p>Tylko SOL, DOGE, SHIB, PEPE, BONK, WIF, FARTCOIN, PENGU i TRUMP. Bez dźwigni i bez shortowania. Wysokie ryzyko: portfel może też mocno stracić.</p></div></div>
+      <div class="rule"><span class="ico ico-gr">=</span><div><b>Uczciwe porównanie.</b><p>Obok AI liczymy 200 zł w S&amp;P 500 i 200 zł w Bitcoinie, kupione i trzymane, z tymi samymi kosztami.</p></div></div>
+    </div>
+    <h2 class="sec">Koszty i kurs</h2>
+    <div class="group" id="costFacts"></div>
+    <p class="foot">Eksperyment edukacyjny, nie porada inwestycyjna.</p>
+    <div class="group"><button class="cell cell-tap danger" id="logoutBtn">Wyloguj z tego telefonu</button></div>
+    <p class="sign"><svg class="sign-logo"><use href="#logo"/></svg><em>the domain</em></p>
   </section>
 </main>
 
-<nav class="tabs">
-  <button data-tab="wynik" class="on">Wynik</button>
-  <button data-tab="portfel">Portfel</button>
-  <button data-tab="dziennik">Dziennik</button>
-  <button data-tab="notatki">Notatki</button>
-  <button data-tab="zasady">Zasady</button>
+<nav class="tabbar">
+  <button data-tab="wynik" class="on"><svg><use href="#i-home"/></svg><span>Wynik</span></button>
+  <button data-tab="portfel"><svg><use href="#i-wallet"/></svg><span>Portfel</span></button>
+  <button data-tab="dziennik"><svg><use href="#i-list"/></svg><span>Dziennik</span></button>
+  <button data-tab="notatki"><svg><use href="#i-note"/></svg><span>Notatki</span></button>
+  <button data-tab="zasady"><svg><use href="#i-info"/></svg><span>Zasady</span></button>
 </nav>
 
+<!-- arkusz od dołu (szczegóły) -->
+<div class="sheet-wrap" id="sheetWrap" hidden>
+  <div class="sheet-dim" id="sheetDim"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true">
+    <div class="grabber"></div>
+    <div class="sheet-head"><h3 id="sheetTitle"></h3><button class="sheet-x" id="sheetClose" aria-label="Zamknij">Gotowe</button></div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </div>
+</div>
+
+<!-- kod dostępu w stylu iOS -->
 <div id="pin" hidden>
   <div class="pin-box">
-    <svg viewBox="0 0 136 120" class="mark lg"><path d="M3 3H52A52 57 0 0 1 52 117H3Z" fill="none" stroke="currentColor" stroke-width="6"/><rect x="118" y="102" width="18" height="18" fill="currentColor"/></svg>
-    <h1 class="h"><em>Kod dostępu</em></h1>
-    <p class="hint">Wpisz kod raz, telefon go zapamięta.</p>
-    <form id="pinForm"><input id="pinInput" inputmode="numeric" autocomplete="one-time-code" maxlength="12" placeholder="••••••"><button class="btn" type="submit">Wejdź</button></form>
+    <svg class="pin-logo"><use href="#logo"/></svg>
+    <p class="pin-title">Wpisz kod dostępu</p>
+    <div class="dots" id="dots"></div>
     <p class="err" id="pinErr"></p>
+    <div class="keypad" id="keypad"></div>
+    <p class="pin-sign"><em>built to grow.</em></p>
   </div>
 </div>
 

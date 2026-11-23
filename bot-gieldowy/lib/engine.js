@@ -1,4 +1,4 @@
-import { START_CAPITAL_PLN, EXPERIMENT_DAYS, BENCHMARKS, FX_FEE, FEES, UNIVERSE, AGGRO_GOAL_PLN, AGGRO_MAX_POSITION_SHARE } from './config.js';
+import { START_CAPITAL_PLN, EXPERIMENT_DAYS, BENCHMARKS, FX_FEE, FEES, UNIVERSE, AGGRO_GOAL_PLN, AGGRO_MAX_POSITION_SHARE, TRADABLE_ONLY } from './config.js';
 import { getMarket } from './market.js';
 import { loadState, saveState } from './store.js';
 import { portfolioValue, benchmarkValue, quoteBuy, execute } from './broker.js';
@@ -99,7 +99,7 @@ export async function runTick({ source = 'cron', force = false, alarm = null } =
 
 export function costsInfo() {
   return {
-    goalPLN: AGGRO_GOAL_PLN, maxShare: AGGRO_MAX_POSITION_SHARE,
+    goalPLN: AGGRO_GOAL_PLN, maxShare: AGGRO_MAX_POSITION_SHARE, tradable: TRADABLE_ONLY,
     fx: FX_FEE, stock: FEES.stock, crypto: FEES.crypto,
     universe: UNIVERSE.map(u => ({ symbol: u.symbol, name: u.name, type: u.type })),
   };
