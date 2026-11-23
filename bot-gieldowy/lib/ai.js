@@ -70,8 +70,21 @@ function parseJSON(text) {
   return JSON.parse(text.slice(s, e + 1));
 }
 
+// Najpierw Claude Sonnet; jeśli konto AI Gateway nie ma środków na płatny model,
+// próbujemy kolejnych modeli z darmowego planu, żeby bot nie stał.
+const CHAIN = [process.env.AI_MODEL || AI_MODEL, 'anthropic/claude-haiku-5.5', 'anthropic/claude-haiku-4.5'];
+
 export async function askAI(ctx) {
   const prompt = buildUserPrompt(ctx);
+  const errors = [];
+  for (const model of [...new Set(CHAIN)]) {
+    try { return await callModel(model, prompt); }
+    catch (e) { errors.push(`${model}: ${e.message}`); if (!/HTTP 40[23]/.test(e.message)) break; }
+  }
+  throw new Error(errors.join(' || '));
+}
+
+async function callModel(model, prompt) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), 50000);
   try {
@@ -79,13 +92,13 @@ export async function askAI(ctx) {
       method: 'POST', signal: ctrl.signal,
       headers: { 'Content-Type': 'application/json', Authorization: await authHeader() },
       body: JSON.stringify({
-        model: AI_MODEL, max_tokens: 1500, temperature: 0.3,
+        model, max_tokens: 1500, temperature: 0.3,
         messages: [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }],
       }),
     });
     const j = await r.json();
-    if (!r.ok) throw new Error(`AI Gateway HTTP ${r.status}: ${JSON.stringify(j).slice(0, 300)}`);
+    if (!r.ok) throw new Error(`AI Gateway HTTP ${r.status}: ${JSON.stringify(j).slice(0, 600)}`);
     const text = j.choices?.[0]?.message?.content || '';
-    return { decision: parseJSON(text), usage: j.usage, model: j.model || AI_MODEL };
+    return { decision: parseJSON(text), usage: j.usage, model: j.model || model };
   } finally { clearTimeout(t); }
 }
