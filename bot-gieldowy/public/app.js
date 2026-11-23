@@ -123,7 +123,7 @@ function render(d) {
   // dziennik
   const tradesById = Object.fromEntries(d.trades.map(t => [t.id, t]));
   $('#log').innerHTML = d.decisions.length ? d.decisions.map(dec => `<li><time>${tPL(dec.at)}</time>${dec.source === 'ręcznie' ? '<span class="tag">ręcznie</span>' : ''}${dec.error ? '<span class="tag">błąd AI</span>' : ''}
-    <p class="sum">${esc(dec.summary)}</p>${dec.marketView ? `<p class="mv">${esc(dec.marketView)}</p>` : ''}
+    <p class="sum">${esc(dec.summary)}</p>${dec.marketView ? `<p class="mv">${esc(dec.marketView)}</p>` : ''}${dec.keyInfo ? `<p class="mv">Kluczowa informacja: ${esc(dec.keyInfo)}</p>` : ''}${(dec.sourcesUsed && dec.sourcesUsed.length) ? `<p class="src">Źródła: ${dec.sourcesUsed.map(esc).join(' · ')}${dec.fearGreed != null ? ` · strach/chciwość ${dec.fearGreed}/100` : ''}</p>` : ''}
     ${dec.executed.map(e => { const t = tradesById[e.tradeId]; if (!t) return `<div class="tr">${esc(e.text)}</div>`;
       return `<div class="tr"><b>${t.side}</b> ${t.symbol} · ${zl(t.amountPLN)} zł · ${t.qty < 1 ? zl(t.qty, 6) : Math.round(t.qty).toLocaleString('pl-PL')} szt. po $${px(t.priceUSD)}
       ${t.plPLN != null ? `<br><span class="${cls(t.plPLN)}">wynik ${sign(t.plPLN)} zł</span>` : ''}

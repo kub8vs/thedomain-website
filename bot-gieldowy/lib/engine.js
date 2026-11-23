@@ -3,6 +3,7 @@ import { getMarket } from './market.js';
 import { loadState, saveState } from './store.js';
 import { portfolioValue, benchmarkValue, quoteBuy, execute } from './broker.js';
 import { askAI } from './ai.js';
+import { getIntel } from './intel.js';
 
 export function newState() {
   const now = new Date();
@@ -58,7 +59,8 @@ export async function runTick({ source = 'cron', force = false } = {}) {
 
   let result = { skipped: true, why: finished ? 'eksperyment zakończony' : 'za wcześnie od ostatniej decyzji' };
   if (!finished && !tooSoon) {
-    const ctx = { state, market, mode: 'aggro', ...snapshot(state, market) };
+    const intel = await getIntel().catch(() => null);
+    const ctx = { state, market, intel, mode: 'aggro', ...snapshot(state, market) };
     const dec = { id: crypto.randomUUID(), at: now.toISOString(), source, executed: [], rejected: [] };
     try {
       const { decision, usage, model } = await askAI(ctx);
@@ -66,6 +68,10 @@ export async function runTick({ source = 'cron', force = false } = {}) {
       dec.summary = decision.decision_summary || '';
       dec.marketView = decision.market_view || '';
       dec.confidence = decision.confidence;
+      dec.sourcesUsed = Array.isArray(decision.sources_used) ? decision.sources_used.slice(0, 6).map(String) : [];
+      dec.keyInfo = decision.key_info || '';
+      dec.sourcesAvailable = intel?.sources || [];
+      dec.fearGreed = intel?.fearGreed?.now ?? null;
       dec.raw = decision.actions || [];
       if (usage) {
         dec.tokens = { in: usage.prompt_tokens, out: usage.completion_tokens };
