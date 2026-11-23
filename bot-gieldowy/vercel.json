@@ -1,0 +1,101 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    {
+      "path": "/api/tick",
+      "schedule": "5 0 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 1 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 2 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 3 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 4 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 5 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 6 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 7 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 8 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 9 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 10 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 11 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 12 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 13 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 14 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 15 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 16 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 17 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 18 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 19 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 20 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 21 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 22 * * *"
+    },
+    {
+      "path": "/api/tick",
+      "schedule": "5 23 * * *"
+    }
+  ]
+}

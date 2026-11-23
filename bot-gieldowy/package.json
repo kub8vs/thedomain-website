@@ -1,0 +1,10 @@
+{
+  "name": "bot-gieldowy",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "22.x" },
+  "dependencies": {
+    "@vercel/blob": "^1.1.1",
+    "@vercel/oidc": "^2.0.2"
+  }
+}

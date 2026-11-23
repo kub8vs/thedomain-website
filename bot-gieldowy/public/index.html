@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>D. Bot giełdowy</title>
+<meta name="theme-color" content="#0A0A0A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="D. Bot">
+<meta name="robots" content="noindex,nofollow">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div id="intro" aria-hidden="true">
+  <svg viewBox="0 0 136 120" class="intro-mark"><path class="d" d="M3 3H52A52 57 0 0 1 52 117H3Z"/><rect class="dot" x="118" y="102" width="18" height="18"/></svg>
+</div>
+
+<header class="top">
+  <div class="brand">
+    <svg viewBox="0 0 136 120" class="mark"><path d="M3 3H52A52 57 0 0 1 52 117H3Z" fill="none" stroke="currentColor" stroke-width="8"/><rect x="118" y="102" width="18" height="18" fill="currentColor"/></svg>
+    <span>bot giełdowy</span>
+  </div>
+  <div class="live"><i id="liveDot"></i><span id="liveTxt">…</span></div>
+</header>
+
+<main id="app">
+  <!-- WYNIK -->
+  <section class="view" data-view="wynik">
+    <div class="hero">
+      <p class="eyebrow" id="dayLine">Tydzień próbny na wirtualnych pieniądzach</p>
+      <h1 class="big"><span id="total">—</span><small> zł</small></h1>
+      <p class="delta" id="totalDelta">&nbsp;</p>
+    </div>
+
+    <div class="verdict" id="verdict">
+      <p class="eyebrow">AI kontra rynek</p>
+      <p class="verdict-txt" id="verdictTxt">Ładowanie…</p>
+    </div>
+
+    <table class="race" id="race"></table>
+
+    <div class="chart-wrap">
+      <div class="legend"><span class="l-ai">AI</span><span class="l-spy">S&amp;P 500</span><span class="l-btc">Bitcoin</span></div>
+      <svg id="chart" viewBox="0 0 360 180" preserveAspectRatio="none"></svg>
+      <p class="hint" id="chartHint"></p>
+    </div>
+
+    <div class="band">
+      <p class="eyebrow">Ostatnia decyzja AI</p>
+      <p class="quote" id="lastDecision">—</p>
+      <p class="meta" id="lastDecisionMeta"></p>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="decideBtn">Niech AI zdecyduje teraz</button>
+      <p class="hint" id="nextTick">AI sprawdza rynek automatycznie co godzinę.</p>
+    </div>
+
+    <dl class="facts" id="facts"></dl>
+  </section>
+
+  <!-- PORTFEL -->
+  <section class="view" data-view="portfel" hidden>
+    <h2 class="h"><em>Portfel</em></h2>
+    <table class="tbl" id="positions"></table>
+    <h2 class="h"><em>Rynek teraz</em></h2>
+    <p class="hint" id="usStatus"></p>
+    <table class="tbl" id="market"></table>
+  </section>
+
+  <!-- DZIENNIK -->
+  <section class="view" data-view="dziennik" hidden>
+    <h2 class="h"><em>Dziennik decyzji</em></h2>
+    <p class="hint">Każda decyzja AI z uzasadnieniem. Rozwiń, żeby zobaczyć koszty transakcji.</p>
+    <ol class="log" id="log"></ol>
+  </section>
+
+  <!-- NOTATKI -->
+  <section class="view" data-view="notatki" hidden>
+    <h2 class="h"><em>Podpowiedz AI</em></h2>
+    <p class="hint">Wpisz, co wiesz o rynku: news, przeczucie, link, wydarzenie. AI przeczyta to przy następnej decyzji i sama oceni, czy to ma sens.</p>
+    <form id="noteForm">
+      <textarea id="noteText" rows="4" maxlength="1000" placeholder="np. Jutro wyniki Nvidii po sesji. Słyszałem, że BTC ma wsparcie na 60 tys."></textarea>
+      <button class="btn" type="submit">Wyślij do AI</button>
+    </form>
+    <ul class="notes" id="notes"></ul>
+  </section>
+
+  <!-- ZASADY -->
+  <section class="view" data-view="zasady" hidden>
+    <h2 class="h"><em>Jak to działa</em></h2>
+    <ol class="rules">
+      <li><b>Pieniądze są wirtualne, rynek prawdziwy.</b> Start: 200 zł. Ceny akcji z giełdy w USA (Yahoo Finance), krypto z giełdy Coinbase, kurs dolara z rynku walutowego (zapas: NBP).</li>
+      <li><b>Koszty jak u prawdziwego brokera.</b> Przy każdej transakcji płacisz przewalutowanie PLN↔USD 0,5% (jak w XTB), spread (krypto: prawdziwy z giełdy, akcje: typowy rynkowy) i prowizję (akcje/ETF 0%, krypto 0,1%).</li>
+      <li><b>Wartość = ile byś dostał, sprzedając wszystko teraz.</b> Po odjęciu wszystkich kosztów wyjścia. Bez upiększania.</li>
+      <li><b>AI decyduje co godzinę.</b> Claude dostaje ceny, wskaźniki, Twoje notatki i swoje poprzednie decyzje. Może kupić, sprzedać albo nic nie robić. Akcje tylko w czasie sesji (15:30–22:00), krypto 24/7.</li>
+      <li><b>Limity bezpieczeństwa.</b> Max 40% portfela w jednym instrumencie, min. zlecenie 10 zł, bez dźwigni i bez shortowania.</li>
+      <li><b>Uczciwe porównanie.</b> Obok AI liczymy dwa portfele „kup i trzymaj”: całe 200 zł w S&amp;P 500 i całe 200 zł w Bitcoinie, z tymi samymi kosztami. Jeśli AI ich nie bije, to znaczy, że nie warto jej dawać prawdziwych pieniędzy.</li>
+    </ol>
+    <p class="hint">To eksperyment edukacyjny, nie porada inwestycyjna. Większość aktywnego tradingu przegrywa z rynkiem po kosztach. Ten tydzień ma to zmierzyć.</p>
+    <dl class="facts" id="costFacts"></dl>
+    <button class="btn ghost" id="logoutBtn">Wyloguj z tego telefonu</button>
+  </section>
+</main>
+
+<nav class="tabs">
+  <button data-tab="wynik" class="on">Wynik</button>
+  <button data-tab="portfel">Portfel</button>
+  <button data-tab="dziennik">Dziennik</button>
+  <button data-tab="notatki">Notatki</button>
+  <button data-tab="zasady">Zasady</button>
+</nav>
+
+<div id="pin" hidden>
+  <div class="pin-box">
+    <svg viewBox="0 0 136 120" class="mark lg"><path d="M3 3H52A52 57 0 0 1 52 117H3Z" fill="none" stroke="currentColor" stroke-width="6"/><rect x="118" y="102" width="18" height="18" fill="currentColor"/></svg>
+    <h1 class="h"><em>Kod dostępu</em></h1>
+    <p class="hint">Wpisz kod raz, telefon go zapamięta.</p>
+    <form id="pinForm"><input id="pinInput" inputmode="numeric" autocomplete="one-time-code" maxlength="12" placeholder="••••••"><button class="btn" type="submit">Wejdź</button></form>
+    <p class="err" id="pinErr"></p>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+<script src="/app.js" defer></script>
+</body>
+</html>
