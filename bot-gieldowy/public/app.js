@@ -207,7 +207,7 @@ function renderPortfolio(d) {
   const qs = d.market.quotes.filter(q => tradable.includes(q.symbol) || ['BTC', 'ETH'].includes(q.symbol))
     .sort((a, b) => (tradable.includes(b.symbol) - tradable.includes(a.symbol)));
   $('#market').innerHTML = qs.map(q => q.error ? `<div class="cell ind">${avatar(q.symbol)}<div class="cell-main"><p class="t1">${q.symbol}</p><p class="t2">brak danych</p></div></div>` :
-    `<button class="cell cell-tap ind" data-q="${q.symbol}">${avatar(q.symbol)}<div class="cell-main"><p class="t1">${q.symbol}${tradable.includes(q.symbol) ? '' : '<span class="badge">tylko kontekst</span>'}</p><p class="t2">${esc(q.name.replace(' (meme)', ''))}</p></div>
+    `<button class="cell cell-tap ind" data-q="${q.symbol}">${avatar(q.symbol)}<div class="cell-main"><p class="t1">${q.symbol}</p><p class="t2">${esc(q.name.replace(' (meme)', ''))}${tradable.includes(q.symbol) ? '' : ' · tylko kontekst'}</p></div>
       ${sparkSVG(q.spark)}<div class="cell-r"><p class="price">$${px(q.mid)}</p><span class="chg ${cls(q.ch24h)}">${pct(q.ch24h)}</span></div></button>`).join('');
   $$('#market [data-q]').forEach(b => b.onclick = () => openQuote(Q[b.dataset.q], pos.find(p => p.symbol === b.dataset.q)));
 }
