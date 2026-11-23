@@ -73,6 +73,15 @@ export function regimeSummary(state, market, total, now = new Date()) {
 }
 
 // Weto lub zmniejszenie zlecenia kupna. Zwraca { ok, why, maxShare }
+// Wyniki testu na 180 dniach świec godzinowych (maj–lis 2026), z kosztami aplikacji.
+// Każdy z 5 setupów był na minusie po kosztach; Momentum i Siła vs BTC jako jedyne
+// były blisko zera w próbie, więc zostają, ale tylko w trendzie w górę i mniejszą pozycją.
+export const BACKTEST = {
+  ALLOWED: ['momentum', 'siła relatywna', 'sila relatywna'],
+  MAX_SHARE: 0.5,
+  SUMMARY: 'Test 180 dni (1h, koszty aplikacji): VWAP kontynuacja śr. -1,56% na transakcję, VWAP powrót -1,69% (548 transakcji), Sweep -1,82% (848), Momentum -1,25% (w próbie -0,94, poza próbą -2,41), Siła vs BTC -1,20% (w próbie -0,78, poza próbą -2,41). Kup i trzymaj: SOL -12%, memy -34% do -63%. Żaden setup nie zarabiał po kosztach; najwięcej traciły częste wejścia.',
+};
+
 export function riskCheck(state, market, order, regime, now = new Date()) {
   if (order.action !== 'buy') return { ok: true };
   if (regime.daily_stop_hit) return { ok: false, why: `weto ryzyka: dzienny limit straty -${RISK.DAILY_LOSS_STOP_PCT}% osiągnięty (${regime.day_pl_pct}%), zakaz nowych kupna do północy` };
@@ -82,7 +91,11 @@ export function riskCheck(state, market, order, regime, now = new Date()) {
   const open = Object.keys(state.positions).filter(s => s !== order.symbol);
   if (open.length >= RISK.MAX_POSITIONS) return { ok: false, why: `weto ryzyka: już ${open.length} otwarte pozycje (max ${RISK.MAX_POSITIONS}, memy ruszają się razem)` };
   const q = market.quotes[order.symbol];
-  let maxShare = 1, notes = [];
+  const setup = String(order.setup || '').toLowerCase();
+  const allowed = BACKTEST.ALLOWED.find(x => setup.includes(x));
+  if (!allowed) return { ok: false, why: `weto testu historycznego: setup "${order.setup || 'brak'}" tracił po kosztach na 6 miesiącach danych, dozwolone tylko Momentum po katalizatorze i Siła relatywna` };
+  if (q && q.regime !== 'trend w górę') return { ok: false, why: `weto testu historycznego: ${order.symbol} nie jest w trendzie w górę (${q.regime || 'brak danych'}), a poza trendem każdy setup tracił` };
+  let maxShare = BACKTEST.MAX_SHARE, notes = ['setup bez udowodnionej przewagi'];
   if (q?.vol_regime === 'wysoka') { maxShare = Math.min(maxShare, RISK.HIGH_VOL_MAX_SHARE); notes.push('wysoka zmienność'); }
   if (ev.active.some(e => e.impact === 'low-liquidity')) { maxShare = Math.min(maxShare, RISK.LOW_LIQ_MAX_SHARE); notes.push('niska płynność'); }
   return { ok: true, maxShare, note: notes.join(', ') };
