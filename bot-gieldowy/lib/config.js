@@ -37,3 +37,7 @@ export const BENCHMARKS = [
 // Dni bez sesji na NYSE (koniec 2026 / początek 2027)
 export const US_HOLIDAYS = ['2026-11-26', '2026-12-25', '2027-01-01', '2027-01-18'];
 export const US_HALF_DAYS = ['2026-11-27', '2026-12-24'];
+
+// Drugi portfel: tryb agresywny (cel 1000 zł z 200 zł). Te same koszty, bez dźwigni.
+export const AGGRO_GOAL_PLN = 1000;
+export const AGGRO_MAX_POSITION_SHARE = 1.0;

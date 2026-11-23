@@ -47,7 +47,7 @@ export function quoteBuy(q, pln, fx) {
   return { qty, fees: { fx: fxFee, commission: comm * fx, spread: spreadPLN } };
 }
 
-export function execute(state, market, order, now = new Date().toISOString()) {
+export function execute(state, market, order, now = new Date().toISOString(), maxShare = MAX_POSITION_SHARE) {
   const fx = market.fx.rate;
   const q = market.quotes[order.symbol];
   if (!q) return { ok: false, why: `nieznany instrument ${order.symbol}` };
@@ -58,10 +58,10 @@ export function execute(state, market, order, now = new Date().toISOString()) {
     let pln = Math.min(+order.amount_pln || 0, state.cash);
     const total = portfolioValue(state, market).total;
     const have = state.positions[q.symbol] ? liquidationPLN(q, state.positions[q.symbol].qty, fx) : 0;
-    const room = total * MAX_POSITION_SHARE - have;
+    const room = total * maxShare - have;
     if (pln > room) pln = Math.max(0, room);
     pln = Math.floor(pln * 100) / 100;
-    if (pln < MIN_ORDER_PLN) return { ok: false, why: `${q.symbol}: za mała kwota (${r2(pln)} zł, min ${MIN_ORDER_PLN} zł lub limit 40% portfela)` };
+    if (pln < MIN_ORDER_PLN) return { ok: false, why: `${q.symbol}: za mała kwota (${r2(pln)} zł, min ${MIN_ORDER_PLN} zł lub limit ${Math.round(maxShare * 100)}% portfela)` };
     const { qty, fees } = quoteBuy(q, pln, fx);
     state.cash -= pln;
     const p = state.positions[q.symbol] || { qty: 0, costPLN: 0, openedAt: now };

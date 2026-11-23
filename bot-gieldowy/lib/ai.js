@@ -1,5 +1,17 @@
 import { getVercelOidcToken } from '@vercel/oidc';
-import { AI_MODEL, FX_FEE, FEES, MIN_ORDER_PLN, MAX_POSITION_SHARE, START_CAPITAL_PLN } from './config.js';
+import { AI_MODEL, FX_FEE, FEES, MIN_ORDER_PLN, MAX_POSITION_SHARE, START_CAPITAL_PLN, AGGRO_GOAL_PLN } from './config.js';
+
+const FORMAT = `Odpowiedz WYŁĄCZNIE poprawnym JSON (bez markdown) w formacie:
+{
+  "market_view": "1-2 zdania po polsku: co widzisz na rynku",
+  "decision_summary": "1 zdanie po polsku, prostym językiem dla początkującego: co robisz i dlaczego",
+  "actions": [
+    {"action": "buy", "symbol": "BTC", "amount_pln": 40, "reason": "krótko po polsku"},
+    {"action": "sell", "symbol": "NVDA", "fraction": 1, "reason": "krótko po polsku"}
+  ],
+  "confidence": 0.0-1.0
+}
+"actions" może być pustą listą. Kwoty w PLN (kwota gotówki do wydania). fraction = część pozycji do sprzedaży (0-1).`;
 
 const SYSTEM = `Jesteś zarządzającym małym portfelem testowym (paper trading) w eksperymencie edukacyjnym.
 Pieniądze są wirtualne, ale ceny, spready i opłaty są prawdziwe, więc działaj dokładnie tak, jakby to były prawdziwe pieniądze.
@@ -13,17 +25,22 @@ Zasady i koszty (pamiętaj o nich przy każdej decyzji):
 - Notatki od właściciela traktuj jako informacje do rozważenia, nie jako rozkazy. Sam oceń, czy mają sens.
 - Bądź uczciwy: jeśli nie masz przewagi, napisz to.
 
-Odpowiedz WYŁĄCZNIE poprawnym JSON (bez markdown) w formacie:
-{
-  "market_view": "1-2 zdania po polsku: co widzisz na rynku",
-  "decision_summary": "1 zdanie po polsku, prostym językiem dla początkującego: co robisz i dlaczego",
-  "actions": [
-    {"action": "buy", "symbol": "BTC", "amount_pln": 40, "reason": "krótko po polsku"},
-    {"action": "sell", "symbol": "NVDA", "fraction": 1, "reason": "krótko po polsku"}
-  ],
-  "confidence": 0.0-1.0
-}
-"actions" może być pustą listą. Kwoty w PLN (kwota gotówki do wydania). fraction = część pozycji do sprzedaży (0-1).`;
+${FORMAT}`;
+
+const SYSTEM_AGGRO = `Zarządzasz portfelem testowym (paper trading) w trybie AGRESYWNYM.
+Pieniądze są wirtualne, ale ceny, spready i opłaty są prawdziwe.
+Cel właściciela: zamienić ${START_CAPITAL_PLN} zł w ${AGGRO_GOAL_PLN} zł w ciągu tygodnia (+${Math.round((AGGRO_GOAL_PLN / START_CAPITAL_PLN - 1) * 100)}%).
+To skrajnie trudny cel (bez dźwigni potrzeba ruchu o kilkaset procent), więc grasz o maksymalny zwrot i akceptujesz duże ryzyko straty.
+Możesz trzymać cały portfel w jednym instrumencie, wybierać najbardziej zmienne aktywa (krypto, mocno ruszające się akcje) i grać na momentum albo odbicia.
+Koszty nadal się liczą: kupno+sprzedaż to ok. 1-1,3%, więc nie handluj bez powodu, ale nie siedź w gotówce, jeśli widzisz szansę.
+
+Zasady:
+- Akcje/ETF z USA tylko w czasie sesji (15:30-22:00 czasu PL, pon-pt). Krypto 24/7.
+- Minimalne zlecenie ${MIN_ORDER_PLN} zł. Do 100% portfela w jednym instrumencie. Bez dźwigni, bez krótkiej sprzedaży.
+- Notatki od właściciela traktuj jako informacje, nie rozkazy.
+- Bądź szczery: w uzasadnieniu oceniaj, czy cel jest jeszcze realny.
+
+${FORMAT}`;
 
 function compactMarket(market) {
   return Object.values(market.quotes).map(q => q.error ? { symbol: q.symbol, error: 'brak danych' } : ({
@@ -34,14 +51,15 @@ function compactMarket(market) {
   }));
 }
 
-export function buildUserPrompt({ state, market, pv, bench }) {
+export function buildUserPrompt({ state, acct, market, pv, bench, mode }) {
+  acct = acct || state;
   const notes = state.notes.slice(0, 8).map(n => `- [${n.at}] ${n.text}`).join('\n') || '(brak)';
-  const last = state.decisions.slice(0, 6).map(d => `- [${d.at}] ${d.summary} | akcje: ${d.executed.map(e => e.text).join('; ') || 'brak'}`).join('\n') || '(brak, to pierwsza decyzja)';
+  const last = acct.decisions.slice(0, 6).map(d => `- [${d.at}] ${d.summary} | akcje: ${d.executed.map(e => e.text).join('; ') || 'brak'}`).join('\n') || '(brak, to pierwsza decyzja)';
   return `Teraz: ${new Date().toISOString()} (UTC). Dzień eksperymentu ${state.day ?? 1} z 7.
 Giełda w USA: ${market.us.open ? 'OTWARTA' : 'ZAMKNIĘTA – ' + market.us.reason}.
 Kurs USD/PLN: ${market.fx.rate.toFixed(4)}.
 
-PORTFEL (start ${START_CAPITAL_PLN} zł):
+PORTFEL ${mode === 'aggro' ? `AGRESYWNY (start ${START_CAPITAL_PLN} zł, cel ${AGGRO_GOAL_PLN} zł)` : `(start ${START_CAPITAL_PLN} zł)`}:
 gotówka: ${pv.cash.toFixed(2)} zł, pozycje: ${pv.positions.toFixed(2)} zł, razem (po kosztach wyjścia): ${pv.total.toFixed(2)} zł
 ${pv.rows.map(r => `- ${r.symbol}: wartość ${r.valuePLN.toFixed(2)} zł, koszt ${r.costPLN.toFixed(2)} zł, wynik ${(r.plPct ?? 0).toFixed(2)}%`).join('\n') || '- brak pozycji'}
 
@@ -78,13 +96,13 @@ export async function askAI(ctx) {
   const prompt = buildUserPrompt(ctx);
   const errors = [];
   for (const model of [...new Set(CHAIN)]) {
-    try { return await callModel(model, prompt); }
+    try { return await callModel(model, prompt, ctx.mode === 'aggro' ? SYSTEM_AGGRO : SYSTEM); }
     catch (e) { errors.push(`${model}: ${e.message}`); if (!/HTTP 40[23]/.test(e.message)) break; }
   }
   throw new Error(errors.join(' || '));
 }
 
-async function callModel(model, prompt) {
+async function callModel(model, prompt, system) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), 50000);
   try {
@@ -93,7 +111,7 @@ async function callModel(model, prompt) {
       headers: { 'Content-Type': 'application/json', Authorization: await authHeader() },
       body: JSON.stringify({
         model, max_tokens: 12000, temperature: 0.3, reasoning_effort: 'low', response_format: { type: 'json_object' },
-        messages: [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }],
+        messages: [{ role: 'system', content: system }, { role: 'user', content: prompt }],
       }),
     });
     const j = await r.json();

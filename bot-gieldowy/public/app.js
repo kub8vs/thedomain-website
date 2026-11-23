@@ -76,6 +76,13 @@ function render(d) {
   $('#total').textContent = zl(tot);
   $('#totalDelta').innerHTML = `<span class="${cls(diff)}">${sign(diff)} zł (${pct(diff / start * 100)})</span> <span class="mut">od startu, po wszystkich kosztach</span>`;
 
+  const goal = d.costs.goalPLN || 1000;
+  const prog = Math.max(0, Math.min(1, (tot - start) / (goal - start)));
+  $('#goalFill').style.width = (prog * 100).toFixed(1) + '%';
+  const need = (goal / tot - 1) * 100;
+  const daysLeft = Math.max(0, (new Date(d.endsAt) - Date.now()) / 864e5);
+  $('#goalTxt').textContent = tot >= goal ? 'Cel osiągnięty.' : `Brakuje ${zl(goal - tot)} zł. Portfel musi jeszcze urosnąć o ${zl(need, 0)}% w ${zl(daysLeft, 1)} dnia. Postęp ${zl(prog * 100, 1)}%.`;
+
   const spy = d.benchmarks.find(b => b.id === 'SPY'), btc = d.benchmarks.find(b => b.id === 'BTC');
   const vsM = tot - spy.value;
   let v;
@@ -86,7 +93,7 @@ function render(d) {
 
   const mdl = (d.decisions.find(x => x.model) || {}).model || '';
   const aiName = /claude/.test(mdl) ? 'AI (Claude)' : mdl ? 'AI (model zapasowy)' : 'AI';
-  const rows = [{ nm: aiName, sub: /claude/.test(mdl) || !mdl ? 'aktywnie zarządza' : 'darmowy model, Claude po doładowaniu', val: tot, me: true }, ...d.benchmarks.map(b => ({ nm: b.id === 'SPY' ? 'S&P 500' : 'Bitcoin', sub: b.pending ? 'czeka na otwarcie giełdy' : 'kup i trzymaj, nic nie robi', val: b.value }))];
+  const rows = [{ nm: aiName, sub: /claude/.test(mdl) || !mdl ? 'gra agresywnie o 1000 zł' : 'gra o 1000 zł · darmowy model', val: tot, me: true }, ...d.benchmarks.map(b => ({ nm: b.id === 'SPY' ? 'S&P 500' : 'Bitcoin', sub: b.pending ? 'czeka na otwarcie giełdy' : 'kup i trzymaj, nic nie robi', val: b.value }))];
   const vals = rows.map(r => r.val), lo = Math.min(...vals, start) * .995, hi = Math.max(...vals, start) * 1.005;
   rows.sort((a, b) => b.val - a.val);
   $('#race').innerHTML = rows.map((r, i) => `<tr class="${r.me ? 'me' : ''}"><td class="nm">${i + 1}. ${r.nm}<span>${r.sub}</span><div class="bar"><b style="left:0;width:${((r.val - lo) / (hi - lo) * 100).toFixed(1)}%"></b></div></td>

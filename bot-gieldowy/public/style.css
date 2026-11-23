@@ -129,3 +129,9 @@ form textarea:focus,form input:focus{border-color:var(--fg)}
 .skeleton{color:transparent!important;background:linear-gradient(90deg,rgba(243,242,238,.06),rgba(243,242,238,.12),rgba(243,242,238,.06));background-size:200% 100%;animation:sk 1.2s infinite}
 @keyframes sk{to{background-position:-200% 0}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}#intro{display:none}}
+
+.goal{margin-top:26px}
+.goal-top{display:flex;justify-content:space-between;align-items:baseline}
+.goal-num{font-family:var(--serif);font-style:italic;font-size:26px}
+.goal-bar{position:relative;height:3px;background:var(--rule);margin-top:10px}
+.goal-bar b{position:absolute;left:0;top:0;bottom:0;background:var(--fg);width:0;transition:width .8s cubic-bezier(.2,.7,.2,1)}

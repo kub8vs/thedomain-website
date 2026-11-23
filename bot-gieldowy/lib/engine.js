@@ -1,4 +1,4 @@
-import { START_CAPITAL_PLN, EXPERIMENT_DAYS, BENCHMARKS, FX_FEE, FEES, UNIVERSE } from './config.js';
+import { START_CAPITAL_PLN, EXPERIMENT_DAYS, BENCHMARKS, FX_FEE, FEES, UNIVERSE, AGGRO_GOAL_PLN, AGGRO_MAX_POSITION_SHARE } from './config.js';
 import { getMarket } from './market.js';
 import { loadState, saveState } from './store.js';
 import { portfolioValue, benchmarkValue, quoteBuy, execute } from './broker.js';
@@ -58,7 +58,7 @@ export async function runTick({ source = 'cron', force = false } = {}) {
 
   let result = { skipped: true, why: finished ? 'eksperyment zakończony' : 'za wcześnie od ostatniej decyzji' };
   if (!finished && !tooSoon) {
-    const ctx = { state, market, ...snapshot(state, market) };
+    const ctx = { state, market, mode: 'aggro', ...snapshot(state, market) };
     const dec = { id: crypto.randomUUID(), at: now.toISOString(), source, executed: [], rejected: [] };
     try {
       const { decision, usage, model } = await askAI(ctx);
@@ -73,7 +73,7 @@ export async function runTick({ source = 'cron', force = false } = {}) {
       }
       const acts = (decision.actions || []).slice().sort((a, b) => (a.action === 'sell' ? -1 : 1) - (b.action === 'sell' ? -1 : 1));
       for (const a of acts) {
-        const r = execute(state, market, { ...a, symbol: String(a.symbol || '').toUpperCase() }, dec.at);
+        const r = execute(state, market, { ...a, symbol: String(a.symbol || '').toUpperCase() }, dec.at, AGGRO_MAX_POSITION_SHARE);
         if (r.ok) dec.executed.push({ tradeId: r.trade.id, text: `${r.trade.side} ${r.trade.symbol} za ${r.trade.amountPLN.toFixed(2)} zł` });
         else dec.rejected.push({ text: r.why });
       }
@@ -93,6 +93,7 @@ export async function runTick({ source = 'cron', force = false } = {}) {
 
 export function costsInfo() {
   return {
+    goalPLN: AGGRO_GOAL_PLN, maxShare: AGGRO_MAX_POSITION_SHARE,
     fx: FX_FEE, stock: FEES.stock, crypto: FEES.crypto,
     universe: UNIVERSE.map(u => ({ symbol: u.symbol, name: u.name, type: u.type })),
   };
