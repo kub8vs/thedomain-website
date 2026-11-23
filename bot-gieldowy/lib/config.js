@@ -24,6 +24,7 @@ export const UNIVERSE = [
   { symbol: 'NVDA', name: 'Nvidia',               type: 'stock',  spread: 0.0004 },
   { symbol: 'AMZN', name: 'Amazon',               type: 'stock',  spread: 0.0004 },
   { symbol: 'TSLA', name: 'Tesla',                type: 'stock',  spread: 0.0006 },
+  { symbol: 'GOLD', name: 'Złoto (XAUUSD)',       type: 'stock',  spread: 0.0004, yahoo: 'GC=F', h24: true },
   { symbol: 'BTC',  name: 'Bitcoin',              type: 'crypto', pair: 'BTC-USD' },
   { symbol: 'ETH',  name: 'Ethereum',             type: 'crypto', pair: 'ETH-USD' },
   { symbol: 'SOL',  name: 'Solana',               type: 'crypto', pair: 'SOL-USD' },

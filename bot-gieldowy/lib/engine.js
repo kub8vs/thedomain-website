@@ -4,6 +4,7 @@ import { loadState, saveState } from './store.js';
 import { portfolioValue, benchmarkValue, quoteBuy, execute } from './broker.js';
 import { askAI } from './ai.js';
 import { getIntel } from './intel.js';
+import { runTrend, trendValue } from './trend.js';
 import { getDex, getDerivs, getBooks } from './edge.js';
 import { notify, tradeMessage, moveMessage } from './push.js';
 
@@ -35,6 +36,7 @@ function buyBenchmarks(state, market) {
 export function snapshot(state, market) {
   const pv = portfolioValue(state, market);
   const bench = state.benchmarks.map(b => ({ id: b.id, label: b.label, value: benchmarkValue(b, market), pending: !b.qty }));
+  bench.push({ id: 'TREND', label: 'Strategia: jedź z trendem', value: trendValue(state, market), pending: false, positions: Object.keys(state.trend?.positions || {}), signals: state.trend?.signals || {} });
   return { pv, bench };
 }
 
@@ -100,9 +102,11 @@ export async function runTick({ source = 'cron', force = false, alarm = null } =
     state.decisions = state.decisions.slice(0, 600);
     result = { skipped: false, decision: dec };
   }
+  let trendEvents = [];
+  if (!finished) trendEvents = await runTrend(state, market, now.toISOString()).catch(e => { console.error('trend', e); return []; });
   const snap = snapshot(state, market);
   recordEquity(state, snap.pv, snap.bench);
-  const msgs = [];
+  const msgs = trendEvents.map(e => ({ title: e.text.split('. ')[0], body: e.text.split('. ').slice(1).join('. ').slice(0, 220), tag: 'trend-' + e.trade.id }));
   if (result.decision?.executed?.length) {
     const T = Object.fromEntries(state.trades.slice(0, 20).map(t => [t.id, t]));
     msgs.push(tradeMessage(result.decision, result.decision.executed.map(e => T[e.tradeId]).filter(Boolean), snap.pv.total));

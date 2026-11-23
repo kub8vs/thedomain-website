@@ -102,7 +102,7 @@ function drawChart(all, start) {
   let eq = all || [];
   if (range !== 'all' && eq.length) { const cut = Date.now() - +range * 3600e3; const f = eq.filter(p => new Date(p.t) >= cut); eq = f.length >= 2 ? f : eq; }
   if (eq.length < 2) { svg.innerHTML = `<line x1="0" x2="${W}" y1="${H / 2}" y2="${H / 2}" stroke="var(--fg3)" stroke-dasharray="2 5" vector-effect="non-scaling-stroke"/>`; chartPts = null; return; }
-  const keys = ['ai', 'SPY', 'BTC'];
+  const keys = ['ai', 'SPY', 'BTC', 'TREND'];
   const vals = eq.flatMap(p => keys.map(k => p[k]).filter(v => v != null)).concat([start]);
   let mn = Math.min(...vals), mx = Math.max(...vals); const pad = (mx - mn) * .1 || 1; mn -= pad; mx += pad;
   const t0 = +new Date(eq[0].t), t1 = +new Date(eq[eq.length - 1].t);
@@ -116,6 +116,7 @@ function drawChart(all, start) {
     + `<path d="${ai}L${W},${H}L0,${H}Z" fill="url(#g)"/>`
     + `<path d="${path('SPY')}" fill="none" stroke="var(--blue)" stroke-width="1.4" stroke-opacity=".8" vector-effect="non-scaling-stroke"/>`
     + `<path d="${path('BTC')}" fill="none" stroke="var(--orange)" stroke-width="1.4" stroke-opacity=".8" vector-effect="non-scaling-stroke"/>`
+    + `<path d="${path('TREND')}" fill="none" stroke="var(--purple)" stroke-width="1.6" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"/>`
     + `<path d="${ai}" fill="none" stroke="${col}" stroke-width="2.4" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`
     + `<g id="cursor" style="display:none"><line id="cx" y1="0" y2="${H}" stroke="var(--fg3)" vector-effect="non-scaling-stroke"/><circle id="cd" r="4.5" fill="${col}" stroke="var(--bg)" stroke-width="2" vector-effect="non-scaling-stroke"/></g>`;
   chartPts = eq.map(p => ({ x: X(p.t), y: Y(p.ai), p }));
@@ -163,7 +164,7 @@ function render(d) {
   const spy = d.benchmarks.find(b => b.id === 'SPY');
   const mdl = (d.decisions.find(x => x.model) || {}).model || '';
   const rows = [{ sym: 'AI', nm: /claude/.test(mdl) ? 'AI · Claude' : 'AI', sub: 'SOL + meme coiny', val: tot, me: true },
-    ...d.benchmarks.map(b => ({ sym: b.id, nm: b.id === 'SPY' ? 'S&P 500' : 'Bitcoin', sub: b.pending ? 'czeka na otwarcie giełdy' : 'kup i trzymaj', val: b.value }))];
+    ...d.benchmarks.map(b => ({ sym: b.id, nm: b.id === 'SPY' ? 'S&P 500' : b.id === 'TREND' ? 'Strategia trend' : 'Bitcoin', sub: b.id === 'TREND' ? (b.positions?.length ? 'trzyma: ' + b.positions.join(', ') : 'bez AI, czeka na trend w górę') : b.pending ? 'czeka na otwarcie giełdy' : 'kup i trzymaj', val: b.value }))];
   const vals = rows.map(r => r.val), lo = Math.min(...vals, start) * .99, hi = Math.max(...vals, start) * 1.002;
   rows.sort((a, b) => b.val - a.val);
   $('#race').innerHTML = rows.map((r, i) => `<div class="cell ${r.me ? 'me' : ''}"><span class="race-rank">${i + 1}</span>
@@ -193,7 +194,26 @@ function render(d) {
     + kv('Kurs USD/PLN teraz', zl(d.market.fx.rate, 4)) + kv('Źródło kursu', esc(d.market.fx.source));
 }
 
+const NAMES = { BTC: 'Bitcoin', SOL: 'Solana', GOLD: 'Złoto (XAUUSD)', SPY: 'S&P 500' };
+function renderTrend(d) {
+  const t = d.trend; if (!t || !t.signals) { $('#trendBox').innerHTML = ''; return; }
+  const tb = d.benchmarks.find(b => b.id === 'TREND');
+  const rows = Object.entries(t.signals).map(([sym, s]) => {
+    const held = t.positions[sym];
+    const toBreak = (s.high20 / s.price - 1) * 100, toAvg = (s.sma50 / s.price - 1) * 100;
+    const state = held ? `trzymam, stop ${px(held.trendStop)}` : s.trendUp ? (toBreak > 0 ? `trend w górę, czekam na wybicie (+${zl(toBreak, 1)}%)` : 'sygnał kupna') : `trend w dół: do średniej 50 dni brakuje +${zl(toAvg, 1)}%`;
+    return `<div class="cell ind"><span class="trend-dot" style="background:${held ? 'var(--purple)' : s.trendUp ? 'var(--up)' : 'var(--down)'};margin:0 14px 0 14px"></span>
+      <div class="cell-main"><p class="t1">${NAMES[sym] || sym}</p><p class="t2" style="white-space:normal">${state}</p></div>
+      <div class="cell-r"><p class="price">${px(s.price)}</p><p class="t2">średnia 50 d: ${px(s.sma50)}</p></div></div>`;
+  }).join('');
+  const log = (t.log || []).slice(0, 5).map(l => `<div class="cell"><div class="cell-main"><p class="note-t">${tPL(l.at)}</p><p class="note-x">${esc(l.text)}</p></div></div>`).join('');
+  $('#trendBox').innerHTML = `<h2 class="sec">Strategia trend <span class="sec-note">${tb ? zl(tb.value) + ' zł' : ''}</span></h2><div class="group">${rows}</div>
+    <p class="foot">Bez AI. Kupuje tylko, gdy cena jest nad średnią 50 dni i przebija szczyt z 20 dni. Ryzyko 1% portfela na transakcję, sprzedaż pod średnią 20 dni albo na stopie. Sprawdza co 5 minut.</p>
+    ${log ? `<h2 class="sec">Ruchy strategii</h2><div class="group">${log}</div>` : ''}`;
+}
+
 function renderPortfolio(d) {
+  renderTrend(d);
   const tradable = d.costs.tradable || [];
   const Q = Object.fromEntries(d.market.quotes.map(q => [q.symbol, q]));
   const pos = d.portfolio.rows;

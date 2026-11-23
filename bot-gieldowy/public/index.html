@@ -64,7 +64,7 @@
         <svg id="chart" viewBox="0 0 360 190" preserveAspectRatio="none"></svg>
         <div class="scrub" id="scrub" hidden><span id="scrubVal"></span><span id="scrubT"></span></div>
       </div>
-      <div class="legend"><span><i class="k-ai"></i>AI</span><span><i class="k-spy"></i>S&amp;P 500</span><span><i class="k-btc"></i>Bitcoin</span></div>
+      <div class="legend"><span><i class="k-ai"></i>AI</span><span><i class="k-spy"></i>S&amp;P 500</span><span><i class="k-btc"></i>Bitcoin</span><span><i class="k-tr"></i>Trend</span></div>
     </div>
 
     <h2 class="sec">Cel tygodnia</h2>
@@ -113,6 +113,7 @@
     <div class="large-head"><p class="kicker">SOL i meme coiny</p><h1 class="large-title">Portfel</h1></div>
     <h2 class="sec">Pozycje</h2>
     <div class="group" id="positions"></div>
+    <div id="trendBox"></div>
     <h2 class="sec">Rynek <span class="sec-note" id="usStatus"></span></h2>
     <div class="group" id="market"></div>
     <p class="foot">Ceny krypto: prawdziwy bid/ask z Coinbase. Wykres: ostatnie 48 godzin. Dotknij, żeby zobaczyć szczegóły.</p>
@@ -150,6 +151,7 @@
       <div class="rule"><span class="ico ico-p"><svg><use href="#i-spark"/></svg></span><div><b>AI analizuje co 5 minut.</b><p>Świece minutowe, RSI, obrót, indeks strachu i chciwości, CoinGecko, nagłówki z CoinDesk, The Block, Decrypt i Cointelegraph. Do tego kupujący i sprzedający w sieci Solana (DexScreener), funding i otwarte pozycje na kontraktach (OKX) oraz książka zleceń z Coinbase. Co 2 godziny AI przegląda swoje transakcje i zapisuje lekcje, które stosuje dalej. Pozycji młodszej niż 15 minut nie sprzedaje, żeby nie przepalać opłat.</p></div></div>
       <div class="rule"><span class="ico ico-r">!</span><div><b>Cel 1000 zł w tydzień.</b><p>Tylko SOL, DOGE, SHIB, PEPE, BONK, WIF, FARTCOIN, PENGU i TRUMP. Bez dźwigni i bez shortowania. Wysokie ryzyko: portfel może też mocno stracić.</p></div></div>
       <div class="rule"><span class="ico ico-gr">=</span><div><b>Uczciwe porównanie.</b><p>Obok AI liczymy 200 zł w S&amp;P 500 i 200 zł w Bitcoinie, kupione i trzymane, z tymi samymi kosztami.</p></div></div>
+      <div class="rule"><span class="ico ico-p">T</span><div><b>Strategia trend (bez AI).</b><p>Drugi portfel 200 zł na prostych zasadach: BTC, SOL, złoto i S&amp;P 500 na wykresie dziennym. Kupuje, gdy cena jest nad średnią 50 dni i przebija szczyt z 20 dni. Ryzyko 1% portfela, stop pod dołkiem z 10 dni, wyjście pod średnią 20 dni.</p></div></div>
     </div>
     <h2 class="sec">Koszty i kurs</h2>
     <div class="group" id="costFacts"></div>

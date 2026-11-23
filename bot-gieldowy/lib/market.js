@@ -65,7 +65,7 @@ function stats(closes, price) {
 }
 
 // ---------- źródła ----------
-async function yahooChart(symbol, range = '1mo', interval = '1h') {
+export async function yahooChart(symbol, range = '1mo', interval = '1h') {
   const hosts = ['query1', 'query2'];
   let last;
   for (const h of hosts) {
@@ -79,7 +79,7 @@ async function yahooChart(symbol, range = '1mo', interval = '1h') {
 }
 
 async function stockQuote(inst) {
-  const { meta, closes } = await yahooChart(inst.symbol);
+  const { meta, closes } = await yahooChart(inst.yahoo || inst.symbol);
   const mid = meta.regularMarketPrice;
   const half = inst.spread / 2;
   return {
@@ -134,7 +134,8 @@ export async function getMarket() {
   const us = usMarketStatus();
   const q = {};
   for (const x of quotes) {
-    x.tradable = !x.error && (x.type === 'crypto' || us.open);
+    const wd = new Date().getUTCDay();
+    x.tradable = !x.error && (x.type === 'crypto' || us.open || (x.h24 && wd !== 0 && wd !== 6));
     q[x.symbol] = x;
   }
   return { at: new Date().toISOString(), fx, us, quotes: q };

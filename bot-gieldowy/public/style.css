@@ -267,3 +267,5 @@ textarea::placeholder { color: var(--fg3); }
 .push-state { font-size: 15px; font-weight: 600; color: var(--blue); flex-shrink: 0; }
 .push-state.on { color: var(--fg2); font-weight: 400; }
 #pushCell .t2 { white-space: normal; }
+.k-tr { background: var(--purple); }
+.trend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }

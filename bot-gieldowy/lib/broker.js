@@ -51,7 +51,7 @@ export function execute(state, market, order, now = new Date().toISOString(), ma
   const fx = market.fx.rate;
   const q = market.quotes[order.symbol];
   if (!q) return { ok: false, why: `nieznany instrument ${order.symbol}` };
-  if (TRADABLE_ONLY?.length && !TRADABLE_ONLY.includes(order.symbol) && !(order.action === 'sell' && state.positions[order.symbol])) return { ok: false, why: `${order.symbol}: handlujemy tylko ${TRADABLE_ONLY.join(', ')}` };
+  if (!order.anySymbol && TRADABLE_ONLY?.length && !TRADABLE_ONLY.includes(order.symbol) && !(order.action === 'sell' && state.positions[order.symbol])) return { ok: false, why: `${order.symbol}: handlujemy tylko ${TRADABLE_ONLY.join(', ')}` };
   if (q.error) return { ok: false, why: `brak ceny dla ${order.symbol}` };
   if (!q.tradable) return { ok: false, why: `${order.symbol}: giełda w USA zamknięta (${market.us.reason})` };
 
