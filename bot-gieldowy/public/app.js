@@ -84,7 +84,9 @@ function render(d) {
   else v = vsM > 0 ? `AI wygrywa z rynkiem o ${zl(vsM)} zł.` : `AI przegrywa z rynkiem o ${zl(-vsM)} zł.`;
   $('#verdictTxt').textContent = v;
 
-  const rows = [{ nm: 'AI (Claude)', sub: 'aktywnie zarządza', val: tot, me: true }, ...d.benchmarks.map(b => ({ nm: b.id === 'SPY' ? 'S&P 500' : 'Bitcoin', sub: b.pending ? 'czeka na otwarcie giełdy' : 'kup i trzymaj, nic nie robi', val: b.value }))];
+  const mdl = (d.decisions.find(x => x.model) || {}).model || '';
+  const aiName = /claude/.test(mdl) ? 'AI (Claude)' : mdl ? 'AI (model zapasowy)' : 'AI';
+  const rows = [{ nm: aiName, sub: /claude/.test(mdl) || !mdl ? 'aktywnie zarządza' : 'darmowy model, Claude po doładowaniu', val: tot, me: true }, ...d.benchmarks.map(b => ({ nm: b.id === 'SPY' ? 'S&P 500' : 'Bitcoin', sub: b.pending ? 'czeka na otwarcie giełdy' : 'kup i trzymaj, nic nie robi', val: b.value }))];
   const vals = rows.map(r => r.val), lo = Math.min(...vals, start) * .995, hi = Math.max(...vals, start) * 1.005;
   rows.sort((a, b) => b.val - a.val);
   $('#race').innerHTML = rows.map((r, i) => `<tr class="${r.me ? 'me' : ''}"><td class="nm">${i + 1}. ${r.nm}<span>${r.sub}</span><div class="bar"><b style="left:0;width:${((r.val - lo) / (hi - lo) * 100).toFixed(1)}%"></b></div></td>
@@ -94,7 +96,7 @@ function render(d) {
 
   const ld = d.decisions[0];
   $('#lastDecision').textContent = ld ? ld.summary : 'AI jeszcze nie podjęło decyzji.';
-  $('#lastDecisionMeta').textContent = ld ? `${tPL(ld.at)} · ${ld.executed.length ? ld.executed.map(e => e.text).join(', ') : 'bez transakcji'}` : '';
+  $('#lastDecisionMeta').textContent = ld ? `${tPL(ld.at)} · ${ld.model ? ld.model.split('/')[1] + ' · ' : ''}${ld.executed.length ? ld.executed.map(e => e.text).join(', ') : 'bez transakcji'}` : '';
 
   const f = d.fees, fT = f.fx + f.commission + f.spread;
   $('#facts').innerHTML = `<dt>Gotówka</dt><dd>${zl(d.portfolio.cash)} zł</dd><dt>W pozycjach</dt><dd>${zl(d.portfolio.positions)} zł</dd>
