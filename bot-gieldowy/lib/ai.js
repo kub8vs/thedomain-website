@@ -92,13 +92,15 @@ async function callModel(model, prompt) {
       method: 'POST', signal: ctrl.signal,
       headers: { 'Content-Type': 'application/json', Authorization: await authHeader() },
       body: JSON.stringify({
-        model, max_tokens: 4000, temperature: 0.3,
+        model, max_tokens: 6000, temperature: 0.3, response_format: { type: 'json_object' },
         messages: [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }],
       }),
     });
     const j = await r.json();
     if (!r.ok) throw new Error(`AI Gateway HTTP ${r.status}: ${JSON.stringify(j).slice(0, 600)}`);
-    const text = j.choices?.[0]?.message?.content || '';
-    return { decision: parseJSON(text), usage: j.usage, model: j.model || model };
+    const ch = j.choices?.[0] || {};
+    const text = ch.message?.content || '';
+    try { return { decision: parseJSON(text), usage: j.usage, model: j.model || model }; }
+    catch (e) { throw new Error(`${e.message} (finish=${ch.finish_reason}, len=${text.length}): ${text.slice(0, 300)} | reasoning: ${String(ch.message?.reasoning || '').slice(0, 200)}`); }
   } finally { clearTimeout(t); }
 }
