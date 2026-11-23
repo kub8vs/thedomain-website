@@ -72,7 +72,7 @@ function parseJSON(text) {
 
 // Najpierw Claude Sonnet; jeśli konto AI Gateway nie ma środków na płatny model,
 // próbujemy kolejnych modeli z darmowego planu, żeby bot nie stał.
-const CHAIN = [process.env.AI_MODEL || AI_MODEL, 'anthropic/claude-haiku-5.5', 'anthropic/claude-haiku-4.5'];
+const CHAIN = [process.env.AI_MODEL || AI_MODEL, 'anthropic/claude-haiku-5.5', 'anthropic/claude-haiku-4.5', 'reflection/beam-free', 'nvidia/nemotron-3.5-lightning-free'];
 
 export async function askAI(ctx) {
   const prompt = buildUserPrompt(ctx);
@@ -92,7 +92,7 @@ async function callModel(model, prompt) {
       method: 'POST', signal: ctrl.signal,
       headers: { 'Content-Type': 'application/json', Authorization: await authHeader() },
       body: JSON.stringify({
-        model, max_tokens: 1500, temperature: 0.3,
+        model, max_tokens: 4000, temperature: 0.3,
         messages: [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }],
       }),
     });
