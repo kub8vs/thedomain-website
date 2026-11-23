@@ -65,7 +65,7 @@
 
     <div class="actions">
       <button class="btn" id="decideBtn">Niech AI zdecyduje teraz</button>
-      <p class="hint" id="nextTick">AI sprawdza rynek i decyduje automatycznie co 5 minut.</p>
+      <p class="hint" id="nextTick">Strażnik sprawdza ceny co minutę, AI analizuje co 5 minut i od razu przy mocnym ruchu.</p>
     </div>
 
     <dl class="facts" id="facts"></dl>
@@ -105,7 +105,8 @@
       <li><b>Pieniądze są wirtualne, rynek prawdziwy.</b> Start: 200 zł. Ceny akcji z giełdy w USA (Yahoo Finance), krypto i meme coiny (DOGE, SHIB, PEPE, BONK, WIF, FARTCOIN, PENGU, TRUMP) z giełdy Coinbase, kurs dolara z rynku walutowego (zapas: NBP). Do decyzji AI dostaje też: wolumeny i rankingi z CoinGecko, indeks strachu i chciwości (alternative.me) oraz świeże nagłówki z CoinDesk, The Block, Decrypt i Cointelegraph. W dzienniku przy każdej decyzji widać, na których źródłach się oparło.</li>
       <li><b>Koszty jak u prawdziwego brokera.</b> Przy każdej transakcji płacisz przewalutowanie PLN↔USD 0,5% (jak w XTB), spread (krypto: prawdziwy z giełdy, akcje: typowy rynkowy) i prowizję (akcje/ETF 0%, krypto 0,1%).</li>
       <li><b>Wartość = ile byś dostał, sprzedając wszystko teraz.</b> Po odjęciu wszystkich kosztów wyjścia. Bez upiększania.</li>
-      <li><b>AI decyduje co 5 minut.</b> Claude dostaje ceny, wskaźniki, Twoje notatki i swoje poprzednie decyzje. Może kupić, sprzedać albo nic nie robić. Akcje tylko w czasie sesji (15:30–22:00), krypto 24/7.</li>
+      <li><b>Strażnik co minutę.</b> Bez AI, twarde reguły: przy każdym kupnie AI ustawia stop kroczący (sprzedaż, gdy cena spadnie o kilka procent od szczytu) i cel (przy nim automat sprzedaje połowę, reszta jedzie dalej). Gdy któraś moneta ruszy się mocno w ciągu 3 minut, strażnik od razu woła AI. Żeby nie przepalać opłat, AI nie sprzedaje pozycji młodszej niż 15 minut (przed dużą stratą chroni stop).</li>
+      <li><b>AI analizuje co 5 minut</b> na świecach minutowych (ruch z 1, 3, 5, 15 i 60 minut, RSI, obrót) i swojej historii zysków i kosztów. Claude dostaje ceny, wskaźniki, Twoje notatki i swoje poprzednie decyzje. Może kupić, sprzedać albo nic nie robić. Akcje tylko w czasie sesji (15:30–22:00), krypto 24/7.</li>
       <li><b>Cel: 1000 zł w tydzień: Solana i meme coiny.</b> AI handluje tylko SOL, DOGE, SHIB, PEPE, BONK, WIF, FARTCOIN, PENGU i TRUMP. Co 5 minut decyduje, w co wejść, z czego wyjść albo czy trzymać gotówkę. Akcje, BTC i ETH służą mu tylko jako kontekst. Min. zlecenie 10 zł, bez dźwigni i bez shortowania (jak u zwykłego brokera w UE). Wysokie ryzyko: portfel może też mocno stracić.</li>
       <li><b>Uczciwe porównanie.</b> Obok AI liczymy dwa portfele „kup i trzymaj”: całe 200 zł w S&amp;P 500 i całe 200 zł w Bitcoinie, z tymi samymi kosztami. Jeśli AI ich nie bije, to znaczy, że nie warto jej dawać prawdziwych pieniędzy.</li>
     </ol>
