@@ -53,7 +53,7 @@ export async function runTick({ source = 'cron', force = false } = {}) {
   const now = new Date();
   state.day = Math.min(EXPERIMENT_DAYS, Math.floor((now - new Date(state.startedAt)) / 864e5) + 1);
   const finished = now > new Date(state.endsAt);
-  const last = state.decisions[0];
+  const last = state.decisions.find(d => !d.error);
   const tooSoon = last && now - new Date(last.at) < (force ? 10 : 20) * 60e3;
 
   let result = { skipped: true, why: finished ? 'eksperyment zakończony' : 'za wcześnie od ostatniej decyzji' };
