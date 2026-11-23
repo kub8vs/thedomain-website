@@ -50,3 +50,6 @@ export const US_HALF_DAYS = ['2026-11-27', '2026-12-24'];
 // Drugi portfel: tryb agresywny (cel 1000 zł z 200 zł). Te same koszty, bez dźwigni.
 export const AGGRO_GOAL_PLN = 1000;
 export const AGGRO_MAX_POSITION_SHARE = 1.0;
+
+// kub 23.11: AI handluje TYLKO Solaną (SOL <-> gotówka). Reszta rynku to tylko kontekst.
+export const TRADABLE_ONLY = ['SOL'];
