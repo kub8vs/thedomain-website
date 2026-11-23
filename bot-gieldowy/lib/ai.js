@@ -92,7 +92,7 @@ async function callModel(model, prompt) {
       method: 'POST', signal: ctrl.signal,
       headers: { 'Content-Type': 'application/json', Authorization: await authHeader() },
       body: JSON.stringify({
-        model, max_tokens: 6000, temperature: 0.3, response_format: { type: 'json_object' },
+        model, max_tokens: 12000, temperature: 0.3, reasoning_effort: 'low', response_format: { type: 'json_object' },
         messages: [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }],
       }),
     });
