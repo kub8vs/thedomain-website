@@ -4,6 +4,7 @@ import { loadState, saveState } from './store.js';
 import { portfolioValue, benchmarkValue, quoteBuy, execute } from './broker.js';
 import { askAI } from './ai.js';
 import { getIntel } from './intel.js';
+import { getDex, getDerivs, getBooks } from './edge.js';
 import { notify, tradeMessage, moveMessage } from './push.js';
 
 export function newState() {
@@ -60,7 +61,14 @@ export async function runTick({ source = 'cron', force = false, alarm = null } =
 
   let result = { skipped: true, why: finished ? 'eksperyment zakończony' : 'za wcześnie od ostatniej decyzji' };
   if (!finished && !tooSoon) {
-    const intel = await getIntel().catch(() => null);
+    const books = UNIVERSE.filter(u => (TRADABLE_ONLY.includes(u.symbol)) && u.pair);
+    const [intel, dex, derivs, ob] = await Promise.all([getIntel().catch(() => null), getDex().catch(() => ({})), getDerivs().catch(() => ({})), getBooks(books).catch(() => ({}))]);
+    if (intel) {
+      intel.edge = { dex, derivs, books: ob };
+      if (Object.keys(dex).length) intel.sources.push('DexScreener (sieć Solana)');
+      if (Object.keys(derivs).length) intel.sources.push('OKX (kontrakty)');
+      if (Object.keys(ob).length) intel.sources.push('Coinbase (książka zleceń)');
+    }
     const ctx = { state, market, intel, alarm, mode: 'aggro', ...snapshot(state, market) };
     const dec = { id: crypto.randomUUID(), at: now.toISOString(), source, alarm: alarm || undefined, executed: [], rejected: [] };
     try {

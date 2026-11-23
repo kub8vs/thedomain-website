@@ -244,6 +244,7 @@ function decIcon(dec) {
   return `<span class="log-ico" style="background:#636366"><svg><use href="#i-spark"/></svg></span>`;
 }
 function renderLog(d) {
+  $('#lessonsBox').innerHTML = d.lessons?.length ? `<h2 class="sec">Lekcje AI <span class="sec-note">${hm(d.lessonsAt)}</span></h2><div class="group">${d.lessons.map(l => `<div class="cell"><span class="log-ico" style="background:var(--purple)"><svg><use href="#i-spark"/></svg></span><div class="cell-main"><p class="log-sum" style="-webkit-line-clamp:unset">${esc(l.text)}</p></div></div>`).join('')}</div><p class="foot">AI przegląda swoje transakcje co 2 godziny i stosuje te lekcje przy kolejnych decyzjach.</p>` : '';
   let list = d.decisions;
   if (logFilter === 'trades') list = list.filter(x => x.executed.length);
   if (logFilter === 'guard') list = list.filter(x => x.source === 'strażnik' || x.source === 'alarm');

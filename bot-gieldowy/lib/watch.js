@@ -6,6 +6,7 @@ import { quickQuotes, usdPln } from './market.js';
 import { loadState, saveState } from './store.js';
 import { execute, guardLevels } from './broker.js';
 import { runTick } from './engine.js';
+import { reviewTrades } from './ai.js';
 import { notify, tradeMessage } from './push.js';
 import { portfolioValue } from './broker.js';
 
@@ -95,5 +96,18 @@ export async function runWatch({ force = false } = {}) {
   }
   let tick = null;
   if (alarm) tick = await runTick({ source: 'alarm', force: true, alarm });
-  return { checked: quotes.length, held, traded: dec.executed.map(e => e.text), saved: dirty, alarm, tick: tick && (tick.decision?.summary || tick.why) };
+  // co 2 godziny: AI przegląda swoje transakcje i zapisuje lekcje
+  let lessons = null;
+  const sinceLessons = state.lessonsAt ? (now - new Date(state.lessonsAt)) / 3600e3 : 99;
+  if (!alarm && sinceLessons >= 2 && (state.trades || []).filter(t => t.side === 'SPRZEDAŻ').length >= 2 && (force || now.getUTCMinutes() % 5 === 2)) {
+    try {
+      const list = await reviewTrades(state);
+      const fresh = await loadState({ fresh: true });
+      fresh.lessons = list.map(text => ({ at: now.toISOString(), text }));
+      fresh.lessonsAt = now.toISOString();
+      await saveState(fresh);
+      lessons = list;
+    } catch (e) { console.error('lekcje', e.message); }
+  }
+  return { checked: quotes.length, held, traded: dec.executed.map(e => e.text), saved: dirty, alarm, tick: tick && (tick.decision?.summary || tick.why), lessons };
 }
