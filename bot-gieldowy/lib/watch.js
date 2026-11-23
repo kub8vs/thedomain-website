@@ -21,46 +21,54 @@ export async function runWatch({ force = false } = {}) {
   const syms = [...new Set([...TRADABLE_ONLY, ...held])];
   const quotes = await quickQuotes(UNIVERSE.filter(u => syms.includes(u.symbol) && u.type === 'crypto'));
   const Q = Object.fromEntries(quotes.map(q => [q.symbol, q]));
-  let dirty = false;
-  const dec = { id: crypto.randomUUID(), at: now.toISOString(), source: 'strażnik', executed: [], rejected: [], notes: [] };
-  let market = null;
-
-  for (const sym of held) {
-    const p = state.positions[sym], q = Q[sym];
-    if (!p || !q || q.error) continue;
-    if (!p.entryUSD) { // pozycja sprzed strażnika: cena wejścia z ostatniego kupna
-      const t = state.trades.find(t => t.symbol === sym && t.side === 'KUPNO');
-      p.entryUSD = t?.priceUSD || q.ask; p.peakUSD = Math.max(p.entryUSD, q.bid); dirty = true;
+  const guard = st => {
+    let dirty = false;
+    const dec = { id: crypto.randomUUID(), at: now.toISOString(), source: 'strażnik', executed: [], rejected: [], notes: [] };
+    for (const sym of Object.keys(st.positions)) {
+      const p = st.positions[sym], q = Q[sym];
+      if (!p || !q || q.error) continue;
+      if (!p.entryUSD) { // pozycja sprzed strażnika: cena wejścia z ostatniego kupna
+        const t = st.trades.find(t => t.symbol === sym && t.side === 'KUPNO');
+        p.entryUSD = t?.priceUSD || q.ask; p.peakUSD = Math.max(p.entryUSD, q.bid); dirty = true;
+      }
+      const before = guardLevels(p);
+      if (q.bid > (p.peakUSD || 0)) p.peakUSD = q.bid;
+      const g = guardLevels(p);
+      if (g.stopUSD > before.stopUSD * 1.004) dirty = true; // stop podciągnięty w górę
+      let order = null;
+      if (q.bid <= g.stopUSD) {
+        order = { action: 'sell', symbol: sym, fraction: 1, guard: 'stop',
+          reason: `cena ${px(q.bid)} USD spadła do stopu ${px(g.stopUSD)} USD (${g.stopPct}% od szczytu ${px(g.peakUSD)})` };
+      } else if (g.takeUSD && q.bid >= g.takeUSD) {
+        order = { action: 'sell', symbol: sym, fraction: 0.5, guard: 'cel',
+          reason: `cena ${px(q.bid)} USD osiągnęła cel +${g.takePct}%: sprzedaję połowę, reszta jedzie dalej ze stopem` };
+      }
+      if (!order) continue;
+      dirty = true;
+      const r = execute(st, market, order, dec.at, 1);
+      if (r.ok) {
+        if (order.guard === 'cel' && st.positions[sym]) st.positions[sym].tookProfit = true;
+        dec.executed.push({ tradeId: r.trade.id, text: `${r.trade.side} ${sym} za ${r.trade.amountPLN.toFixed(2)} zł` });
+        dec.notes.push(`${sym}: ${order.reason}`);
+      } else dec.rejected.push({ text: r.why });
     }
-    const before = guardLevels(p);
-    if (q.bid > (p.peakUSD || 0)) p.peakUSD = q.bid;
-    const g = guardLevels(p);
-    if (g.stopUSD > before.stopUSD * 1.004) dirty = true; // stop podciągnięty w górę
-    let order = null;
-    if (q.bid <= g.stopUSD) {
-      order = { action: 'sell', symbol: sym, fraction: 1, guard: 'stop',
-        reason: `cena ${px(q.bid)} USD spadła do stopu ${px(g.stopUSD)} USD (${g.stopPct}% od szczytu ${px(g.peakUSD)})` };
-    } else if (g.takeUSD && q.bid >= g.takeUSD) {
-      order = { action: 'sell', symbol: sym, fraction: 0.5, guard: 'cel',
-        reason: `cena ${px(q.bid)} USD osiągnęła cel +${g.takePct}%: sprzedaję połowę, reszta jedzie dalej ze stopem` };
+    if (dec.executed.length || dec.rejected.length) {
+      dec.summary = `Strażnik: ${dec.notes.join('; ') || 'próba sprzedaży'}.`;
+      st.decisions.unshift(dec);
+      st.decisions = st.decisions.slice(0, 600);
     }
-    if (!order) continue;
-    market = market || { fx: await usdPln(), us: { open: false, reason: '' }, quotes: Q, at: now.toISOString() };
-    const r = execute(state, market, order, dec.at, 1);
-    if (r.ok) {
-      if (order.guard === 'cel' && state.positions[sym]) state.positions[sym].tookProfit = true;
-      dec.executed.push({ tradeId: r.trade.id, text: `${r.trade.side} ${sym} za ${r.trade.amountPLN.toFixed(2)} zł` });
-      dec.notes.push(`${sym}: ${order.reason}`);
-    } else dec.rejected.push({ text: r.why });
-    dirty = true;
+    return { dirty, dec };
+  };
+  const market = { fx: { rate: 4 }, us: { open: false, reason: '' }, quotes: Q, at: now.toISOString() };
+  // 1) próba na tanim (z pamięci CDN) odczycie; 2) jeśli trzeba coś zmienić, czytamy świeży stan i dopiero zapisujemy
+  let { dirty, dec } = guard(JSON.parse(JSON.stringify(state)));
+  if (dirty) {
+    market.fx = await usdPln();
+    const freshState = await loadState({ fresh: true });
+    ({ dirty, dec } = guard(freshState));
+    if (dirty) await saveState(freshState);
+    Object.assign(state, freshState);
   }
-
-  if (dec.executed.length || dec.rejected.length) {
-    dec.summary = `Strażnik: ${dec.notes.join('; ') || 'próba sprzedaży'}.`;
-    state.decisions.unshift(dec);
-    state.decisions = state.decisions.slice(0, 600);
-  }
-  if (dirty) await saveState(state);
 
   // alarm: duży ruch w ciągu 3 minut
   const movers = quotes.filter(q => !q.error && q.ch3m != null && Math.abs(q.ch3m) >= (state.positions[q.symbol] ? 1 : ALARM_MOVE_PCT))

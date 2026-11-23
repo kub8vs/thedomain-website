@@ -121,7 +121,7 @@ export async function askAI(ctx) {
 
 async function callModel(model, prompt, system) {
   const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), 50000);
+  const t = setTimeout(() => ctrl.abort(), 75000);
   try {
     const r = await fetch('https://ai-gateway.vercel.sh/v1/chat/completions', {
       method: 'POST', signal: ctrl.signal,
