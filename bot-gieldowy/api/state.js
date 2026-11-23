@@ -8,7 +8,7 @@ export const config = { maxDuration: 30 };
 export default async function handler(req, res) {
   if (!authorized(req)) return deny(res);
   try {
-    const [state, market] = await Promise.all([loadState(), getMarket()]);
+    const [state, market] = await Promise.all([loadState({ fresh: false }), getMarket()]);
     if (!state) return res.status(200).json({ notStarted: true, market, costs: costsInfo() });
     const { pv, bench } = snapshot(state, market);
     const fees = state.trades.reduce((a, t) => ({ fx: a.fx + t.fees.fx, commission: a.commission + t.fees.commission, spread: a.spread + t.fees.spread }), { fx: 0, commission: 0, spread: 0 });
