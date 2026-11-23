@@ -27,6 +27,15 @@ export const UNIVERSE = [
   { symbol: 'BTC',  name: 'Bitcoin',              type: 'crypto', pair: 'BTC-USD' },
   { symbol: 'ETH',  name: 'Ethereum',             type: 'crypto', pair: 'ETH-USD' },
   { symbol: 'SOL',  name: 'Solana',               type: 'crypto', pair: 'SOL-USD' },
+  // meme coiny (prawdziwy bid/ask z Coinbase; spready bywają kilka razy większe niż na BTC)
+  { symbol: 'DOGE', name: 'Dogecoin (meme)',      type: 'crypto', pair: 'DOGE-USD', meme: true },
+  { symbol: 'SHIB', name: 'Shiba Inu (meme)',     type: 'crypto', pair: 'SHIB-USD', meme: true },
+  { symbol: 'PEPE', name: 'Pepe (meme)',          type: 'crypto', pair: 'PEPE-USD', meme: true },
+  { symbol: 'BONK', name: 'Bonk (meme)',          type: 'crypto', pair: 'BONK-USD', meme: true },
+  { symbol: 'WIF',  name: 'dogwifhat (meme)',     type: 'crypto', pair: 'WIF-USD', meme: true },
+  { symbol: 'FARTCOIN', name: 'Fartcoin (meme)',  type: 'crypto', pair: 'FARTCOIN-USD', meme: true },
+  { symbol: 'PENGU', name: 'Pudgy Penguins (meme)', type: 'crypto', pair: 'PENGU-USD', meme: true },
+  { symbol: 'TRUMP', name: 'Official Trump (meme)', type: 'crypto', pair: 'TRUMP-USD', meme: true },
 ];
 
 export const BENCHMARKS = [

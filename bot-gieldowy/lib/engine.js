@@ -39,7 +39,7 @@ function recordEquity(state, pv, bench) {
   const p = { t: new Date().toISOString(), ai: +pv.total.toFixed(2) };
   for (const b of bench) p[b.id] = +b.value.toFixed(2);
   const last = state.equity[state.equity.length - 1];
-  if (last && Date.now() - new Date(last.t) < 5 * 60e3) state.equity[state.equity.length - 1] = p;
+  if (last && Date.now() - new Date(last.t) < 3 * 60e3) state.equity[state.equity.length - 1] = p;
   else state.equity.push(p);
 }
 
@@ -54,7 +54,7 @@ export async function runTick({ source = 'cron', force = false } = {}) {
   state.day = Math.min(EXPERIMENT_DAYS, Math.floor((now - new Date(state.startedAt)) / 864e5) + 1);
   const finished = now > new Date(state.endsAt);
   const last = state.decisions.find(d => !d.error);
-  const tooSoon = last && now - new Date(last.at) < (force ? 10 : 20) * 60e3;
+  const tooSoon = last && now - new Date(last.at) < (force ? 2 : 4) * 60e3;
 
   let result = { skipped: true, why: finished ? 'eksperyment zakończony' : 'za wcześnie od ostatniej decyzji' };
   if (!finished && !tooSoon) {
@@ -82,7 +82,7 @@ export async function runTick({ source = 'cron', force = false } = {}) {
       dec.summary = 'AI nie odpowiedziało, więc nic nie zmieniam (bezpieczny tryb).';
     }
     state.decisions.unshift(dec);
-    state.decisions = state.decisions.slice(0, 400);
+    state.decisions = state.decisions.slice(0, 600);
     result = { skipped: false, decision: dec };
   }
   const snap = snapshot(state, market);

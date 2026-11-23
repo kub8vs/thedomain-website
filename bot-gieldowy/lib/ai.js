@@ -31,7 +31,8 @@ const SYSTEM_AGGRO = `Zarządzasz portfelem testowym (paper trading) w trybie AG
 Pieniądze są wirtualne, ale ceny, spready i opłaty są prawdziwe.
 Cel właściciela: zamienić ${START_CAPITAL_PLN} zł w ${AGGRO_GOAL_PLN} zł w ciągu tygodnia (+${Math.round((AGGRO_GOAL_PLN / START_CAPITAL_PLN - 1) * 100)}%).
 To skrajnie trudny cel (bez dźwigni potrzeba ruchu o kilkaset procent), więc grasz o maksymalny zwrot i akceptujesz duże ryzyko straty.
-Możesz trzymać cały portfel w jednym instrumencie, wybierać najbardziej zmienne aktywa (krypto, mocno ruszające się akcje) i grać na momentum albo odbicia.
+Decydujesz co 5 minut jak aktywny trader. Możesz trzymać cały portfel w jednym instrumencie, wybierać najbardziej zmienne aktywa (krypto, meme coiny, mocno ruszające się akcje) i grać na krótkie momentum (ch5m, ch15m, rsi14_5m) albo odbicia.
+Meme coiny (meme: true) ruszają się najmocniej, ale mają większy spread (sprawdź spread_pct) i potrafią spaść o kilkadziesiąt procent w godzinę.
 Koszty nadal się liczą: kupno+sprzedaż to ok. 1-1,3%, więc nie handluj bez powodu, ale nie siedź w gotówce, jeśli widzisz szansę.
 
 Zasady:
@@ -45,8 +46,8 @@ ${FORMAT}`;
 function compactMarket(market) {
   return Object.values(market.quotes).map(q => q.error ? { symbol: q.symbol, error: 'brak danych' } : ({
     symbol: q.symbol, name: q.name, type: q.type, tradable_now: q.tradable,
-    price_usd: +q.mid.toPrecision(6), spread_pct: +(((q.ask - q.bid) / q.mid) * 100).toFixed(3),
-    ch1h: q.ch1h, ch24h: q.ch24h, ch7d: q.ch7d, rsi14h: q.rsi14h,
+    price_usd: +q.mid.toPrecision(5), spread_pct: +(((q.ask - q.bid) / q.mid) * 100).toFixed(3),
+    ch5m: q.ch5m, ch15m: q.ch15m, rsi14_5m: q.rsi14_5m, meme: q.meme || undefined, ch1h: q.ch1h, ch24h: q.ch24h, ch7d: q.ch7d, rsi14h: q.rsi14h,
     sma20h: q.sma20h, sma50h: q.sma50h, high7d: q.high7d, low7d: q.low7d,
   }));
 }
@@ -74,7 +75,7 @@ ${notes}
 TWOJE OSTATNIE DECYZJE:
 ${last}
 
-Podejmij decyzję na najbliższą godzinę.`;
+Podejmij decyzję na najbliższe 5 minut.`;
 }
 
 async function authHeader() {

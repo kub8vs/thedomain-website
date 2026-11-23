@@ -9,6 +9,7 @@ const pct = x => (x > 0 ? '+' : x < 0 ? '−' : '') + zl(Math.abs(x)) + '%';
 const cls = x => x > 0.004 ? 'up' : x < -0.004 ? 'down' : 'mut';
 const tPL = iso => new Date(iso).toLocaleString('pl-PL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Warsaw' });
 const hm = iso => new Date(iso).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Warsaw' });
+const px = x => x == null ? '–' : x >= 10 ? zl(x, 2) : x >= 0.01 ? zl(x, 4) : x.toPrecision(3).replace('.', ',');
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 function toast(msg, ms = 3200) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), ms); }
@@ -113,18 +114,18 @@ function render(d) {
   // portfel
   const pos = d.portfolio.rows;
   $('#positions').innerHTML = `<tr><th>Instrument</th><th>Wartość</th><th>Wynik</th></tr>` +
-    (pos.length ? pos.map(p => `<tr><td><b>${p.symbol}</b><span>${esc(p.name || '')} · ${zl(p.qty, p.qty < 1 ? 6 : 3)} szt.</span></td><td>${zl(p.valuePLN)} zł<span>koszt ${zl(p.costPLN)} zł</span></td><td class="${cls(p.plPLN)}">${sign(p.plPLN)} zł<span>${pct(p.plPct)}</span></td></tr>`).join('') : '')
+    (pos.length ? pos.map(p => `<tr><td><b>${p.symbol}</b><span>${esc(p.name || '')} · ${p.qty < 1 ? zl(p.qty, 6) : Math.round(p.qty).toLocaleString('pl-PL')} szt.</span></td><td>${zl(p.valuePLN)} zł<span>koszt ${zl(p.costPLN)} zł</span></td><td class="${cls(p.plPLN)}">${sign(p.plPLN)} zł<span>${pct(p.plPct)}</span></td></tr>`).join('') : '')
     + `<tr><td><b>Gotówka</b><span>PLN</span></td><td>${zl(d.portfolio.cash)} zł</td><td></td></tr>`;
   $('#usStatus').textContent = `Giełda w USA: ${d.market.us.open ? 'otwarta, można handlować akcjami' : 'zamknięta, ' + d.market.us.reason + '. Krypto działa 24/7.'}`;
   $('#market').innerHTML = `<tr><th>Instrument</th><th>48 h</th><th>Cena</th><th>7 dni</th></tr>` + d.market.quotes.map(q => q.error ? `<tr><td><b>${q.symbol}</b><span>brak danych</span></td><td></td><td></td><td></td></tr>` :
-    `<tr class="${q.tradable ? '' : 'closed'}"><td><b>${q.symbol}</b><span>${esc(q.name)}</span></td><td>${sparkSVG(q.spark)}</td><td>$${zl(q.mid, q.mid < 10 ? 4 : 2)}<span>spread ${zl((q.ask - q.bid) / q.mid * 100, 3)}%</span></td><td class="${cls(q.ch7d)}">${q.ch7d == null ? '–' : pct(q.ch7d)}<span>24h ${q.ch24h == null ? '–' : pct(q.ch24h)}</span></td></tr>`).join('');
+    `<tr class="${q.tradable ? '' : 'closed'}"><td><b>${q.symbol}</b><span>${esc(q.name)}</span></td><td>${sparkSVG(q.spark)}</td><td>$${px(q.mid)}<span>spread ${zl((q.ask - q.bid) / q.mid * 100, 3)}%</span></td><td class="${cls(q.ch7d)}">${q.ch7d == null ? '–' : pct(q.ch7d)}<span>24h ${q.ch24h == null ? '–' : pct(q.ch24h)}</span></td></tr>`).join('');
 
   // dziennik
   const tradesById = Object.fromEntries(d.trades.map(t => [t.id, t]));
   $('#log').innerHTML = d.decisions.length ? d.decisions.map(dec => `<li><time>${tPL(dec.at)}</time>${dec.source === 'ręcznie' ? '<span class="tag">ręcznie</span>' : ''}${dec.error ? '<span class="tag">błąd AI</span>' : ''}
     <p class="sum">${esc(dec.summary)}</p>${dec.marketView ? `<p class="mv">${esc(dec.marketView)}</p>` : ''}
     ${dec.executed.map(e => { const t = tradesById[e.tradeId]; if (!t) return `<div class="tr">${esc(e.text)}</div>`;
-      return `<div class="tr"><b>${t.side}</b> ${t.symbol} · ${zl(t.amountPLN)} zł · ${zl(t.qty, t.qty < 1 ? 6 : 3)} szt. po $${zl(t.priceUSD)}
+      return `<div class="tr"><b>${t.side}</b> ${t.symbol} · ${zl(t.amountPLN)} zł · ${t.qty < 1 ? zl(t.qty, 6) : Math.round(t.qty).toLocaleString('pl-PL')} szt. po $${px(t.priceUSD)}
       ${t.plPLN != null ? `<br><span class="${cls(t.plPLN)}">wynik ${sign(t.plPLN)} zł</span>` : ''}
       ${t.reason ? `<br><span class="mut">${esc(t.reason)}</span>` : ''}
       <details><summary>koszty ${zl(t.feesTotal)} zł</summary><div class="fees"><span>Przewalutowanie 0,5%</span><span>${zl(t.fees.fx)} zł</span><span>Prowizja</span><span>${zl(t.fees.commission)} zł</span><span>Spread</span><span>${zl(t.fees.spread, 4)} zł</span><span>Kurs USD/PLN</span><span>${zl(t.fx, 4)}</span></div></details></div>`; }).join('')}
@@ -137,8 +138,8 @@ function render(d) {
   $('#costFacts').innerHTML = `<dt>Przewalutowanie PLN↔USD</dt><dd>${zl(c.fx * 100, 1)}%</dd><dt>Prowizja akcje/ETF</dt><dd>${zl(c.stock.commission * 100, 1)}%</dd>
     <dt>Prowizja krypto</dt><dd>${zl(c.crypto.commission * 100, 1)}%</dd><dt>Kurs USD/PLN teraz</dt><dd>${zl(d.market.fx.rate, 4)}</dd><dt>Źródło kursu</dt><dd>${esc(d.market.fx.source)}</dd>`;
 
-  const mins = 65 - new Date().getMinutes(); 
-  $('#nextTick').textContent = `AI sprawdza rynek automatycznie co godzinę (następne sprawdzenie w ciągu ~${mins % 60 || 60} min).`;
+  
+  $('#nextTick').textContent = `AI sprawdza rynek i decyduje automatycznie co 5 minut.`;
 }
 
 async function load() { const d = await api('/api/state'); render(d); return d; }

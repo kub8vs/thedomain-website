@@ -90,13 +90,23 @@ async function stockQuote(inst) {
 }
 
 async function cryptoQuote(inst) {
-  const [t, candles] = await Promise.all([
-    getJSON(`https://api.exchange.coinbase.com/products/${inst.pair}/ticker`),
-    getJSON(`https://api.exchange.coinbase.com/products/${inst.pair}/candles?granularity=3600`),
-  ]);
+  const base = `https://api.exchange.coinbase.com/products/${inst.pair}`;
+  const t = await getJSON(`${base}/ticker`);
+  const candles = await getJSON(`${base}/candles?granularity=3600`);
+  const c5 = await getJSON(`${base}/candles?granularity=300`).catch(() => []);
   const bid = +t.bid, ask = +t.ask, mid = (bid + ask) / 2;
   const closes = candles.map(c => c[4]).reverse(); // Coinbase zwraca od najnowszej
-  return { ...inst, mid, bid, ask, spreadSource: 'giełda', time: t.time, ...stats(closes, mid) };
+  const k5 = c5.map(c => c[4]).reverse();
+  const back5 = n => k5.length > n ? k5[k5.length - 1 - n] : null;
+  return { ...inst, mid, bid, ask, spreadSource: 'giełda', time: t.time, ...stats(closes, mid),
+    ch5m: pct(mid, back5(1)), ch15m: pct(mid, back5(3)), rsi14_5m: rsi(k5) };
+}
+
+// Coinbase limituje publiczne API, więc krypto pobieramy partiami
+async function inBatches(items, n, fn) {
+  const out = [];
+  for (let i = 0; i < items.length; i += n) out.push(...await Promise.all(items.slice(i, i + n).map(fn)));
+  return out;
 }
 
 export async function usdPln() {
@@ -109,11 +119,13 @@ export async function usdPln() {
 }
 
 export async function getMarket() {
-  const [fx, ...quotes] = await Promise.all([
+  const safe = (f, i) => f(i).catch(e => ({ ...i, error: String(e.message || e) }));
+  const [fx, stocks, cryptos] = await Promise.all([
     usdPln(),
-    ...UNIVERSE.map(i => (i.type === 'crypto' ? cryptoQuote(i) : stockQuote(i))
-      .catch(e => ({ ...i, error: String(e.message || e) }))),
+    Promise.all(UNIVERSE.filter(i => i.type !== 'crypto').map(i => safe(stockQuote, i))),
+    inBatches(UNIVERSE.filter(i => i.type === 'crypto'), 4, i => safe(cryptoQuote, i)),
   ]);
+  const quotes = [...stocks, ...cryptos];
   const us = usMarketStatus();
   const q = {};
   for (const x of quotes) {
