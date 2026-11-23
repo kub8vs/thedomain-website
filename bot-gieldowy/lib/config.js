@@ -51,5 +51,5 @@ export const US_HALF_DAYS = ['2026-11-27', '2026-12-24'];
 export const AGGRO_GOAL_PLN = 1000;
 export const AGGRO_MAX_POSITION_SHARE = 1.0;
 
-// kub 23.11: AI handluje TYLKO Solaną (SOL <-> gotówka). Reszta rynku to tylko kontekst.
-export const TRADABLE_ONLY = ['SOL'];
+// kub 23.11: AI handluje TYLKO Solaną i meme coinami. Akcje, BTC, ETH to tylko kontekst.
+export const TRADABLE_ONLY = ['SOL', 'DOGE', 'SHIB', 'PEPE', 'BONK', 'WIF', 'FARTCOIN', 'PENGU', 'TRUMP'];

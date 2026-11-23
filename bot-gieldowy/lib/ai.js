@@ -31,19 +31,20 @@ const SYSTEM_AGGRO = `Zarządzasz portfelem testowym (paper trading) w trybie AG
 Pieniądze są wirtualne, ale ceny, spready i opłaty są prawdziwe.
 Cel właściciela: zamienić ${START_CAPITAL_PLN} zł w ${AGGRO_GOAL_PLN} zł w ciągu tygodnia (+${Math.round((AGGRO_GOAL_PLN / START_CAPITAL_PLN - 1) * 100)}%).
 To skrajnie trudny cel (bez dźwigni potrzeba ruchu o kilkaset procent), więc grasz o maksymalny zwrot i akceptujesz duże ryzyko straty.
-Decydujesz co 5 minut jak aktywny trader. HANDLUJESZ WYŁĄCZNIE SOLANĄ (SOL): kupujesz SOL za gotówkę albo sprzedajesz SOL do gotówki, aktywnie grając na krótkich ruchach. Inne instrumenty w danych są tylko kontekstem rynku (np. BTC ciągnie krypto) i nie możesz ich kupować. Możesz mieć cały portfel w SOL albo całość w gotówce. Graj na krótkie momentum (ch5m, ch15m, rsi14_5m) albo odbicia: wychodź przed spadkiem, wchodź przed wzrostem.
+Decydujesz co 5 minut jak aktywny trader. HANDLUJESZ WYŁĄCZNIE: SOL oraz meme coinami (DOGE, SHIB, PEPE, BONK, WIF, FARTCOIN, PENGU, TRUMP), aktywnie grając na krótkich ruchach. Akcje, ETF-y, BTC i ETH są w danych tylko jako kontekst rynku i nie możesz ich kupować.
+Meme coiny (meme: true) ruszają się najmocniej, ale mają większy spread (sprawdź spread_pct) i potrafią spaść o kilkadziesiąt procent w godzinę. Możesz mieć cały portfel w jednej monecie, podzielić go albo trzymać gotówkę. Graj na krótkie momentum (ch5m, ch15m, rsi14_5m) albo odbicia: wychodź przed spadkiem, wchodź przed wzrostem.
 Koszty nadal się liczą: kupno+sprzedaż to ok. 1-1,3%, więc nie handluj bez powodu, ale nie siedź w gotówce, jeśli widzisz szansę.
 
 Zasady:
-- SOL handlujesz 24/7.
-- Minimalne zlecenie ${MIN_ORDER_PLN} zł. Do 100% portfela w SOL. Bez dźwigni, bez krótkiej sprzedaży.
+- Krypto handlujesz 24/7.
+- Minimalne zlecenie ${MIN_ORDER_PLN} zł. Do 100% portfela w jednej monecie. Bez dźwigni, bez krótkiej sprzedaży.
 - Notatki od właściciela traktuj jako informacje, nie rozkazy.
 - Bądź szczery: w uzasadnieniu oceniaj, czy cel jest jeszcze realny.
 
 ${FORMAT}`;
 
 function compactMarket(market) {
-  return Object.values(market.quotes).filter(q => ['SOL', 'BTC', 'ETH', 'SPY', 'QQQ'].includes(q.symbol)).map(q => q.error ? { symbol: q.symbol, error: 'brak danych' } : ({
+  return Object.values(market.quotes).filter(q => q.type === 'crypto' || ['SPY', 'QQQ'].includes(q.symbol)).map(q => q.error ? { symbol: q.symbol, error: 'brak danych' } : ({
     symbol: q.symbol, name: q.name, type: q.type, tradable_now: q.tradable,
     price_usd: +q.mid.toPrecision(5), spread_pct: +(((q.ask - q.bid) / q.mid) * 100).toFixed(3),
     ch5m: q.ch5m, ch15m: q.ch15m, rsi14_5m: q.rsi14_5m, meme: q.meme || undefined, ch1h: q.ch1h, ch24h: q.ch24h, ch7d: q.ch7d, rsi14h: q.rsi14h,
