@@ -5,6 +5,7 @@ import { portfolioValue, benchmarkValue, quoteBuy, execute } from './broker.js';
 import { askAI } from './ai.js';
 import { getIntel } from './intel.js';
 import { runTrend, trendValue } from './trend.js';
+import { regimeSummary, riskCheck, atrLevels } from './risk.js';
 import { getDex, getDerivs, getBooks } from './edge.js';
 import { notify, tradeMessage, moveMessage } from './push.js';
 
@@ -71,7 +72,10 @@ export async function runTick({ source = 'cron', force = false, alarm = null } =
       if (Object.keys(derivs).length) intel.sources.push('OKX (kontrakty)');
       if (Object.keys(ob).length) intel.sources.push('Coinbase (książka zleceń)');
     }
-    const ctx = { state, market, intel, alarm, mode: 'aggro', ...snapshot(state, market) };
+    const snap0 = snapshot(state, market);
+    const regime = regimeSummary(state, market, snap0.pv.total, now);
+    state.regime = regime;
+    const ctx = { state, market, intel, alarm, regime, mode: 'aggro', ...snap0 };
     const dec = { id: crypto.randomUUID(), at: now.toISOString(), source, alarm: alarm || undefined, executed: [], rejected: [] };
     try {
       const { decision, usage, model } = await askAI(ctx);
@@ -81,6 +85,8 @@ export async function runTick({ source = 'cron', force = false, alarm = null } =
       dec.confidence = decision.confidence;
       dec.sourcesUsed = Array.isArray(decision.sources_used) ? decision.sources_used.slice(0, 6).map(String) : [];
       dec.keyInfo = decision.key_info || '';
+      dec.regimeView = decision.regime || '';
+      dec.regime = { liquidity: regime.liquidity, btc: regime.btc, events_now: regime.events_now, day_pl_pct: regime.day_pl_pct };
       dec.sourcesAvailable = intel?.sources || [];
       dec.fearGreed = intel?.fearGreed?.now ?? null;
       dec.raw = decision.actions || [];
@@ -90,7 +96,11 @@ export async function runTick({ source = 'cron', force = false, alarm = null } =
       }
       const acts = (decision.actions || []).slice().sort((a, b) => (a.action === 'sell' ? -1 : 1) - (b.action === 'sell' ? -1 : 1));
       for (const a of acts) {
-        const r = execute(state, market, { ...a, symbol: String(a.symbol || '').toUpperCase() }, dec.at, AGGRO_MAX_POSITION_SHARE);
+        const sym = String(a.symbol || '').toUpperCase();
+        const rc = riskCheck(state, market, { ...a, symbol: sym }, regime, now);
+        if (!rc.ok) { dec.rejected.push({ text: rc.why }); continue; }
+        const lv = atrLevels(market.quotes[sym]);
+        const r = execute(state, market, { ...a, symbol: sym, stop_loss_pct: lv.stopPct, take_profit_pct: lv.takePct, reason: `${a.setup ? '[' + a.setup + '] ' : ''}${a.reason || ''}${rc.note ? ' (mniejsza pozycja: ' + rc.note + ')' : ''}` }, dec.at, Math.min(AGGRO_MAX_POSITION_SHARE, rc.maxShare ?? 1));
         if (r.ok) dec.executed.push({ tradeId: r.trade.id, text: `${r.trade.side} ${r.trade.symbol} za ${r.trade.amountPLN.toFixed(2)} zł` });
         else dec.rejected.push({ text: r.why });
       }

@@ -96,6 +96,17 @@ async function cryptoQuote(inst) {
   const c1 = await getJSON(`${base}/candles?granularity=60`).catch(() => []); // 300 świec minutowych = 5 h
   const bid = +t.bid, ask = +t.ask, mid = (bid + ask) / 2;
   const closes = candles.map(c => c[4]).reverse(); // Coinbase zwraca od najnowszej
+  const H = candles.slice().reverse(); // [time, low, high, open, close, vol] od najstarszej
+  const tr = H.map((c, i) => i ? Math.max(c[2] - c[1], Math.abs(c[2] - H[i - 1][4]), Math.abs(c[1] - H[i - 1][4])) / c[4] * 100 : (c[2] - c[1]) / c[4] * 100);
+  const atrAt = i => tr.slice(Math.max(0, i - 13), i + 1).reduce((a, b) => a + b, 0) / Math.min(14, i + 1);
+  const atrNow = tr.length ? atrAt(tr.length - 1) : null;
+  const atrHist = tr.map((_, i) => atrAt(i)).slice(-168).sort((a, b) => a - b);
+  const atrMed = atrHist.length ? atrHist[Math.floor(atrHist.length / 2)] : null;
+  const last24 = H.slice(-24);
+  const vw = last24.reduce((s, c) => s + (c[1] + c[2] + c[4]) / 3 * c[5], 0), vv = last24.reduce((s, c) => s + c[5], 0);
+  const vwap24 = vv ? vw / vv : null;
+  const c24 = closes.slice(-25);
+  const er = c24.length > 2 ? Math.abs(c24[c24.length - 1] - c24[0]) / c24.slice(1).reduce((s, x, i) => s + Math.abs(x - c24[i]), 0) : null; // 1 = czysty trend, 0 = szarpanina
   const k1 = c1.map(c => c[4]).reverse();
   const v1 = c1.map(c => c[5] * c[4]).reverse();
   const back1 = n => k1.length > n ? k1[k1.length - 1 - n] : null;
@@ -104,7 +115,12 @@ async function cryptoQuote(inst) {
   return { ...inst, mid, bid, ask, spreadSource: 'giełda', time: t.time, ...stats(closes, mid),
     ch1m: pct(mid, back1(1)), ch3m: pct(mid, back1(3)), ch5m: pct(mid, back1(5)), ch15m: pct(mid, back1(15)), ch60m: pct(mid, back1(60)),
     rsi14_1m: rsi(k1), rsi14_5m: rsi(k5), vol15m_vs_avg: volAvg ? +(volNow / volAvg).toFixed(2) : null,
-    high5h: k1.length ? Math.max(...k1) : null, low5h: k1.length ? Math.min(...k1) : null };
+    high5h: k1.length ? Math.max(...k1) : null, low5h: k1.length ? Math.min(...k1) : null,
+    atr14h_pct: atrNow != null ? +atrNow.toFixed(2) : null,
+    vwap24h: vwap24 != null ? +vwap24.toPrecision(6) : null, vs_vwap24h_pct: vwap24 ? pct(mid, vwap24) : null,
+    efficiency_24h: er != null ? +er.toFixed(2) : null,
+    regime: er == null ? null : er >= 0.35 ? (closes[closes.length - 1] > c24[0] ? 'trend w górę' : 'trend w dół') : 'rynek boczny',
+    vol_regime: atrNow && atrMed ? (atrNow > atrMed * 1.5 ? 'wysoka' : atrNow < atrMed * 0.7 ? 'niska' : 'normalna') : null };
 }
 
 // Coinbase limituje publiczne API, więc krypto pobieramy partiami

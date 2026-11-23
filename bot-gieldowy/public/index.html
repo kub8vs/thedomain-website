@@ -102,6 +102,10 @@
     </div>
     <p class="foot" id="pushFoot"></p>
 
+    <h2 class="sec">Reżim rynku i ryzyko</h2>
+    <div class="group" id="regime"></div>
+    <p class="foot">Liczone w kodzie co 5 minut. Strażnik ryzyka blokuje kupno po stracie 6% w ciągu dnia, w oknie ważnych danych z USA i przy więcej niż 2 pozycjach naraz.</p>
+
     <h2 class="sec">Liczby</h2>
     <div class="group" id="facts"></div>
 
@@ -150,6 +154,7 @@
       <div class="rule"><span class="ico ico-o"><svg><use href="#i-shield"/></svg></span><div><b>Strażnik co minutę.</b><p>Bez AI, twarde reguły: stop kroczący (sprzedaż, gdy cena spadnie o kilka procent od szczytu) i cel (sprzedaje połowę, reszta jedzie dalej). Mocny ruch w 3 minuty od razu budzi AI.</p></div></div>
       <div class="rule"><span class="ico ico-p"><svg><use href="#i-spark"/></svg></span><div><b>AI analizuje co 5 minut.</b><p>Świece minutowe, RSI, obrót, indeks strachu i chciwości, CoinGecko, nagłówki z CoinDesk, The Block, Decrypt i Cointelegraph. Do tego kupujący i sprzedający w sieci Solana (DexScreener), funding i otwarte pozycje na kontraktach (OKX) oraz książka zleceń z Coinbase. Co 2 godziny AI przegląda swoje transakcje i zapisuje lekcje, które stosuje dalej. Pozycji młodszej niż 15 minut nie sprzedaje, żeby nie przepalać opłat.</p></div></div>
       <div class="rule"><span class="ico ico-r">!</span><div><b>Cel 1000 zł w tydzień.</b><p>Tylko SOL, DOGE, SHIB, PEPE, BONK, WIF, FARTCOIN, PENGU i TRUMP. Bez dźwigni i bez shortowania. Wysokie ryzyko: portfel może też mocno stracić.</p></div></div>
+      <div class="rule"><span class="ico ico-r"><svg><use href="#i-shield"/></svg></span><div><b>Reżim rynku i weto ryzyka.</b><p>Kod najpierw ustala, czy rynek jest w trendzie, czy chodzi bokiem, jaka jest zmienność i płynność. AI wybiera strategię pasującą do reżimu: kontynuacja od VWAP, powrót do VWAP, zebranie płynności, momentum po newsie albo siła względem BTC. Stop (2 x ATR) i cel (2 x stop) liczy kod. Strażnik ryzyka może zablokować każde kupno: limit straty 6% dziennie, max 2 pozycje, zakaz wejść przy ważnych danych z USA (PCE, NFP, Fed, CPI).</p></div></div>
       <div class="rule"><span class="ico ico-gr">=</span><div><b>Uczciwe porównanie.</b><p>Obok AI liczymy 200 zł w S&amp;P 500 i 200 zł w Bitcoinie, kupione i trzymane, z tymi samymi kosztami.</p></div></div>
       <div class="rule"><span class="ico ico-p">T</span><div><b>Strategia trend (bez AI).</b><p>Drugi portfel 200 zł na prostych zasadach: BTC, SOL, złoto i S&amp;P 500 na wykresie dziennym. Kupuje, gdy cena jest nad średnią 50 dni i przebija szczyt z 20 dni. Ryzyko 1% portfela, stop pod dołkiem z 10 dni, wyjście pod średnią 20 dni.</p></div></div>
     </div>

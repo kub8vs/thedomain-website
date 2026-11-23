@@ -184,6 +184,11 @@ function render(d) {
   $('#facts').innerHTML = kv('Gotówka', zl(d.portfolio.cash) + ' zł') + kv('W pozycjach', zl(d.portfolio.positions) + ' zł')
     + kv('Transakcje', d.trades.length) + kv('Zapłacone koszty', zl(fT) + ' zł') + kv('Decyzje AI', d.decisions.filter(x => x.source !== 'strażnik').length)
     + kv('Koniec tygodnia', tPL(d.endsAt));
+  const rg = d.regime;
+  $('#regime').innerHTML = rg ? kv('Bitcoin', esc(rg.btc ? rg.btc.trend + ', zmienność ' + rg.btc.vol : '–')) + kv('Solana', esc(rg.sol ? rg.sol.trend + ', zmienność ' + rg.sol.vol : '–'))
+    + kv('Płynność', esc(rg.liquidity)) + kv('Dziś', `<span class="${cls(rg.day_pl_pct)}">${pct(rg.day_pl_pct)}</span>${rg.daily_stop_hit ? ' · limit straty, stop' : ''}`)
+    + (rg.events_now.length ? kv('Teraz', esc(rg.events_now.join(', ')), 'down') : '')
+    + (rg.events_next_72h[0] ? `<div class="cell"><div class="cell-main"><p class="t2">Najbliższe wydarzenie</p><p class="sheet-p">${esc(rg.events_next_72h[0])}</p></div></div>` : '') : '';
 
   renderPortfolio(d);
   renderLog(d);
@@ -287,6 +292,7 @@ function openDecision(dec) {
     <p class="sheet-p" style="font-size:19px;font-weight:600;letter-spacing:-.02em;margin:4px 0 0">${esc(dec.summary)}</p>
     ${dec.alarm ? `<h2 class="sec">Powód alarmu</h2><div class="group"><div class="cell"><p class="sheet-p">${esc(dec.alarm)}</p></div></div>` : ''}
     ${dec.marketView ? `<h2 class="sec">Co widzi na rynku</h2><div class="group"><div class="cell"><p class="sheet-p">${esc(dec.marketView)}</p></div></div>` : ''}
+    ${dec.regimeView ? `<h2 class="sec">Reżim rynku</h2><div class="group"><div class="cell"><p class="sheet-p">${esc(dec.regimeView)}</p></div></div>` : ''}
     ${dec.keyInfo ? `<h2 class="sec">Kluczowa informacja</h2><div class="group"><div class="cell"><p class="sheet-p">${esc(dec.keyInfo)}</p></div></div>` : ''}
     ${trHTML}
     ${dec.rejected?.length ? `<h2 class="sec">Odrzucone zlecenia</h2><div class="group">${dec.rejected.map(r => `<div class="cell"><p class="sheet-p muted">${esc(r.text)}</p></div>`).join('')}</div>` : ''}
