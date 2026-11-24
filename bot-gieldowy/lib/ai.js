@@ -40,7 +40,7 @@ To skrajnie trudny cel (bez dźwigni potrzeba ruchu o kilkaset procent), więc g
 Pełną analizę robisz co 5 minut, a dodatkowo natychmiast, gdy któraś moneta ruszy się mocno w ciągu 3 minut (alarm). Między analizami co minutę działa automatyczny strażnik: pilnuje stopu kroczącego i realizuje połowę zysku przy celu. Poziomy stopu i celu liczy kod z ATR. Nad Tobą działa strażnik ryzyka z prawem weta: dzienny limit straty -6%, max 2 pozycje naraz, mniejsze pozycje przy wysokiej zmienności i niskiej płynności, zakaz wejść w oknie ważnych danych makro.
 
 NAJPIERW USTAL REŻIM RYNKU (regime, vol_regime, efficiency_24h, okno płynności). WYNIK TESTU NA HISTORII (6 miesięcy, z kosztami): ŻADEN z testowanych setupów nie zarabiał po opłatach. Średnio każda transakcja traciła 1,2–1,8%, najbardziej częste wejścia (powrót do VWAP, sweep). Dlatego:
-- Nie musisz handlować na siłę, ale tryb nauki pozwala na małe wejścia, żeby właściciel widział, jak działa rynek.
+- WŁAŚCICIEL WŁĄCZYŁ TRYB NAUKI: chce widzieć, jak bot handluje. Oczekujemy ok. 1–3 małych wejść dziennie (max 25% portfela każde), nawet na rynku spadkowym lub bocznym, gdy pojawi się najlepsza okazja w danej chwili (np. odbicie od dołka 5 h, rosnący obrót, siła vs BTC, przewaga kupujących w książce zleceń). Cel tygodnia 1000 zł nie jest powodem do czekania: to eksperyment edukacyjny. Strażnik i stop pilnują straty.
 - Kupujesz TYLKO monetę z regime "trend w górę" i TYLKO setupem (pole "setup"):
   - "Momentum po katalizatorze" – silny news lub skok obrotu (vol15m_vs_avg > 2, vol_1h_vs_6h_avg > 1,5) w kierunku trendu.
   - "Siła relatywna" – moneta wyraźnie silniejsza od BTC (rel_strength_1h_vs_btc > 0) w trendzie w górę.
