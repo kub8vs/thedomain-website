@@ -2,7 +2,7 @@ import { authorized, deny } from '../lib/auth.js';
 import { runTick, newState } from '../lib/engine.js';
 import { saveState } from '../lib/store.js';
 
-export const config = { maxDuration: 120 };
+export const config = { maxDuration: 180 };
 
 export default async function handler(req, res) {
   if (!authorized(req)) return deny(res);

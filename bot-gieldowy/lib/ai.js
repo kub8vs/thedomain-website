@@ -125,22 +125,37 @@ const CHAIN = [process.env.AI_MODEL || AI_MODEL, 'anthropic/claude-haiku-5.5', '
 export async function askAI(ctx) {
   const prompt = buildUserPrompt(ctx);
   const errors = [];
+  const t0 = Date.now();
+  const system = (ctx.mode === 'aggro' ? SYSTEM_AGGRO : SYSTEM) + BRIEF;
   for (const model of [...new Set(CHAIN)]) {
-    try { return await callModel(model, prompt, ctx.mode === 'aggro' ? SYSTEM_AGGRO : SYSTEM); }
-    catch (e) { errors.push(`${model}: ${e.message}`); if (!/HTTP 40[23]/.test(e.message)) break; }
+    try { return await callModel(model, prompt, system, 60000); }
+    catch (e) {
+      errors.push(`${model}: ${e.message.slice(0, 300)}`);
+      if (/HTTP 40[23]/.test(e.message)) continue;
+      // Darmowy model czasem "przemyśli" cały limit i nie odda JSON-a: druga, szybka próba.
+      const left = 105000 - (Date.now() - t0);
+      if (left > 20000) {
+        try { return await callModel(model, prompt, system + QUICK, left, 4000); }
+        catch (e2) { errors.push(`${model} (szybka próba): ${e2.message.slice(0, 300)}`); }
+      }
+      break;
+    }
   }
   throw new Error(errors.join(' || '));
 }
 
-async function callModel(model, prompt, system) {
+const BRIEF = '\n\nRozumuj zwięźle (maks. ok. 250 słów rozumowania), potem od razu odpowiedz JSON-em.';
+const QUICK = '\n\nPOPRZEDNIA PRÓBA PRZEKROCZYŁA LIMIT. Teraz NIE rozpisuj analizy: odpowiedz natychmiast samym JSON-em, z krótkim uzasadnieniem.';
+
+async function callModel(model, prompt, system, timeoutMs = 75000, maxTokens = 12000) {
   const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), 75000);
+  const t = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
     const r = await fetch('https://ai-gateway.vercel.sh/v1/chat/completions', {
       method: 'POST', signal: ctrl.signal,
       headers: { 'Content-Type': 'application/json', Authorization: await authHeader() },
       body: JSON.stringify({
-        model, max_tokens: 12000, temperature: 0.3, reasoning_effort: 'low', response_format: { type: 'json_object' },
+        model, max_tokens: maxTokens, temperature: 0.3, reasoning_effort: 'low', response_format: { type: 'json_object' },
         messages: [{ role: 'system', content: system }, { role: 'user', content: prompt }],
       }),
     });
