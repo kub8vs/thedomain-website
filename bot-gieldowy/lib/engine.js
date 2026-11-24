@@ -107,6 +107,17 @@ export async function runTick({ source = 'cron', force = false, alarm = null } =
     } catch (e) {
       dec.error = String(e.message || e);
       dec.summary = 'AI nie odpowiedziało, więc nic nie zmieniam (bezpieczny tryb).';
+      // Tryb nauki: gdy AI milczy, prosta reguła wybiera najlepszą okazję i wchodzi małą kwotą.
+      const pick = learnPick(state, market, dec.at);
+      if (pick) {
+        const rc = riskCheck(state, market, pick, regime, now);
+        if (rc.ok) {
+          const lv = atrLevels(market.quotes[pick.symbol]);
+          const r = execute(state, market, { ...pick, stop_loss_pct: lv.stopPct, take_profit_pct: lv.takePct, reason: `[${pick.setup}] ${pick.reason}` }, dec.at, Math.min(AGGRO_MAX_POSITION_SHARE, rc.maxShare ?? 1));
+          if (r.ok) { dec.executed.push({ tradeId: r.trade.id, text: `${r.trade.side} ${r.trade.symbol} za ${r.trade.amountPLN.toFixed(2)} zł` }); dec.summary = `AI nie odpowiedziało, więc zadziałała reguła trybu nauki: ${pick.reason}`; }
+          else dec.rejected.push({ text: r.why });
+        } else dec.rejected.push({ text: rc.why });
+      }
     }
     state.decisions.unshift(dec);
     state.decisions = state.decisions.slice(0, 600);
@@ -133,4 +144,28 @@ export function costsInfo() {
     fx: FX_FEE, stock: FEES.stock, crypto: FEES.crypto,
     universe: UNIVERSE.map(u => ({ symbol: u.symbol, name: u.name, type: u.type })),
   };
+}
+
+
+// Reguła trybu nauki (bez AI): max 1 pozycja, max 3 wejścia dziennie, najlepszy wynik z ruchu 5/15 min, obrotu i siły vs BTC.
+function learnPick(state, market, at) {
+  if (Object.keys(state.positions || {}).length) return null;
+  const day = String(at).slice(0, 10);
+  const today = (state.trades || []).filter(t => String(t.at).slice(0, 10) === day && /Nauka/.test(t.reason || '')).length;
+  if (today >= 3) return null;
+  const btc = market.quotes.BTC;
+  if (btc?.ch15m != null && btc.ch15m < -1) return null;
+  let best = null;
+  for (const sym of TRADABLE_ONLY) {
+    const q = market.quotes[sym];
+    if (!q || q.error || !q.tradable || q.ch5m == null) continue;
+    if (q.rsi14_1m != null && q.rsi14_1m > 75) continue;
+    const rel = (q.ch1h != null && btc?.ch1h != null) ? q.ch1h - btc.ch1h : 0;
+    const score = q.ch5m * 2 + (q.ch15m || 0) + Math.min(q.vol15m_vs_avg || 1, 3) + rel * 0.5;
+    if (q.ch5m > 0 && (!best || score > best.score)) best = { sym, score, q, rel };
+  }
+  if (!best || best.score < 1.5) return null;
+  const total = portfolioValue(state, market).total;
+  return { action: 'buy', symbol: best.sym, amount_pln: Math.floor(total * 0.25), setup: 'Nauka: reguła momentum',
+    reason: `${best.sym} rośnie (5 min ${best.q.ch5m}%, 15 min ${best.q.ch15m}%), obrót x${best.q.vol15m_vs_avg}, vs BTC ${best.rel.toFixed(2)}%. Mała pozycja 25%.` };
 }
