@@ -155,7 +155,7 @@ async function callModel(model, prompt, system, timeoutMs = 75000, maxTokens = 1
       method: 'POST', signal: ctrl.signal,
       headers: { 'Content-Type': 'application/json', Authorization: await authHeader() },
       body: JSON.stringify({
-        model, max_tokens: maxTokens, temperature: 0.3, reasoning_effort: 'low', response_format: { type: 'json_object' },
+        model, max_tokens: maxTokens, temperature: 0.3, ...(maxTokens < 12000 ? { reasoning: { enabled: false, effort: 'none' } } : { reasoning_effort: 'low' }), response_format: { type: 'json_object' },
         messages: [{ role: 'system', content: system }, { role: 'user', content: prompt }],
       }),
     });
