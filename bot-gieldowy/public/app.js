@@ -191,6 +191,7 @@ function render(d) {
     + (rg.events_next_72h[0] ? `<div class="cell"><div class="cell-main"><p class="t2">Najbliższe wydarzenie</p><p class="sheet-p">${esc(rg.events_next_72h[0])}</p></div></div>` : '') : '';
 
   renderPortfolio(d);
+  try { renderScalp(d); } catch (e) { console.error(e); }
   renderLog(d);
   $('#notes').innerHTML = d.notes.length ? d.notes.map(n => `<div class="cell"><div class="cell-main"><p class="note-t">${tPL(n.at)}</p><p class="note-x">${esc(n.text)}</p></div></div>`).join('')
     : '<div class="cell"><span class="muted">Brak notatek.</span></div>';
@@ -215,6 +216,17 @@ function renderTrend(d) {
   $('#trendBox').innerHTML = `<h2 class="sec">Strategia trend <span class="sec-note">${tb ? zl(tb.value) + ' zł' : ''}</span></h2><div class="group">${rows}</div>
     <p class="foot">Bez AI. Kupuje tylko, gdy cena jest nad średnią 50 dni i przebija szczyt z 20 dni. Ryzyko 1% portfela na transakcję, sprzedaż pod średnią 20 dni albo na stopie. Sprawdza co 5 minut.</p>
     ${log ? `<h2 class="sec">Ruchy strategii</h2><div class="group">${log}</div>` : ''}`;
+}
+
+function renderScalp(d) {
+  const sc = d.scalp, box = $('#scalpBox'); if (!box) return;
+  if (!sc) { box.innerHTML = `<h2 class="sec">Minutówka</h2><div class="group"><div class="cell"><div class="cell-main"><p class="t1">Czeka na pierwszy mocny ruch</p><p class="t2" style="white-space:normal">Osobny portfel 200 zł. Sprawdza rynek co minutę.</p></div></div></div>`; return; }
+  const pl = sc.value - 200, st = sc.stats;
+  const pos = Object.entries(sc.positions || {}).map(([s, p]) => `<div class="cell ind">${avatar(s)}<div class="cell-main"><p class="t1">${s}</p><p class="t2">kupione ${tPL(p.at)} za ${zl(p.costPLN)} zł</p></div><div class="cell-r"><p class="price">$${px(p.entryUSD)}</p></div></div>`).join('');
+  const tr = (sc.trades || []).slice(0, 8).map(t => `<div class="cell ind">${avatar(t.symbol)}<div class="cell-main"><p class="t1">${t.side === 'KUPNO' ? 'Kupno' : 'Sprzedaż'} ${t.symbol}</p><p class="t2" style="white-space:normal">${tPL(t.at)} · ${esc(t.reason)}</p></div><div class="cell-r"><p class="price">${zl(t.amountPLN)} zł</p>${t.plPLN != null ? `<span class="chg ${cls(t.plPLN)}">${t.plPLN >= 0 ? '+' : ''}${zl(t.plPLN)} zł</span>` : ''}</div></div>`).join('');
+  box.innerHTML = `<h2 class="sec">Minutówka <span class="sec-note">${zl(sc.value)} zł</span></h2>
+    <div class="group"><div class="cell"><div class="cell-main"><p class="t1">${pl >= 0 ? '+' : ''}${zl(pl)} zł od startu</p><p class="t2">${st.closed} zamkniętych · ${st.wins} na plusie${st.closed ? ` (${Math.round(100 * st.wins / st.closed)}%)` : ''}</p></div></div>${pos}${tr}</div>
+    <p class="foot">Bez AI, co minutę. Kupuje 40 zł, gdy moneta rośnie min. +0,5% w 3 min przy dużym obrocie. Sprzedaje przy +1%, przy -0,7% albo po 10 min. Koszty jak na giełdzie krypto w USDC: 0,1% za stronę + spread.</p>`;
 }
 
 function renderPortfolio(d) {

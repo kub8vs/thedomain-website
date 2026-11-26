@@ -57,3 +57,15 @@ export async function saveState(state) {
 }
 
 export const storageKind = useRedis ? 'redis' : 'blob';
+
+// MINUTÓWKA trzyma swój portfel w osobnym pliku, żeby zapisy co minutę nie kolidowały z analizą AI.
+const SCALP_PATH = 'stan/scalp.json';
+export async function loadScalp({ fresh = false } = {}) {
+  const base = blobBase(); if (!base) return null;
+  const r = await fetch(`${base}${SCALP_PATH}${fresh ? `?v=${Date.now()}` : ''}`, { cache: 'no-store' });
+  return r.ok ? await r.json() : null;
+}
+export async function saveScalp(sc) {
+  sc.savedAt = new Date().toISOString();
+  await put(SCALP_PATH, JSON.stringify(sc), { access: 'public', addRandomSuffix: false, allowOverwrite: true, contentType: 'application/json', cacheControlMaxAge: 60 });
+}

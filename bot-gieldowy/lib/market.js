@@ -166,7 +166,12 @@ export async function quickQuotes(insts) {
       const bid = +t.bid, ask = +t.ask, mid = (bid + ask) / 2;
       const k1 = c1.map(c => c[4]).reverse();
       const back1 = n => k1.length > n ? k1[k1.length - 1 - n] : null;
-      return { ...inst, bid, ask, mid, tradable: true, ch1m: pct(mid, back1(1)), ch3m: pct(mid, back1(3)), ch15m: pct(mid, back1(15)) };
+      const v = c1.map(c => c[5]).reverse();
+      const avg = (a, b) => { const x = v.slice(Math.max(0, v.length - a), v.length - b); return x.length ? x.reduce((s, y) => s + y, 0) / x.length : null; };
+      const v3 = avg(3, 0), v30 = avg(33, 3);
+      const lastC = c1[0];
+      return { ...inst, bid, ask, mid, tradable: true, ch1m: pct(mid, back1(1)), ch3m: pct(mid, back1(3)), ch15m: pct(mid, back1(15)),
+        vol3_vs_30: v3 && v30 ? +(v3 / v30).toFixed(2) : null, green1m: lastC ? lastC[4] > lastC[3] : null };
     } catch (e) { return { ...inst, error: String(e.message || e) }; }
   });
 }

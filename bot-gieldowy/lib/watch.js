@@ -3,12 +3,13 @@
 // 2) alarm: gdy któraś moneta mocno się rusza, od razu prosi AI o pełną analizę.
 import { UNIVERSE, TRADABLE_ONLY, ALARM_MOVE_PCT } from './config.js';
 import { quickQuotes, usdPln } from './market.js';
-import { loadState, saveState } from './store.js';
+import { loadState, saveState, loadScalp, saveScalp } from './store.js';
 import { execute, guardLevels } from './broker.js';
 import { runTick } from './engine.js';
 import { reviewTrades } from './ai.js';
 import { notify, tradeMessage } from './push.js';
 import { portfolioValue } from './broker.js';
+import { runScalp, scalpInit } from './scalp.js';
 
 const px = x => +(+x).toPrecision(5);
 
@@ -78,6 +79,18 @@ export async function runWatch({ force = false } = {}) {
     Object.assign(state, freshState);
   }
 
+  // MINUTÓWKA: osobny portfel do szybkiego tradingu, sprawdzany co minutę
+  let scalpEv = [];
+  try {
+    const fxNow = state.trades?.[0]?.fx || 4.07;
+    const cached = (await loadScalp()) || scalpInit();
+    if (runScalp(JSON.parse(JSON.stringify(cached)), Q, fxNow, now).length) {
+      const sc = (await loadScalp({ fresh: true })) || scalpInit();
+      scalpEv = runScalp(sc, Q, fxNow, now);
+      if (scalpEv.length) await saveScalp(sc);
+    }
+  } catch (e) { console.error('minutówka', e.message); }
+
   // alarm: duży ruch w ciągu 3 minut
   const movers = quotes.filter(q => !q.error && q.ch3m != null && Math.abs(q.ch3m) >= (state.positions[q.symbol] ? 1 : ALARM_MOVE_PCT))
     .sort((a, b) => Math.abs(b.ch3m) - Math.abs(a.ch3m));
@@ -109,5 +122,5 @@ export async function runWatch({ force = false } = {}) {
       lessons = list;
     } catch (e) { console.error('lekcje', e.message); }
   }
-  return { checked: quotes.length, held, traded: dec.executed.map(e => e.text), saved: dirty, alarm, tick: tick && (tick.decision?.summary || tick.why), lessons };
+  return { scalp: scalpEv.map(t => `${t.side} ${t.symbol} ${t.amountPLN} zł${t.plPLN != null ? ' (' + t.plPLN + ' zł)' : ''}`), checked: quotes.length, held, traded: dec.executed.map(e => e.text), saved: dirty, alarm, tick: tick && (tick.decision?.summary || tick.why), lessons };
 }
